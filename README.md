@@ -1,40 +1,135 @@
-# 2024-logart
+# Aplicación: LogArt
+Alumno: David Moreno Martín
+
+Tutor: Micael Gallego Carrillo
 
 # 🛠️ Herramientas
 
 - [Github Projects]()
 - [Blog]()
+- [Figma](https://www.figma.com/design/rCnGcWEIXcScpNjtIBcZKp/wireFrame?node-id=1-2&t=VRMJLtGbOjGuZY8N-1)
+<br><br>
+
+# ❓ Palabras clave
+
+<div style="text-align: justify">
+
+**Disciplina**: videojuegos, Lectura, música.
+<br><br>
+
+**Objeto**: Videojuego, libro o canción perteneciente a una disciplina.
+<br><br>
+
+**Galería**: Conjunto de objetos bajo una misma disciplina conforman la galería de esa disciplina.
+<br><br>
+
+**Comentario**: Mensaje o post que escribe un Usuario dentro de un Objeto de su propiedad
+<br><br>
+
+**Relación KeyWords**: Un Usuario crea un Objeto dentro de una de las tres Disciplinas. Se podría decir que ese Objeto ahora está en la Galería de esa Disciplina. Además, el Usuario puede crear comentarios bajo ese Objeto
+<br>
+<br>
+
+**Ejemplo KeyWords**: El Usuario David crea el Objeto “Harry Potter” dentro de la Disciplina Lectura. La Galería de Libros del usuario ahora tiene un nuevo Objeto, y el Usuario decide escribir un Comentario dentro ese objeto poniendo “¡Voldemort mola!”
+
+</div>
+
+<br><br>
 
 # 📂 Entidades
 
-![Diagrama de entidades]()
+![Diagrama de entidades](/DocFiles/images/entityDiagram.png)
 
-- **lorem:** lorem
-- **lorem:** lorem
-- **lorem:** lorem
-- **lorem:** lorem
+<div style="text-align: justify">
 
-## 🔐 Permisos de usuario
+Las entidades son **Usuario**, **Disciplina**, **Objetos** y **Comentarios**.
+<br>
 
-- **No registrado**: lorem
-- **Registrado**: lorem
-- **Administrador**: lorem
+ Están relacionadas de la siguiente forma: Un **Usuario** escoge una **Disciplina**, y crea un **Objeto** dentro de ella. A su vez el **Usuario** puede crear **Comentarios** dentro de los **Objetos** creados. </div>
+<br><br>
 
-## 🖼️ Imágenes
+# 👦 Tipos de usuarios
 
-- lorem
+<div style="text-align: justify">
 
-## 📊 Gráficos
+**Usuario No registrado**: Podrá ver los objetos de la galería de un usuario, siempre y cuando esa persona haya decidido compartir dicho objeto. No podrá crear ni editar objetos dentro de ninguna galería.
 
-- lorem
+**Usuario registrado**: Podrá ver los objetos de la galería de otro usuario, siempre y cuando esa persona haya decidió compartir dicho objeto. Además, podrá crear nuevos objetos en cada galería y editarlos/eliminarlos a su gusto. 
 
-## 📧 Tecnología complementaria
+Si los objetos son suyos, dentro podrá añadir/editar/eliminar comentarios sobre su experiencia, y dependiendo del tipo de galería en la que esté el objeto, podrá también añadir una imagen de un mapa (videojuegos) o los autores (libros y música) de dicho objeto.
 
-- lorem
+**Usuario administrador**: En el caso del administrador, podrá ver las galerías y los objetos de todos los usuarios registrados en la aplicación, hayan decidido compartirlos o no. Además de esto, también podrá eliminar los objetos que considere que no son apropiados. 
 
-## 📈 Algoritmo o consulta avanzada
+De forma similar, también podrá eliminar los comentarios que existan dentro de cada objeto. Por último el administrador dispondrá de una página especial, en la que podrá ver una serie de estadísticas y gráficos relacionados con el funcionamiento de la aplicación y la creación de objetos/comentarios.
 
-- lorem
+
+
+
+ </div>
+
+# 🔐 Permisos de usuario
+<div style="text-align: justify">
+
+Relacionado con lo comentado en el punto anterior, los permisos de los usuarios varían dependiendo del tipo de usuario:
+
+
+**Usuario anónimo**: No tiene ningún tipo de permiso/responsabilidad, no es dueño de ningún dato/entidad, solo puede ver los objetos de las galerías de ciertos usuarios si ellos así lo desean.
+
+**Usuario registrado**: Tendrá permiso para añadir/eliminar objetos dentro de las galerías, así como los comentarios e imágenes dentro de cada objeto. Será dueño de las entidades Objeto y Comentarios siempre que hayan sido creadas por él.
+
+**Usuario administrador**: Tiene todos los permisos posibles, incluyendo la eliminación de objetos/comentarios de cualquier usuario que no sea administrador, y la posibilidad de entrar a objetos de galerías que los usuarios no hayan decidido compartir. Será dueño de las entidades Objeto y Comentarios, sin importar quien las haya creado
+
+
+ </div>
+
+
+# 🖼️ Imágenes
+
+<div style="text-align: justify">
+
+La web permitirá la subida de imágenes en varios sentidos, el primero de ellos a la hora de crear/modificar el perfil, donde podrás añadir una foto de tu gusto. Luego, cuando creas un nuevo objeto, podrás añadir la imagen que mejor represente ese objeto según tu opinión.
+
+ Por último, también podrás añadir una imagen dentro de los objetos de la galería “Videojuegos” siendo esta imagen el mapa del juego.
+
+
+Por lo tanto, las entidades asociadas con imágenes son: **Usuario** (foto de perfil) y **Objeto** (imagen de objeto, y mapa si la disciplina es videojuego)
+
+
+ </div>
+
+# 📊 Gráficos
+
+<div style="text-align: justify">
+
+En la pantalla de administrador se mostrarán 2 gráficos, ambos sobre una medida de tiempo (días, meses...)
+ 
+ El primero, sobre los objetos creados por parte de los usuarios, y el segundo sobre los comentarios creados dentro de los objetos. 
+ 
+ Estos gráficos serán de barra en principio, pudiendo cambiar el estilo en un futuro si el hacerlo refleja mejor los datos.
+
+</div>
+
+# 📧 Tecnología complementaria
+
+<div style="text-align: justify">
+
+Como tecnología complementaría, la web empleará un método de verificación después de registrarse, este método se implementará enviando un correo a los usuarios, que deberán recibir y aceptar para poder usar la aplicación
+
+ </div>
+
+# 📈 Algoritmo o consulta avanzada
+
+<div style="text-align: justify">
+
+En la pestaña de administrador, se mostrarán el número de objetos y comentarios creados por unidad de tiempo, junto a sus respectivos gráficos. 
+
+El algoritmo/consulta avanzada consistirá en averiguar (y mostrar en la pantalla) el aumento/disminución en porcentaje de estos.
+
+ Por ejemplo -> Objetos totales: 1.239, +20.4% con respecto al mes pasado.
+(Reflejado en el wireframe para entenderlo mejor)
+
+
+ </div>
 <br><br><br>
 
 ---
