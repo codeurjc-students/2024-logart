@@ -195,4 +195,4 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 # Wireframe de navegación de la aplicación
 
 
-![Imagen de Wireframe de navegación](docFiles/images/navWireframe.png)
+![Imagen de Wireframe de navegación](DocFiles/images/navWireframe.png)
