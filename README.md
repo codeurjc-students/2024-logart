@@ -15,22 +15,22 @@ ponerlos públicos). Para ello, pulsaremos en el botón del menú arriba a la de
 por username.
 <br><br>
 
-![Imagen de pantalla de inicio](ArchivosDocumentación/Imágenes/unregisteredHome.png) 
+![Imagen de pantalla de inicio](DocFiles/images/unregisteredHome.png) 
 
 
 Al bajar un poco, tienes el carrusel, donde se muestran varios ejemplos en pequeño, y siguiendo el estilo del disco de vinilo, es un carrusel infinito donde se van repitiendo las imágenes.
 <br><br>
 
-![Imagen de carrusel](ArchivosDocumentación/Imágenes/infiniteCarousel.png)
+![Imagen de carrusel](DocFiles/images/infiniteCarousel.png)
 
 Por último, abajo del todo tenemos la última sección de la página principal para los no registrados. Un slider en el cual puedes elegir entre varias fotos, para hacerte una idea de cuáles son las 3 disciplinas con las que trabaja nuestra aplicación
 <br><br>
 
-![Imagen de slider 1](ArchivosDocumentación/Imágenes/sliderER.png)
+![Imagen de slider 1](DocFiles/images/sliderER.png)
 
-![Imagen de slider 2](ArchivosDocumentación/Imágenes/sliderQui.png)
+![Imagen de slider 2](DocFiles/images/sliderQui.png)
 
-![Imagen de slider 3](ArchivosDocumentación/Imágenes/sliderAF.png)
+![Imagen de slider 3](DocFiles/images/sliderAF.png)
 
 </div>
 
@@ -48,7 +48,7 @@ Para registrarse necesitas un username, un email válido, y una contraseña. Es 
 <br>
 
 
-![Imagen de registro](ArchivosDocumentación/Imágenes/signUp.png)
+![Imagen de registro](DocFiles/images/signUp.png)
 
 ## Pantalla de Login
 
@@ -60,7 +60,7 @@ Es importante que el email esté validado antes de hacer el login, de lo contrar
 <br>
 
 
-![Imagen de login](ArchivosDocumentación/Imágenes/login.png)
+![Imagen de login](DocFiles/images/login.png)
 
 ## Pantalla de La Biblioteca
 
@@ -72,10 +72,10 @@ Esta será la única vez que se verá la pantalla (por sesión), ya que después
 <br>
 
 
-![Imagen de la biblioteca](ArchivosDocumentación/Imágenes/library0.png)
-![Imagen de la biblioteca](ArchivosDocumentación/Imágenes/libraryGames.png)
-![Imagen de la biblioteca](ArchivosDocumentación/Imágenes/libraryMusic.png)
-![Imagen de la biblioteca](ArchivosDocumentación/Imágenes/libraryBooks.png)
+![Imagen de la biblioteca](DocFiles/images/library0.png)
+![Imagen de la biblioteca](DocFiles/images/libraryGames.png)
+![Imagen de la biblioteca](DocFiles/images/libraryMusic.png)
+![Imagen de la biblioteca](DocFiles/images/libraryBooks.png)
 
 ## Pantalla de La Galería
 
@@ -87,9 +87,9 @@ En cada uno de estos objetos aparecerá un nombre, una foto, un corazón para a�
 <br>
 
 
-![Imagen de la galeria Juegos](ArchivosDocumentación/Imágenes/galleryGames.png)
-![Imagen de la galeria Libros](ArchivosDocumentación/Imágenes/galleryBooks.png)
-![Imagen de la galeria Música](ArchivosDocumentación/Imágenes/galleryMusic.png)
+![Imagen de la galeria Juegos](DocFiles/images/galleryGames.png)
+![Imagen de la galeria Libros](DocFiles/images/galleryBooks.png)
+![Imagen de la galeria Música](DocFiles/images/galleryMusic.png)
 
 ## Pantalla de Objeto concreto
 
@@ -101,9 +101,9 @@ Por último, también podrás editarlo, tanto el objeto en sí, (foto y nombre),
 <br>
 
 
-![Imagen de Objeto concreto juego](ArchivosDocumentación/Imágenes/objectGame.png)
-![Imagen de Objeto concreto libro](ArchivosDocumentación/Imágenes/objectBook.png)
-![Imagen de Objeto concreto música](ArchivosDocumentación/Imágenes/objectMusic.png)
+![Imagen de Objeto concreto juego](DocFiles/images/objectGame.png)
+![Imagen de Objeto concreto libro](DocFiles/images/objectBook.png)
+![Imagen de Objeto concreto música](DocFiles/images/objectMusic.png)
 
 ## Pantalla de Perfil
 
@@ -114,7 +114,7 @@ Para hacerlo clicaremos en el menú desplegable del header e iremos a perfil.
 <br>
 
 
-![Imagen de perfil](ArchivosDocumentación/Imágenes/profile.png)
+![Imagen de perfil](DocFiles/images/profile.png)
 
 ## Pantalla de Admin Dashboard
 
@@ -125,7 +125,7 @@ Aquí se reflejarán una serie de estadísticas y gráficos ya comentados en la 
 <br>
 
 
-![Imagen de dashboard](ArchivosDocumentación/Imágenes/adminDashboard.png)
+![Imagen de dashboard](DocFiles/images/adminDashboard.png)
 
 ## Pantalla de Contacto
 
@@ -136,7 +136,7 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 <br>
 
 
-![Imagen de contacto](ArchivosDocumentación/Imágenes/contactUs.png)
+![Imagen de contacto](DocFiles/images/contactUs.png)
 
 ## Pantalla de Error 404
 
@@ -145,4 +145,4 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 <br>
 
 
-![Imagen de contacto](ArchivosDocumentación/Imágenes/error404.png)
+![Imagen de contacto](DocFiles/images/error404.png)
