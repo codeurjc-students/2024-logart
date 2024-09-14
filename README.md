@@ -6,7 +6,7 @@ Tutor: Micael Gallego Carrillo
 # 🛠️ Herramientas
 
 - [Github Projects](https://github.com/users/DavidMorenoo/projects/1/views/1)
-- [Blog](https://medium.com/@davidmorenom17/sentando-las-bases-primera-release-da9ede55ca3b)
+- [Primera entrada del Blog](https://medium.com/@davidmorenom17/sentando-las-bases-primera-release-da9ede55ca3b)
 - [Figma](https://www.figma.com/design/rCnGcWEIXcScpNjtIBcZKp/wireFrame?node-id=1-2&t=VRMJLtGbOjGuZY8N-1)
 <br><br>
 
