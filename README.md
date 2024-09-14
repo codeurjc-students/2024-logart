@@ -5,7 +5,7 @@ Tutor: Micael Gallego Carrillo
 
 # 🛠️ Herramientas
 
-- [Github Projects]()
+- [Github Projects](https://github.com/users/DavidMorenoo/projects/1/views/1)
 - [Blog]()
 - [Figma](https://www.figma.com/design/rCnGcWEIXcScpNjtIBcZKp/wireFrame?node-id=1-2&t=VRMJLtGbOjGuZY8N-1)
 <br><br>
@@ -46,6 +46,55 @@ Las entidades son **Usuario**, **Disciplina**, **Objetos** y **Comentarios**.
 <br>
 
  Están relacionadas de la siguiente forma: Un **Usuario** escoge una **Disciplina**, y crea un **Objeto** dentro de ella. A su vez el **Usuario** puede crear **Comentarios** dentro de los **Objetos** creados. </div>
+<br><br>
+
+# 🔧 Funcionalidades y aspectos principales de la aplicación
+
+<div style="text-align: justify">
+
+### **Funcionalidades básicas**:
+
+1. Autenticación y autorización de usuarios:
+
+   - Registro de usuarios con verificación de email.
+   - Login/logout seguro.
+   - Diferentes roles: no registrado, registrado y administrador.
+2. Gestión de objetos y disciplinas:
+
+   - Crear, editar y eliminar objetos dentro de las disciplinas (lectura, música, videojuegos)
+   - Filtrar y buscar objetos por nombre.
+   - Subida de imágenes relacionadas con los objetos.
+   - Mostrar la galería de objetos por disciplina.
+   - Moderación de objetos por parte de administradores.
+3. Comentarios
+   - Permitir a los usuarios registrados crear, editar y eliminar comentarios sobre sus objetos.
+   - Visualización de comentarios para cada objeto de forma correcta, dentro del propio objeto.
+   - Moderación de comentarios por parte de administradores.
+4. Perfiles de usuarios y dashboard administrador
+   - Creación y edición del perfil, incluyendo la subida de una foto de perfil.
+   - Creación de un panel de control donde el administrador puede visualizar diferentes gráficos y datos sobre el desempeño de la aplicación.
+
+
+### **Funcionalidades avanzadas**:
+
+1. Autenticación y autorización de usuarios:
+
+   - Recuperación de contraseña a través de email.
+2. Gestión de objetos y disciplinas:
+
+   - Compartir objetos con otros usuarios y que estos puedan verlos aún sin estar logeados.
+   - Sistema de favoritos o “me gusta” para poder filtrarlos de esa manera.
+3. Gestión de datos:
+
+   - Algoritmo de análisis de crecimiento, que muestre el aumento o disminución porcentual en un periodo de tiempo.
+<br>
+<br>
+
+
+### ⚠️ La lista de funcionalidades está abierta a ser ampliada si dichas funcionalidades favorecen la efectividad y comodidad de la web para los usuarios. ⚠️
+
+</div>
+
 <br><br>
 
 # 👦 Tipos de usuarios
