@@ -1,6 +1,48 @@
 # 2024-logart
 
-# Pantallas de la aplicación
+# 🛠️ Herramientas
+
+- [Github Projects]()
+- [Blog]()
+
+# 📂 Entidades
+
+![Diagrama de entidades]()
+
+- **lorem:** lorem
+- **lorem:** lorem
+- **lorem:** lorem
+- **lorem:** lorem
+
+## 🔐 Permisos de usuario
+
+- **No registrado**: lorem
+- **Registrado**: lorem
+- **Administrador**: lorem
+
+## 🖼️ Imágenes
+
+- lorem
+
+## 📊 Gráficos
+
+- lorem
+
+## 📧 Tecnología complementaria
+
+- lorem
+
+## 📈 Algoritmo o consulta avanzada
+
+- lorem
+<br><br><br>
+
+---
+
+
+
+
+# Wireframe pantallas de la aplicación
 
 ## Pantalla de inicio (no registrado)
 
@@ -146,3 +188,11 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 
 
 ![Imagen de contacto](DocFiles/images/error404.png)
+
+<br>
+<br>
+
+# Wireframe de navegación de la aplicación
+
+
+![Imagen de Wireframe de navegación](docFiles/images/navWireframe.png)
