@@ -66,13 +66,12 @@ Las entidades son **Usuario**, **Disciplina**, **Objetos** y **Comentarios**.
    - Subida de imágenes relacionadas con los objetos.
    - Mostrar la galería de objetos por disciplina.
    - Moderación de objetos por parte de administradores.
-3. Comentarios
+3. Comentarios:
    - Permitir a los usuarios registrados crear, editar y eliminar comentarios sobre sus objetos.
    - Visualización de comentarios para cada objeto de forma correcta, dentro del propio objeto.
    - Moderación de comentarios por parte de administradores.
-4. Perfiles de usuarios y dashboard administrador
+4. Perfiles de usuarios:
    - Creación y edición del perfil, incluyendo la subida de una foto de perfil.
-   - Creación de un panel de control donde el administrador puede visualizar diferentes gráficos y datos sobre el desempeño de la aplicación.
 
 
 ### **Funcionalidades avanzadas**:
@@ -84,7 +83,10 @@ Las entidades son **Usuario**, **Disciplina**, **Objetos** y **Comentarios**.
 
    - Compartir objetos con otros usuarios y que estos puedan verlos aún sin estar logeados.
    - Sistema de favoritos o “me gusta” para poder filtrarlos de esa manera.
-3. Gestión de datos:
+3. Dashboard de administrador:
+
+   - Creación de un panel de control donde el administrador puede visualizar diferentes gráficos y datos sobre el desempeño de la aplicación.
+4. Gestión de datos:
 
    - Algoritmo de análisis de crecimiento, que muestre el aumento o disminución porcentual en un periodo de tiempo.
 <br>
