@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./models/user.model');
 
 const { verifyToken } = require('./utilities');
+const { parse } = require('dotenv');
 
 mongoose.connect(config.connectionString);
 
@@ -107,6 +108,27 @@ app.get('/api/v1/users/:userId', verifyToken , async (req, res) => {
   }
 
   
+})
+
+app.get('/api/v1/users', verifyToken, async (req, res) => {
+  try {
+    const {page = 1, limit = 1} = req.query;
+    const skip = (page - 1) * limit;
+
+    const users = await User.find({}, 'firstName lastName email username').skip(skip).limit(parseInt(limit));
+
+    const totalUsers = await User.countDocuments();
+
+    return res.status(200).json({
+      users,
+      totalUsers,
+      currentPage: parseInt(page),
+      totalPages: Math.ceil(totalUsers / limit),
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: true, message: 'Internal server error' });
+  }
 })
 
 
