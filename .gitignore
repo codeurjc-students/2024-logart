@@ -1,5 +1,7 @@
 #Secrets
 *.env
+LogArtApp/backend/.env
+
 
 # Logs
 logs
