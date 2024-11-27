@@ -112,7 +112,7 @@ app.get('/api/v1/users/:userId', verifyToken , async (req, res) => {
 
 app.get('/api/v1/users', verifyToken, async (req, res) => {
   try {
-    const {page = 1, limit = 1} = req.query;
+    const {page = 1, limit = 5} = req.query;
     const skip = (page - 1) * limit;
 
     const users = await User.find({}, 'firstName lastName email username').skip(skip).limit(parseInt(limit));
