@@ -15,7 +15,6 @@ const app = express();
 app.use(express.json());
 app.use(cors({origin:"*"}));
 
-//Create user account
 app.post('/api/v1/users', async (req, res) => {
   try {
     const {password, email, firstName, lastName, username} = req.body;
@@ -51,7 +50,6 @@ app.post('/api/v1/users', async (req, res) => {
   }
 });
 
-//Login user
 app.post('/api/v1/auth', async (req, res) => {
   try {
     const { email, password } = req.body;
