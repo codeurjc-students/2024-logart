@@ -1,13 +1,15 @@
 require('dotenv').config();
 
 const config = require('./config.json')
-const moongoose = require('mongoose')
+const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 
-moongoose.connect(config.connectionString)
+mongoose.connect(config.connectionString);
+
+const User = require('./models/user.model');
 
 const app = express();
 app.use(express.json());
