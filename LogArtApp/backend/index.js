@@ -51,6 +51,42 @@ app.post('/api/v1/users', async (req, res) => {
   }
 });
 
+//Login user
+app.post('/api/v1/auth', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: true, message: 'Both fields are required' });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ error: true, message: 'User not found' });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: true, message: 'Invalid credentials' });
+    }
+
+    const accessToken = jwt.sign({ userId: user._id }, 
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: '24h' });
+
+    return res.status(200).json({
+      user: { firstName: user.firstName, lastName: user.lastName, email: user.email, username: user.username },
+      accessToken,
+      message: 'Login successful',
+    });
+  }
+  catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: true, message: 'Internal server error' });
+  }
+  
+});
+
 app.listen(443, () => {
   console.log('Server running on port 443');
 });
