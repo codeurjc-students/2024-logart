@@ -29,6 +29,11 @@ const userSchema = new Schema({
   hastoken: {
     type: Boolean,
     default: false
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin', 'guest'],
+    default: 'user'
   }
 });
 
