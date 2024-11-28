@@ -1,3 +1,8 @@
+#Secrets
+*.env
+LogArtApp/backend/.env
+
+
 # Logs
 logs
 *.log
@@ -22,3 +27,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+LogArtApp/backend/.env
+LogArtApp/backend/.env
