@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const sendVerificationEmail = require('../utils/emailService');
 const User = require('../models/user.model');
 const { accessTokenSecret } = require('../config/environment');
 const BlacklistedToken = require('../models/blacklist.model');
@@ -10,6 +12,8 @@ const login = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) return res.status(401).json({ error: true, message: 'User not found' });
+
+    if (!user.isVerified) return res.status(401).json({ error: true, message: 'Please verify your email before logging in' });
 
     if (!email || !password) return res.status(400).json({ error: true, message: 'Both fields are required' });
 
@@ -48,11 +52,35 @@ const register = async (req, res) => {
       return res.status(409).json({ error: true, message: 'User already exists' });
     }
 
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ password: hashedPassword, email, firstName, lastName, username });
+    const user = new User({ password: hashedPassword, email, firstName, lastName, username, verificationToken });
     await user.save();
 
-    return res.status(201).location(`/api/v1/users/${user._id}`).json({ user: { firstName: user.firstName, lastName: user.lastName, email: user.email, username: user.username }, message: 'User created successfully' });
+    const verificationLink = `${process.env.BASE_URL}/api/v1/verify/${verificationToken}`;
+    await sendVerificationEmail(email, verificationLink);
+
+
+    return res.status(201).location(`/api/v1/users/${user._id}`).json({ user: { firstName: user.firstName, lastName: user.lastName, email: user.email, username: user.username }, message: 'User registered, please check your email to verify your account' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: true, message: 'Internal server error' });
+  }
+};
+
+const verifyUser = async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    const user = await User.findOne({ verificationToken:token });
+    if (!user) {
+      return res.status(404).json({ error: true, message: 'Invalid or expired token' });
+    }
+    user.isVerified = true;
+    user.verificationToken = null;
+    await user.save();
+    return res.status(200).json({ message: 'User verified successfully' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: true, message: 'Internal server error' });
@@ -84,4 +112,4 @@ const logout = async (req, res) => {
   }
 };
 
-module.exports = { login, register, logout };
+module.exports = { login, register, logout, verifyUser };

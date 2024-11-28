@@ -34,6 +34,14 @@ const userSchema = new Schema({
     type: String,
     enum: ['user', 'admin', 'guest'],
     default: 'user'
+  },
+  isVerified: {
+    type: Boolean,
+    default: false
+  },
+  verificationToken: {
+    type: String
+    
   }
 });
 
