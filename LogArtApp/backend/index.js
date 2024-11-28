@@ -8,6 +8,7 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 
 const User = require('./models/user.model');
+const BlacklistedToken = require('./models/blacklist.model');
 
 const { verifyToken } = require('./utilities');
 const { parse } = require('dotenv');
@@ -130,6 +131,29 @@ app.get('/api/v1/users', verifyToken, async (req, res) => {
     return res.status(500).json({ error: true, message: 'Internal server error' });
   }
 })
+
+app.post('/api/v1/logout', verifyToken, async (req, res) => {
+  const ADDITIONAL_TOKEN_EXP_TIME = 5*60*1000;
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) {
+    return res.sendStatus(401).json({ error: true, message: 'No token provided' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const originalExpirationDate = new Date(decoded.exp * 1000);
+    const extendedExpirationDate = new Date(originalExpirationDate.getTime() + ADDITIONAL_TOKEN_EXP_TIME );
+
+    await BlacklistedToken.create({ token, expiresAt: extendedExpirationDate });
+
+    return res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    return res.status(500).json({ error: true, message: 'Internal server error' });
+  }
+})
+
+  
 
 
 app.listen(443, () => {
