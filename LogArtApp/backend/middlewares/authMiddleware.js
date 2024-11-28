@@ -1,5 +1,6 @@
 const jwt = require ('jsonwebtoken');
-const BlacklistedToken = require('./models/blacklist.model');
+const BlacklistedToken = require('../models/blacklist.model');
+const { accessTokenSecret } = require('../config/environment');
 
 async function verifyToken(req, res, next) {
   const authHeader = req.headers['authorization'];
@@ -13,7 +14,7 @@ async function verifyToken(req, res, next) {
     return res.status(401).json({ error: true, message: 'Token is blacklisted' });
   
   }
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+  jwt.verify(token, accessTokenSecret, (err, user) => {
     if (err){
       return res.status(403).json({ error: true, message: 'Invalid token' });
     }
