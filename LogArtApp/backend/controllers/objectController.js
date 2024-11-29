@@ -83,10 +83,33 @@ const updateObject = async (req, res) => {
   }
 };
 
-// const deleteObject = async (req, res) => {
-//   try {
-//     const objectIdFromParams = req.params.objectId;
-//     const userId = req.user.userId;
-//     const 
+const deleteObject = async (req, res) => {
+  try {
+    const objectIdFromParams = req.params.objectId;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const userRole = user.role;
 
-module.exports = { createObject, updateObject };
+    if (!isValidMongoId(objectIdFromParams)) {
+      return res.status(400).json({ error: true, message: 'Invalid object ID format' });
+    }
+
+    const object = await Object.findById(objectIdFromParams);
+    if (!object) {
+      return res.status(404).json({ error: true, message: 'Object not found' });
+    }
+
+    if (object.createdBy.toString() !== userId && userRole !== 'admin') {
+      return res.status(403).json({ error: true, message: 'You are not authorized to delete this object' });
+    }
+
+    await object.deleteOne();
+
+    return res.status(200).json({ message: 'Object deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: true, message: 'Internal server error' });
+  }
+};
+
+module.exports = { createObject, updateObject, deleteObject };
