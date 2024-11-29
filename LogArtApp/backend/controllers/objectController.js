@@ -16,11 +16,14 @@ const createObject = async (req, res) => {
       return res.status(404).json({ error: true, message: 'Discipline not found' });
     }
 
+    const image = req.file ? req.file.path: null;
+
     const newObject = new Object({
       name,
       description,
       discipline: discipline._id,
       createdBy: req.user.userId,
+      imageUrl: image
     });
 
     await newObject.save();
@@ -53,7 +56,6 @@ const updateObject = async (req, res) => {
     if (!object) {
       return res.status(404).json({ error: true, message: 'Object not found' });
     }
-    console.log(userRole);
     if (object.createdBy.toString() !== userId && userRole !== 'admin') {
       
       return res.status(403).json({ error: true, message: 'You are not authorized to update this object' });
@@ -72,6 +74,9 @@ const updateObject = async (req, res) => {
     }
     if (description) {
       object.description = description;
+    }
+    if (req.file) {
+      object.imageUrl = req.file.path;
     }
     object.updatedAt = Date.now();
 
@@ -162,12 +167,18 @@ const getGalleryByDiscipline = async (req, res) => {
 
     const objects = await Object.find(filter).populate('createdBy', 'firstName lastName username').sort({ createdAt: -1 }).skip(skip).limit(limit);
 
+    const objectsWithImageUrls = objects.map((obj) => ({
+  ...obj._doc, 
+  imageUrl: `${req.protocol}://${req.get('host')}/${obj.imageUrl.replace(/\\/g, '/')}`, 
+}));
+
+
     return res.status(200).json({ 
       discipline: {
         id: discipline._id,
         name: discipline.name,
       }, totalObjects,
-      objects,
+      objects: objectsWithImageUrls,
       currentPage: parseInt(page),
       totalPages: Math.ceil(totalObjects / limit)
     });
