@@ -107,4 +107,38 @@ const deleteComment = async (req, res) => {
   }
 };
 
-module.exports = { createComment, updateComment, deleteComment };
+const getCommentsByObjectId = async (req, res) => {
+  try {
+    const objectId = req.params.objectId;
+    const { page=1, limit=3 } = req.query;
+    const skip = (page - 1) * limit;
+    const userIdFromToken = req.user.userId;
+    const object = await Object.findById(objectId);
+    const userIdFromObject = object.createdBy.toString();
+
+    const user = await User.findById(userIdFromToken);
+    const userRole = user.role;
+
+    if (!isValidMongoId(objectId)) {
+      return res.status(400).json({ error: true, message: 'Invalid object ID format' });
+    }
+
+    
+
+    if (userIdFromToken !== userIdFromObject && userRole !== 'admin') {
+      return res.status(403).json({ error: true, message: 'You are not authorized to view comments for this object' });
+    }
+
+    const totalComments = await Comment.countDocuments({ object: objectId });
+
+    const comments = await Comment.find({ object: objectId }).populate( 'user', 'username email').sort({ createdAt: -1 }).skip(skip).limit(limit);
+
+    return res.status(200).json({ comments, totalComments, currentPage: parseInt(page), totalPages: Math.ceil(totalComments / limit) });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: true, message: 'Internal server error' });
+  }
+};
+
+
+module.exports = { createComment, updateComment, deleteComment, getCommentsByObjectId };
