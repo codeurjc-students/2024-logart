@@ -1,4 +1,6 @@
 const Object = require('../models/object.model');
+const path = require('path');
+const fs = require('fs');
 const User = require('../models/user.model');
 const Discipline = require('../models/discipline.model');
 const isValidMongoId = require('../utils/validId');
@@ -76,8 +78,13 @@ const updateObject = async (req, res) => {
       object.description = description;
     }
     if (req.file) {
-      object.imageUrl = req.file.path;
+      const oldImagePath = path.join(__dirname, '..', 'public', 'images', path.basename(object.imageUrl));
+      if (fs.existsSync(oldImagePath)) {
+        fs.unlinkSync(oldImagePath); 
+      }
+      object.imageUrl = `${process.env.BASE_URL}/public/images/${req.file.filename}`;
     }
+
     object.updatedAt = Date.now();
 
     await object.save();
@@ -106,6 +113,11 @@ const deleteObject = async (req, res) => {
 
     if (object.createdBy.toString() !== userId && userRole !== 'admin') {
       return res.status(403).json({ error: true, message: 'You are not authorized to delete this object' });
+    }
+
+    const imagePath = path.join(__dirname, '..', 'public', 'images', path.basename(object.imageUrl));
+    if (fs.existsSync(imagePath)) {
+      fs.unlinkSync(imagePath); 
     }
 
     await object.deleteOne();
