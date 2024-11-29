@@ -14,7 +14,7 @@ const createComment = async (req, res) => {
     }
     
 
-    if (!content || !objectId) {
+    if (!content || !objectId || content.trim() === '' ){
       return res.status(400).json({ error: true, message: 'Both content and object Id are required' });
     }
 
@@ -63,7 +63,7 @@ const updateComment = async (req, res) => {
       return res.status(403).json({ error: true, message: 'You are not authorized to update this comment' });
     }
 
-    if (!content) {
+    if (!content || content.trim() === '') {
       return res.status(400).json({ error: true, message: 'Content is required' });
     }
 
@@ -79,4 +79,32 @@ const updateComment = async (req, res) => {
   }
 };
 
-module.exports = { createComment, updateComment };
+const deleteComment = async (req, res) => {
+  try {
+    const commentId = req.params.commentId;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const userRole = user.role;
+
+    if (!isValidMongoId(commentId)) {
+      return res.status(400).json({ error: true, message: 'Invalid comment ID format' });
+    }
+
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ error: true, message: 'Comment not found' });
+    }
+    if (comment.user.toString() !== req.user.userId && userRole !== 'admin') {
+      return res.status(403).json({ error: true, message: 'You are not authorized to delete this comment' });
+    }
+
+    await comment.deleteOne();
+
+    return res.status(200).json({ message: 'Comment deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: true, message: 'Internal server error' });
+  }
+};
+
+module.exports = { createComment, updateComment, deleteComment };

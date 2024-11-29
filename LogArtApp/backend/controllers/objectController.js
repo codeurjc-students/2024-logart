@@ -9,7 +9,7 @@ const createObject = async (req, res) => {
   try {
     const { name, description, disciplineName } = req.body;
 
-    if (!name || !disciplineName) {
+    if (!name || !disciplineName || name.trim() === '' ){
       return res.status(400).json({ error: true, message: 'Both name and discipline are required' });
     }
 
@@ -51,6 +51,10 @@ const updateObject = async (req, res) => {
     if (!isValidMongoId(objectIdFromParams)) {
       return res.status(400).json({ error: true, message: 'Invalid object ID format' });
     }
+
+    if (!name || !disciplineName || name.trim() === '' ){
+      return res.status(400).json({ error: true, message: 'Both name and discipline are required' });
+    } 
 
     const object = await Object.findById(objectIdFromParams);
 
