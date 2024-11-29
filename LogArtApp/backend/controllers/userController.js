@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const Object = require('../models/object.model');
 const mongoose = require('mongoose');
 const isValidMongoId = require('../utils/validId');
 
@@ -62,6 +63,7 @@ const deleteUser = async (req, res) => {
       return res.status(401).json({ error: true, message: 'You cannot delete an admin account, contact the system administrator' });
     }
 
+    await Object.deleteMany({ createdBy: userId }); 
     await User.findByIdAndDelete(userId);
 
     return res.status(200).json({ message: 'User deleted successfully' });
