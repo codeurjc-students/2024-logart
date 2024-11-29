@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 const mongoose = require('mongoose');
+const isValidMongoId = require('../utils/validId');
 
 const allUsers = async (req, res) => {
   try {
@@ -20,12 +21,13 @@ const findUserById = async (req, res) => {
   try {
     const userIdFromParams = req.params.userId;
     const userIdFromToken = req.user.userId;
-    if (userIdFromParams !== userIdFromToken) {
-      return res.status(401).json({ error: true, message: 'Unauthorized' });
+    
+    if (!isValidMongoId(userIdFromParams)) {
+      return res.status(400).json({ error: true, message: 'Invalid object ID format' });
     }
 
-    if (!mongoose.Types.ObjectId.isValid(userIdFromParams)) {
-      return res.status(400).json({ error: true, message: 'Invalid user ID format' });
+    if (userIdFromParams !== userIdFromToken) {
+      return res.status(401).json({ error: true, message: 'Unauthorized' });
     }
 
     const user = await User.findById(userIdFromParams);
