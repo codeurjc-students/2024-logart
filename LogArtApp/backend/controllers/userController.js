@@ -1,5 +1,9 @@
 const User = require('../models/user.model');
+const Object = require('../models/object.model');
+const fs = require('fs');
+const path = require('path');
 const mongoose = require('mongoose');
+const isValidMongoId = require('../utils/validId');
 
 const allUsers = async (req, res) => {
   try {
@@ -20,12 +24,13 @@ const findUserById = async (req, res) => {
   try {
     const userIdFromParams = req.params.userId;
     const userIdFromToken = req.user.userId;
-    if (userIdFromParams !== userIdFromToken) {
-      return res.status(401).json({ error: true, message: 'Unauthorized' });
+    
+    if (!isValidMongoId(userIdFromParams)) {
+      return res.status(400).json({ error: true, message: 'Invalid object ID format' });
     }
 
-    if (!mongoose.Types.ObjectId.isValid(userIdFromParams)) {
-      return res.status(400).json({ error: true, message: 'Invalid user ID format' });
+    if (userIdFromParams !== userIdFromToken) {
+      return res.status(401).json({ error: true, message: 'Unauthorized' });
     }
 
     const user = await User.findById(userIdFromParams);
@@ -60,9 +65,22 @@ const deleteUser = async (req, res) => {
       return res.status(401).json({ error: true, message: 'You cannot delete an admin account, contact the system administrator' });
     }
 
+    const userObjects = await Object.find({ createdBy: userId });
+
+    userObjects.forEach(async (object) => {
+      if (object.imageUrl) {
+        const imagePath = path.join(__dirname, '..', 'public', 'images', path.basename(object.imageUrl));
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+        }
+      }
+    });
+
+    
+    await Object.deleteMany({ createdBy: userId }); 
     await User.findByIdAndDelete(userId);
 
-    return res.status(200).json({ message: 'User deleted successfully' });
+    return res.status(200).json({ message: 'User and Data deleted successfully' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: true, message: 'Internal server error' });
