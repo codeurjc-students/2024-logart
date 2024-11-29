@@ -116,7 +116,7 @@ const getGalleryByDiscipline = async (req, res) => {
   try {
     const disciplineName = req.params.disciplineName;
     const disciplineId = await Discipline.findOne({ name: disciplineName }).select('_id');
-    const { userId, page=1, limit=3 }  = req.query;
+    const { userId, page=1, limit=3, objectName }  = req.query;
     const skip = (page - 1) * limit;
     const userIdFromToken = req.user.userId;
     const user = await User.findById(userIdFromToken)
@@ -137,11 +137,14 @@ const getGalleryByDiscipline = async (req, res) => {
 
 
     let totalObjects;
+    const countFilter = {discipline: disciplineId};
     if (userId) {
-      totalObjects = await Object.countDocuments({ discipline: disciplineId, createdBy: userId });
-    } else {
-      totalObjects = await Object.countDocuments({ discipline: disciplineId });
+      countFilter.createdBy = userId;
     }
+    if (objectName) {
+      countFilter.name = {$regex: new RegExp(objectName, 'i')};
+    }
+    totalObjects = await Object.countDocuments(countFilter);
     
 
     const discipline = await Discipline.findById(disciplineId);
@@ -152,6 +155,9 @@ const getGalleryByDiscipline = async (req, res) => {
     const filter = {discipline: disciplineId};
     if (userId) {
       filter.createdBy = userId;
+    }
+    if (objectName) {
+      filter.name = {$regex: new RegExp(objectName, 'i')};
     }
 
     const objects = await Object.find(filter).populate('createdBy', 'firstName lastName username').sort({ createdAt: -1 }).skip(skip).limit(limit);
