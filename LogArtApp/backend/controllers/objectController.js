@@ -112,4 +112,63 @@ const deleteObject = async (req, res) => {
   }
 };
 
-module.exports = { createObject, updateObject, deleteObject };
+const getGalleryByDiscipline = async (req, res) => {
+  try {
+    const disciplineName = req.params.disciplineName;
+    const disciplineId = await Discipline.findOne({ name: disciplineName }).select('_id');
+    const { userId, page=1, limit=3 }  = req.query;
+    const skip = (page - 1) * limit;
+    const userIdFromToken = req.user.userId;
+    const user = await User.findById(userIdFromToken)
+    const userRole = user.role;
+
+    if (!userId){
+      if (userRole !== 'admin') {
+        return res.status(403).json({ error: true, message: 'You are not authorized to view this' });
+      }
+    }
+
+    if (userId){
+      if (userId !== userIdFromToken && userRole !== 'admin') {
+        return res.status(403).json({ error: true, message: 'You are not authorized to view this' });
+      }
+
+    }
+
+
+    let totalObjects;
+    if (userId) {
+      totalObjects = await Object.countDocuments({ discipline: disciplineId, createdBy: userId });
+    } else {
+      totalObjects = await Object.countDocuments({ discipline: disciplineId });
+    }
+    
+
+    const discipline = await Discipline.findById(disciplineId);
+    if (!discipline) {
+      return res.status(404).json({ error: true, message: 'Discipline not found' });
+    }
+
+    const filter = {discipline: disciplineId};
+    if (userId) {
+      filter.createdBy = userId;
+    }
+
+    const objects = await Object.find(filter).populate('createdBy', 'firstName lastName username').sort({ createdAt: -1 }).skip(skip).limit(limit);
+
+    return res.status(200).json({ 
+      discipline: {
+        id: discipline._id,
+        name: discipline.name,
+      }, totalObjects,
+      objects,
+      currentPage: parseInt(page),
+      totalPages: Math.ceil(totalObjects / limit)
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: true, message: 'Internal server error' });
+  }
+};
+
+module.exports = { createObject, updateObject, deleteObject, getGalleryByDiscipline };
