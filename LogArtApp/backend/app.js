@@ -4,11 +4,13 @@ const userRoutes = require('./routes/userRoutes');
 const objectRoutes = require('./routes/objectRoutes');
 const connectDB = require('./config/db');
 const seedDisciplines = require('./utils/seedDisciplines');
+const seedAdmins = require('./utils/seedAdmins');
 
 
 const app = express();
 connectDB();
 seedDisciplines();
+seedAdmins();
 
 
 app.use(express.json());

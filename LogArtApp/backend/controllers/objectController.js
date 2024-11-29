@@ -1,4 +1,5 @@
 const Object = require('../models/object.model');
+const User = require('../models/user.model');
 const Discipline = require('../models/discipline.model');
 const isValidMongoId = require('../utils/validId');
 
@@ -37,7 +38,10 @@ const updateObject = async (req, res) => {
   try {
     const objectIdFromParams = req.params.objectId;
     const { name, description, disciplineName } = req.body;
-    const userId = req.user.userId; //PROBAR
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const userRole = user.role;
+    
 
     if (!isValidMongoId(objectIdFromParams)) {
       return res.status(400).json({ error: true, message: 'Invalid object ID format' });
@@ -49,8 +53,9 @@ const updateObject = async (req, res) => {
     if (!object) {
       return res.status(404).json({ error: true, message: 'Object not found' });
     }
-
-    if (object.createdBy.toString() !== userId && req.user.role !== 'admin') {
+    console.log(userRole);
+    if (object.createdBy.toString() !== userId && userRole !== 'admin') {
+      
       return res.status(403).json({ error: true, message: 'You are not authorized to update this object' });
     }
 
@@ -77,5 +82,11 @@ const updateObject = async (req, res) => {
     return res.status(500).json({ error: true, message: 'Internal server error' });
   }
 };
+
+// const deleteObject = async (req, res) => {
+//   try {
+//     const objectIdFromParams = req.params.objectId;
+//     const userId = req.user.userId;
+//     const 
 
 module.exports = { createObject, updateObject };
