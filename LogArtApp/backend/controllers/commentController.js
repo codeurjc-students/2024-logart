@@ -110,7 +110,7 @@ const deleteComment = async (req, res) => {
 const getCommentsByObjectId = async (req, res) => {
   try {
     const objectId = req.params.objectId;
-    const { page=1, limit=3 } = req.query;
+    const { page = 1, limit = 3, commentId } = req.query; 
     const skip = (page - 1) * limit;
     const userIdFromToken = req.user.userId;
     const object = await Object.findById(objectId);
@@ -123,17 +123,41 @@ const getCommentsByObjectId = async (req, res) => {
       return res.status(400).json({ error: true, message: 'Invalid object ID format' });
     }
 
-    
-
     if (userIdFromToken !== userIdFromObject && userRole !== 'admin') {
       return res.status(403).json({ error: true, message: 'You are not authorized to view comments for this object' });
     }
 
+
+    if (commentId) {
+      if (!isValidMongoId(commentId)) {
+        return res.status(400).json({ error: true, message: 'Invalid comment ID format' });
+      }
+
+      const comment = await Comment.findOne({ _id: commentId, object: objectId }).populate('user', 'username email');
+      
+      if (!comment) {
+        return res.status(404).json({ error: true, message: 'Comment not found' });
+      }
+
+      return res.status(200).json({ comments: [comment], totalComments: 1, currentPage: 1, totalPages: 1 });
+    }
+
+
     const totalComments = await Comment.countDocuments({ object: objectId });
+    
+    const comments = await Comment.find({ object: objectId })
+      .populate('user', 'username email')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
-    const comments = await Comment.find({ object: objectId }).populate( 'user', 'username email').sort({ createdAt: -1 }).skip(skip).limit(limit);
+    return res.status(200).json({
+      comments,
+      totalComments,
+      currentPage: parseInt(page),
+      totalPages: Math.ceil(totalComments / limit)
+    });
 
-    return res.status(200).json({ comments, totalComments, currentPage: parseInt(page), totalPages: Math.ceil(totalComments / limit) });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: true, message: 'Internal server error' });
