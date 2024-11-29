@@ -6,7 +6,7 @@ const DisciplineSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    enum: ['Lectura', 'Canciones', 'Videojuegos']
+    enum: ['Libros', 'Canciones', 'Videojuegos']
   },
   description: {
     type: String,

@@ -14,7 +14,7 @@ Tutor: Micael Gallego Carrillo
 
 <div style="text-align: justify">
 
-**Disciplina**: videojuegos, Lectura, música.
+**Disciplina**: videojuegos, Libros, Canciones.
 <br><br>
 
 **Objeto**: Videojuego, libro o canción perteneciente a una disciplina.
@@ -30,7 +30,7 @@ Tutor: Micael Gallego Carrillo
 <br>
 <br>
 
-**Ejemplo KeyWords**: El Usuario David crea el Objeto “Harry Potter” dentro de la Disciplina Lectura. La Galería de Libros del usuario ahora tiene un nuevo Objeto, y el Usuario decide escribir un Comentario dentro ese objeto poniendo “¡Voldemort mola!”
+**Ejemplo KeyWords**: El Usuario David crea el Objeto “Harry Potter” dentro de la Disciplina Libros. La Galería de Libros del usuario ahora tiene un nuevo Objeto, y el Usuario decide escribir un Comentario dentro ese objeto poniendo “¡Voldemort mola!”
 
 </div>
 
@@ -61,7 +61,7 @@ Las entidades son **Usuario**, **Disciplina**, **Objetos** y **Comentarios**.
    - Diferentes roles: no registrado, registrado y administrador.
 2. Gestión de objetos y disciplinas:
 
-   - Crear, editar y eliminar objetos dentro de las disciplinas (lectura, música, videojuegos)
+   - Crear, editar y eliminar objetos dentro de las disciplinas (Libros, Canciones, videojuegos)
    - Filtrar y buscar objetos por nombre.
    - Subida de imágenes relacionadas con los objetos.
    - Mostrar la galería de objetos por disciplina.
@@ -107,7 +107,7 @@ Las entidades son **Usuario**, **Disciplina**, **Objetos** y **Comentarios**.
 
 **Usuario registrado**: Podrá ver los objetos de la galería de otro usuario, siempre y cuando esa persona haya decidió compartir dicho objeto. Además, podrá crear nuevos objetos en cada galería y editarlos/eliminarlos a su gusto. 
 
-Si los objetos son suyos, dentro podrá añadir/editar/eliminar comentarios sobre su experiencia, y dependiendo del tipo de galería en la que esté el objeto, podrá también añadir una imagen de un mapa (videojuegos) o los autores (libros y música) de dicho objeto.
+Si los objetos son suyos, dentro podrá añadir/editar/eliminar comentarios sobre su experiencia, y dependiendo del tipo de galería en la que esté el objeto, podrá también añadir una imagen de un mapa (videojuegos) o los autores (libros y Canciones) de dicho objeto.
 
 **Usuario administrador**: En el caso del administrador, podrá ver las galerías y los objetos de todos los usuarios registrados en la aplicación, hayan decidido compartirlos o no. Además de esto, también podrá eliminar los objetos que considere que no son apropiados. 
 
@@ -277,7 +277,7 @@ En cada uno de estos objetos aparecerá un nombre, una foto, un corazón para a�
 
 ![Imagen de la galeria Juegos](DocFiles/images/galleryGames.png)
 ![Imagen de la galeria Libros](DocFiles/images/galleryBooks.png)
-![Imagen de la galeria Música](DocFiles/images/galleryMusic.png)
+![Imagen de la galeria Canciones](DocFiles/images/galleryMusic.png)
 
 ## Pantalla de Objeto concreto
 
@@ -291,7 +291,7 @@ Por último, también podrás editarlo, tanto el objeto en sí, (foto y nombre),
 
 ![Imagen de Objeto concreto juego](DocFiles/images/objectGame.png)
 ![Imagen de Objeto concreto libro](DocFiles/images/objectBook.png)
-![Imagen de Objeto concreto música](DocFiles/images/objectMusic.png)
+![Imagen de Objeto concreto Canciones](DocFiles/images/objectMusic.png)
 
 ## Pantalla de Perfil
 

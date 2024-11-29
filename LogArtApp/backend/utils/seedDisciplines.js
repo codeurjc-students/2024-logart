@@ -4,7 +4,7 @@ const Discipline = require('../models/discipline.model');
 const seedDisciplines = async () => {
   try {
     const disciplines = [
-      { name: 'Lectura', description: 'Libros que has leido' },
+      { name: 'Libros', description: 'Libros que has leido' },
       { name: 'Canciones', description: 'Canciones que has escuchado' },
       { name: 'Videojuegos', description: 'Videojuegos que has jugado' },
     ];
