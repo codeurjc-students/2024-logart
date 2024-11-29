@@ -58,8 +58,9 @@ const register = async (req, res) => {
     const user = new User({ password: hashedPassword, email, firstName, lastName, username, verificationToken });
     await user.save();
 
-    const verificationLink = `${process.env.BASE_URL}/api/v1/verify/${verificationToken}`;
-    await sendVerificationEmail(email, verificationLink);
+    // TODO Remove comments
+    // const verificationLink = `${process.env.BASE_URL}/api/v1/verify/${verificationToken}`;
+    // await sendVerificationEmail(email, verificationLink);
 
 
     return res.status(201).location(`/api/v1/users/${user._id}`).json({ user: { firstName: user.firstName, lastName: user.lastName, email: user.email, username: user.username }, message: 'User registered, please check your email to verify your account' });
