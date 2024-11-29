@@ -30,7 +30,7 @@ const createObject = async (req, res) => {
 
     await newObject.save();
 
-    return res.status(201).location(`/api/v1/objects/${newObject._id}`).json({ object: newObject, message: 'Object created successfully' });
+    return res.status(201).location(`/api/v1/objects/${disciplineName}/${newObject._id}`).json({ object: newObject, message: 'Object created successfully' });
 
   } catch (error) {
     console.error(error);
@@ -199,5 +199,6 @@ const getGalleryByDiscipline = async (req, res) => {
     return res.status(500).json({ error: true, message: 'Internal server error' });
   }
 };
+
 
 module.exports = { createObject, updateObject, deleteObject, getGalleryByDiscipline };
