@@ -9,7 +9,7 @@ const createObject = async (req, res) => {
   try {
     const { name, description, disciplineName } = req.body;
 
-    if (!name || !disciplineName) {
+    if (!name || !disciplineName || name.trim() === '' ){
       return res.status(400).json({ error: true, message: 'Both name and discipline are required' });
     }
 
@@ -30,7 +30,7 @@ const createObject = async (req, res) => {
 
     await newObject.save();
 
-    return res.status(201).location(`/api/v1/objects/${newObject._id}`).json({ object: newObject, message: 'Object created successfully' });
+    return res.status(201).location(`/api/v1/objects/${disciplineName}/${newObject._id}`).json({ object: newObject, message: 'Object created successfully' });
 
   } catch (error) {
     console.error(error);
@@ -51,6 +51,10 @@ const updateObject = async (req, res) => {
     if (!isValidMongoId(objectIdFromParams)) {
       return res.status(400).json({ error: true, message: 'Invalid object ID format' });
     }
+
+    if (!name || !disciplineName || name.trim() === '' ){
+      return res.status(400).json({ error: true, message: 'Both name and discipline are required' });
+    } 
 
     const object = await Object.findById(objectIdFromParams);
 
@@ -199,5 +203,6 @@ const getGalleryByDiscipline = async (req, res) => {
     return res.status(500).json({ error: true, message: 'Internal server error' });
   }
 };
+
 
 module.exports = { createObject, updateObject, deleteObject, getGalleryByDiscipline };

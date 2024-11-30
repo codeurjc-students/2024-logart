@@ -29,3 +29,4 @@ dist-ssr
 *.sw?
 LogArtApp/backend/.env
 LogArtApp/backend/.env
+LogArtApp/backend/public/images/

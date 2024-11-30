@@ -49,8 +49,8 @@ const deleteUser = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ error: true, message: 'Invalid user ID format' });
+    if (!isValidMongoId(userId)) {
+      return res.status(400).json({ error: true, message: 'Invalid object ID format' });
     }
     if (!userId) {
       return res.status(400).json({ error: true, message: 'User ID is required' });

@@ -15,7 +15,7 @@ const login = async (req, res) => {
 
     if (!user.isVerified) return res.status(401).json({ error: true, message: 'Please verify your email before logging in' });
 
-    if (!email || !password) return res.status(400).json({ error: true, message: 'Both fields are required' });
+    if (!email || !password || !email.trim() === '' || !password.trim() === '') return res.status(400).json({ error: true, message: 'Both fields are required' });
 
     if (user.hastoken) {
       return res.status(401).json({ error: true, message: 'User already logged in' });
@@ -43,7 +43,7 @@ const register = async (req, res) => {
       return res.status(401).json({ error: true, message: 'You are already logged in' });
     }
 
-    if (!password || !email || !firstName || !lastName || !username) {
+    if (!password || !email || !firstName || !lastName || !username || !password.trim() === '' || !email.trim() === '' || !firstName.trim() === '' || !lastName.trim() === '' || !username.trim() === '') {
       return res.status(400).json({ error: true, message: 'All fields are required' });
     }
 
