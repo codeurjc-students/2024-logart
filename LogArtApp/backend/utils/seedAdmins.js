@@ -7,6 +7,7 @@ const seedAdmins = async () => {
     const admins = [
       { username: 'admin', password: 'admin123', email: 'admin@gmail.com', firstName: 'Admin', lastName: 'Admin', role: 'admin',isVerified: true },
       { username: 'admin2', password: 'admin123', email: 'admin2@gmail.com', firstName: 'admin2', lastName: 'admin2', role: 'admin',isVerified: true },
+      { username: 'pepe', password: 'hola123', email: 'pepe@gmail.com', firstName: 'pepe', lastName: 'pepe', role: 'user',isVerified: true },
     ];
 
     for (const admin of admins) {
