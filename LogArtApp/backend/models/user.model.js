@@ -12,7 +12,8 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    lowercase: true
   },
   firstName: {
     type: String,
@@ -34,6 +35,15 @@ const userSchema = new Schema({
     type: String,
     enum: ['user', 'admin', 'guest'],
     default: 'user'
+  },
+  bio: {
+    type: String,
+    maxlength: [250, 'Bio cannot be more than 250 characters'],
+    default: ''
+  },
+  profileImage: {
+    type: String,
+    default: '/public/images/profiles/default.png'
   },
   isVerified: {
     type: Boolean,

@@ -18,7 +18,10 @@ const createObject = async (req, res) => {
       return res.status(404).json({ error: true, message: 'Discipline not found' });
     }
 
-    const image = req.file ? req.file.path: null;
+    if (!req.file) {
+      return res.status(400).json({ error: true, message: 'Image is required' });
+    }
+    const image = `${process.env.BASE_URL}/public/images/objects/${req.file.filename}`;
 
     const newObject = new Object({
       name,
@@ -82,11 +85,11 @@ const updateObject = async (req, res) => {
       object.description = description;
     }
     if (req.file) {
-      const oldImagePath = path.join(__dirname, '..', 'public', 'images', path.basename(object.imageUrl));
+      const oldImagePath = path.join(__dirname, '..', 'public', 'images','objects',path.basename(object.imageUrl));
       if (fs.existsSync(oldImagePath)) {
         fs.unlinkSync(oldImagePath); 
       }
-      object.imageUrl = `${process.env.BASE_URL}/public/images/${req.file.filename}`;
+      object.imageUrl = `${process.env.BASE_URL}/public/images/objects/${req.file.filename}`;
     }
 
     object.updatedAt = Date.now();
