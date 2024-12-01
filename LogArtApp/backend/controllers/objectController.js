@@ -207,5 +207,34 @@ const getGalleryByDiscipline = async (req, res) => {
   }
 };
 
+const getObjectById = async (req, res) => {
+  try {
+    const objectIdFromParams = req.params.objectId;
+    const userIdFromToken = req.user.userId;
+    const user = await User.findById(userIdFromToken)
+    const userRole = user.role;
 
-module.exports = { createObject, updateObject, deleteObject, getGalleryByDiscipline };
+    if (!isValidMongoId(objectIdFromParams)) {
+      return res.status(400).json({ error: true, message: 'Invalid object ID format' });
+    }
+
+    const object = await Object.findById(objectIdFromParams).populate('discipline', 'name').populate('createdBy', 'firstName lastName username');
+    const objectCreatedBy = object.createdBy._id;
+
+    if (!object) {
+      return res.status(404).json({ error: true, message: 'Object not found' });
+    }
+
+    if (objectCreatedBy !== userIdFromToken && userRole !== 'admin') {
+      return res.status(403).json({ error: true, message: 'You are not authorized to view this object' });
+    }
+
+    return res.status(200).json({ object });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: true, message: 'Internal server error' });
+  }
+};
+
+
+module.exports = { createObject, updateObject, deleteObject, getGalleryByDiscipline, getObjectById };

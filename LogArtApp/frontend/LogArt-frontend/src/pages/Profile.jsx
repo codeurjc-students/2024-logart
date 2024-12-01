@@ -1,10 +1,9 @@
-// src/pages/Profile.jsx
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import axios from '../utilities/api';
 
 const Profile = () => {
-  const { user, setUser } = useContext(AuthContext); // Asegúrate de tener `setUser` en AuthContext
+  const { user, setUser } = useContext(AuthContext); 
   const [formData, setFormData] = useState({
     username: '',
     firstName: '',
@@ -60,7 +59,6 @@ const Profile = () => {
         },
       });
       setMessage(response.data.message);
-      // Actualizar el contexto con los nuevos datos del usuario
       setUser(response.data.user);
     } catch (err) {
       console.error('Error al actualizar el perfil:', err);

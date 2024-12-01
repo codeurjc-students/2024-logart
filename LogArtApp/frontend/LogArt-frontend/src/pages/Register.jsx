@@ -1,4 +1,3 @@
-// src/pages/Register.jsx
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
@@ -22,7 +21,6 @@ const Register = () => {
     if (result.success) {
       setMessage(result.message);
       setError('');
-      // Opcional: Redirigir al login
       navigate('/login');
     } else {
       setError(result.message);

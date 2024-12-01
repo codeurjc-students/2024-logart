@@ -28,7 +28,7 @@ const App = () => {
               </ProtectedRoute>
              }
              />
-             <Route path="/objects/:id" element={<ObjectDetails />} />
+             <Route path="/objects/:objectId" element={<ObjectDetails />} />
           </Routes>
         </main>
         <Footer />

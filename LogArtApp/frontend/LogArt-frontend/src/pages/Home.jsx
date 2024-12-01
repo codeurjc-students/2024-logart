@@ -1,4 +1,3 @@
-// src/pages/Home.jsx
 import React, { useState, useEffect } from 'react';
 import axios from '../utilities/api';
 import { Link } from 'react-router-dom';
@@ -10,10 +9,9 @@ const Home = () => {
   const [disciplines, setDisciplines] = useState([]);
 
   useEffect(() => {
-    // Obtener disciplinas disponibles
     const fetchDisciplines = async () => {
       try {
-        const response = await axios.get('/api/v1/objects/disciplines'); // Asegúrate de tener esta ruta en tu backend
+        const response = await axios.get('/api/v1/objects/disciplines'); 
         setDisciplines(response.data.disciplines);
       } catch (error) {
         console.error('Error al obtener disciplinas:', error);
@@ -24,7 +22,6 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    // Obtener objetos según filtros
     const fetchObjects = async () => {
       try {
         const params = {};
