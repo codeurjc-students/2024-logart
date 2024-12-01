@@ -28,7 +28,7 @@ const login = async (req, res) => {
     user.hastoken = true;
     await user.save();
 
-    return res.status(200).json({ accessToken, message: 'Login successful' });
+    return res.status(200).json({ accessToken, user, message: 'Login successful' });
   } catch (error) {
     return res.status(500).json({ message: 'Internal server error' });
   }
