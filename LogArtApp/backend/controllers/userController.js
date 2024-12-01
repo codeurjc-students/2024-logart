@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 const Object = require('../models/object.model');
+const Comment = require('../models/comment.model');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -77,6 +78,8 @@ const deleteUser = async (req, res) => {
     });
 
     
+
+    await Comment.deleteMany({ user: userId });
     await Object.deleteMany({ createdBy: userId }); 
     await User.findByIdAndDelete(userId);
 
