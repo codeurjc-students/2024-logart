@@ -2,6 +2,7 @@ const Object = require('../models/object.model');
 const path = require('path');
 const fs = require('fs');
 const User = require('../models/user.model');
+const Comment = require('../models/comment.model');
 const Discipline = require('../models/discipline.model');
 const isValidMongoId = require('../utils/validId');
 
@@ -73,7 +74,7 @@ const updateObject = async (req, res) => {
     if (disciplineName) {
       const discipline = await Discipline.findOne({ name: disciplineName });
       if (!discipline) {
-        return res.status(404).json({ error: true, message: 'Discipline not found' });
+        return res.status(404).json({ error: true, message: 'Disciplina no encontrada' });
       }
       object.discipline = discipline._id;
     }
@@ -126,7 +127,7 @@ const deleteObject = async (req, res) => {
     if (fs.existsSync(imagePath)) {
       fs.unlinkSync(imagePath); 
     }
-
+    await Comment.deleteMany({ object: objectIdFromParams });
     await object.deleteOne();
 
     return res.status(200).json({ message: 'Object deleted successfully' });

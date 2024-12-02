@@ -25,7 +25,7 @@ const ObjectsByDiscipline = () => {
         const response = await api.get('/api/v1/disciplines');
         setDisciplines(response.data.disciplines);
         if (response.data.disciplines.length > 0) {
-          setSelectedDisciplineName(response.data.disciplines[0].name);
+          setSelectedDisciplineName(response.data.disciplines[2].name);
         }
         setLoadingDisciplines(false);
       } catch (error) {
@@ -77,6 +77,16 @@ const ObjectsByDiscipline = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   };
 
+  const handleObjectUpdated = (updatedObject) => {
+    setObjects((prevObjects) =>
+      prevObjects.map((object) => (object._id === updatedObject._id ? updatedObject : object))
+    );
+  };
+
+  const handleObjectDeleted = (deletedObjectId) => {
+    setObjects((prevObjects) => prevObjects.filter((object) => object._id !== deletedObjectId));
+  };
+
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Objetos por Disciplina</h1>
@@ -105,7 +115,7 @@ const ObjectsByDiscipline = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {objects.map((object) => (
-              <ObjectCard key={object._id} object={object} />
+              <ObjectCard key={object._id} object={object} onObjectUpdated={handleObjectUpdated} onObjectDeleted={handleObjectDeleted}/>
             ))}
           </div>
         )}
