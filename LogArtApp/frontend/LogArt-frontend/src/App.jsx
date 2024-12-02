@@ -6,8 +6,8 @@ import Profile from "./pages/Profile";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ObjectDetails from "./pages/ObjectDetail";
-import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
+import ObjectsByDiscipline from "./pages/ObjectsByDiscipline";
 
 
 const App = () => {
@@ -17,7 +17,7 @@ const App = () => {
         <Navbar />
         <main className="flex-grow container mx-auto px-4 py-6">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route
@@ -25,6 +25,14 @@ const App = () => {
              element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+             }
+             />
+             <Route
+             path="/disciplines"
+             element={
+              <ProtectedRoute>
+                <ObjectsByDiscipline />
               </ProtectedRoute>
              }
              />

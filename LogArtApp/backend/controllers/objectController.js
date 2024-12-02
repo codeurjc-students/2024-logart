@@ -146,11 +146,6 @@ const getGalleryByDiscipline = async (req, res) => {
     const user = await User.findById(userIdFromToken)
     const userRole = user.role;
 
-    if (!userId){
-      if (userRole !== 'admin') {
-        return res.status(403).json({ error: true, message: 'You are not authorized to view this' });
-      }
-    }
 
     if (userId){
       if (userId !== userIdFromToken && userRole !== 'admin') {
@@ -187,9 +182,11 @@ const getGalleryByDiscipline = async (req, res) => {
     const objects = await Object.find(filter).populate('createdBy', 'firstName lastName username').sort({ createdAt: -1 }).skip(skip).limit(limit);
 
     const objectsWithImageUrls = objects.map((obj) => ({
-  ...obj._doc, 
-  imageUrl: `${req.protocol}://${req.get('host')}/${obj.imageUrl.replace(/\\/g, '/')}`, 
-}));
+      ...obj._doc, 
+      imageUrl: obj.imageUrl.startsWith('http') 
+        ? obj.imageUrl 
+        : `${req.protocol}://${req.get('host')}/${obj.imageUrl.replace(/\\/g, '/')}`, 
+    }));
 
 
     return res.status(200).json({ 

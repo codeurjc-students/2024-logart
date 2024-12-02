@@ -13,7 +13,7 @@ const Navbar = () => {
       navigate('/login');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
-      
+
     }
   };
 
@@ -26,6 +26,7 @@ const Navbar = () => {
             <>
               <Link to="/profile" className="mr-4">Perfil</Link>
               <button onClick={handleLogout} className="bg-red-500 px-3 py-1 rounded">Cerrar sesión</button>
+              <Link to="/disciplines" className="ml-4">Galerías</Link>
             </>
           ) : (
             <>
