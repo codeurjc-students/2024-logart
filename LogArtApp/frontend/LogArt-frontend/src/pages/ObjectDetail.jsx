@@ -33,7 +33,7 @@ const ObjectDetail = () => {
   }, [objectId]);
 
   const handleCommentAdded = () => {
-    setRefreshComments(!refreshComments);
+    setRefreshComments(prev => !prev);
   };
 
   if (loading) return <div className="text-center mt-10">Cargando...</div>;

@@ -113,8 +113,7 @@ const getCommentsByObjectId = async (req, res) => {
     const { page = 1, limit = 3, commentId } = req.query; 
     const skip = (page - 1) * limit;
     const userIdFromToken = req.user.userId;
-    const object = await Object.findById(objectId);
-    const userIdFromObject = object.createdBy.toString();
+    
 
     const user = await User.findById(userIdFromToken);
     const userRole = user.role;
@@ -122,6 +121,13 @@ const getCommentsByObjectId = async (req, res) => {
     if (!isValidMongoId(objectId)) {
       return res.status(400).json({ error: true, message: 'Invalid object ID format' });
     }
+    const object = await Object.findById(objectId);
+
+    if (!object) {
+      return res.status(404).json({ error: true, message: 'Object not found' });
+    }
+
+    const userIdFromObject = object.createdBy.toString();
 
     if (userIdFromToken !== userIdFromObject && userRole !== 'admin') {
       return res.status(403).json({ error: true, message: 'You are not authorized to view comments for this object' });
