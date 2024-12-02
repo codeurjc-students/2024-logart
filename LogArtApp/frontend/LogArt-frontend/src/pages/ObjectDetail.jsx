@@ -62,7 +62,11 @@ const ObjectDetail = () => {
         ) : (
           <p className="text-gray-600 mb-4">Inicia sesión para añadir un comentario.</p>
         )}
-        <CommentList objectId={objectId} refresh={refreshComments} />
+        <CommentList 
+          objectId={objectId} 
+          refresh={refreshComments} 
+          objectOwnerId={object.createdBy._id} 
+        />
       </div>
     </div>
   );

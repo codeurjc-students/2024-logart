@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utilities/api';
 
-const CommentList = ({ objectId, refresh }) => {
+const CommentList = ({ objectId, refresh, objectOwnerId }) => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -48,14 +48,25 @@ const CommentList = ({ objectId, refresh }) => {
   return (
     <div>
       <div className="space-y-4">
-        {comments.map(comment => (
-          <div key={comment._id} className="p-4 bg-gray-100 rounded shadow">
-            <p className="text-gray-800">{comment.content}</p>
-            <p className="text-gray-500 text-sm mt-2">
-              Por: {comment.user.username} el {new Date(comment.createdAt).toLocaleDateString()}
-            </p>
-          </div>
-        ))}
+        {comments.map(comment => {
+          const isAdmin = comment.user.role === 'admin';
+          const isNotObjectOwner = comment.user._id !== objectOwnerId;
+          const isAdminCommentOnOtherUser = isAdmin && isNotObjectOwner;
+
+          return (
+            <div 
+              key={comment._id} 
+              className={`p-4 rounded shadow ${
+                isAdminCommentOnOtherUser ? 'bg-yellow-100 border-l-4 border-yellow-500' : 'bg-gray-100'
+              }`}
+            >
+              <p className="text-gray-800">{comment.content}</p>
+              <p className="text-gray-500 text-sm mt-2">
+                Por: {comment.user.username} el {new Date(comment.createdAt).toLocaleDateString()}
+              </p>
+            </div>
+          );
+        })}
       </div>
       <div className="flex justify-center mt-4 space-x-2">
         <button

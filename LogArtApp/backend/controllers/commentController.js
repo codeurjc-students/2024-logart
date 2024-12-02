@@ -152,7 +152,7 @@ const getCommentsByObjectId = async (req, res) => {
     const totalComments = await Comment.countDocuments({ object: objectId });
     
     const comments = await Comment.find({ object: objectId })
-      .populate('user', 'username email')
+      .populate('user', 'username email role _id')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
