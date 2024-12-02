@@ -66,6 +66,11 @@ const updateComment = async (req, res) => {
     if (!content || content.trim() === '') {
       return res.status(400).json({ error: true, message: 'Content is required' });
     }
+    
+    if (userRole === 'admin' && comment.user.toString() !== userId) {
+      comment.isEditedByAdmin = true;
+      comment.editedBy = userId;
+    }
 
     comment.content = content;
     comment.updatedAt = Date.now();

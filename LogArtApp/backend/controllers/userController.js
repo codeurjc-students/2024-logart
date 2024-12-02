@@ -93,7 +93,7 @@ const deleteUser = async (req, res) => {
 const getUserProfile = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const user = await User.findById(userId).select('-password -createdAt -hasToken -role -isVerified -verificationToken -__v -_id');
+    const user = await User.findById(userId).select('-password -createdAt -hasToken -isVerified -verificationToken -__v');
 
     if (!user) {
       return res.status(404).json({ error: true, message: 'User not found' });

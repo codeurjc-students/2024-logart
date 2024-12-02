@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import api from '../utilities/api';
+import { AuthContext } from '../context/AuthContext';
+import CommentItem from './CommentItem';
 
 const CommentList = ({ objectId, refresh, objectOwnerId }) => {
   const [comments, setComments] = useState([]);
@@ -10,7 +12,9 @@ const CommentList = ({ objectId, refresh, objectOwnerId }) => {
   const [totalPages, setTotalPages] = useState(1);
   const limit = 3;
   
-  const fetchComments = async (page=1) => {
+  const { user, isAuthenticated } = useContext(AuthContext);
+
+  const fetchComments = async (page = 1) => {
     setLoading(true);
     try {
       const response = await api.get(`api/v1/comments/${objectId}?page=${page}&limit=${limit}`);
@@ -30,8 +34,10 @@ const CommentList = ({ objectId, refresh, objectOwnerId }) => {
   }, [objectId, currentPage]);
 
   useEffect(() => {
+    
       fetchComments(currentPage);
-  }, [refresh, currentPage]);
+    
+  }, [refresh]);
 
   const handlePreviousPage = () => {
     setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
@@ -41,6 +47,18 @@ const CommentList = ({ objectId, refresh, objectOwnerId }) => {
     setCurrentPage(prevPage => Math.min(prevPage + 1, totalPages));
   };
 
+  const handleCommentUpdated = () => {
+    fetchComments(currentPage);
+  };
+  
+  const handleCommentDeleted = () => {
+    if (comments.length === 1 && currentPage > 1) {
+      setCurrentPage(prevPage => prevPage - 1);
+    } else {
+      fetchComments(currentPage);
+    }
+  };
+  
   if (loading) return <div>Cargando comentarios...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
   if (comments.length === 0) return <div>No hay comentarios aún.</div>;
@@ -48,25 +66,15 @@ const CommentList = ({ objectId, refresh, objectOwnerId }) => {
   return (
     <div>
       <div className="space-y-4">
-        {comments.map(comment => {
-          const isAdmin = comment.user.role === 'admin';
-          const isNotObjectOwner = comment.user._id !== objectOwnerId;
-          const isAdminCommentOnOtherUser = isAdmin && isNotObjectOwner;
-
-          return (
-            <div 
-              key={comment._id} 
-              className={`p-4 rounded shadow ${
-                isAdminCommentOnOtherUser ? 'bg-yellow-100 border-l-4 border-yellow-500' : 'bg-gray-100'
-              }`}
-            >
-              <p className="text-gray-800">{comment.content}</p>
-              <p className="text-gray-500 text-sm mt-2">
-                Por: {comment.user.username} el {new Date(comment.createdAt).toLocaleDateString()}
-              </p>
-            </div>
-          );
-        })}
+        {comments.map(comment => (
+          <CommentItem 
+            key={comment._id} 
+            comment={comment} 
+            onCommentUpdated={handleCommentUpdated} 
+            onCommentDeleted={handleCommentDeleted}
+            objectOwnerId={objectOwnerId} 
+          />
+        ))}
       </div>
       <div className="flex justify-center mt-4 space-x-2">
         <button

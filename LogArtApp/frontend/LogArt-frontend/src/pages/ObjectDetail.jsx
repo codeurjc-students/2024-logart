@@ -1,4 +1,3 @@
-// src/pages/ObjectDetail.jsx
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../utilities/api'; 
@@ -17,7 +16,7 @@ const ObjectDetail = () => {
   useEffect(() => {
     const fetchObject = async () => {
       try {
-        const response = await api.get(`api/v1/objects/details/${objectId}`);
+        const response = await api.get(`/api/v1/objects/details/${objectId}`);
         setObject(response.data.object);
         setLoading(false);
       } catch (err) {
@@ -49,8 +48,8 @@ const ObjectDetail = () => {
         <div className="md:w-1/2 md:pl-6 mt-6 md:mt-0">
           <h1 className="text-3xl font-bold mb-2">{object.name}</h1>
           <p className="text-gray-700 mb-4">{object.description}</p>
-          <p className="text-gray-600 mb-2"><strong>Disciplina:</strong> {object.discipline.name}</p>
-          <p className="text-gray-600"><strong>Creado por:</strong> {object.createdBy.firstName} {object.createdBy.lastName} ({object.createdBy.username})</p>
+          <p className="text-gray-600 mb-2"><strong>Disciplina:</strong> {object.discipline ? object.discipline.name : 'N/A'}</p>
+          <p className="text-gray-600"><strong>Creado por:</strong> {object.createdBy ? `${object.createdBy.firstName} ${object.createdBy.lastName} (${object.createdBy.username})` : 'N/A'}</p>
         </div>
       </div>
 
