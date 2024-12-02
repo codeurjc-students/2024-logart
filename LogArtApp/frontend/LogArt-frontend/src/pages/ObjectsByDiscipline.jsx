@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef} from 'react';
 import api from '../utilities/api';
 import { AuthContext } from '../context/AuthContext';
 import DisciplineSelector from '../components/DisciplineSelector';
@@ -19,6 +19,9 @@ const ObjectsByDiscipline = () => {
   const limit = 3;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+  const debounceTimeoutRef = useRef(null);
   const userId = isAuthenticated && user ? user._id : null;
 
   useEffect(() => {
@@ -40,20 +43,41 @@ const ObjectsByDiscipline = () => {
     fetchDisciplines();
   }, []);
 
+useEffect(() => {
+  if (debounceTimeoutRef.current) {
+    clearTimeout(debounceTimeoutRef.current);
+  }
+
+  debounceTimeoutRef.current = setTimeout(() => {
+    setDebouncedSearchQuery(searchQuery);
+    debounceTimeoutRef.current = null;
+  }, 500);
+
+  return () => {
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+      debounceTimeoutRef.current = null;
+    }
+  };
+}, [searchQuery]);
+
   useEffect(() => {
     if (selectedDisciplineName && userId) {
-      fetchObjects(selectedDisciplineName, userId, currentPage);
+      fetchObjects(selectedDisciplineName, userId, currentPage, debouncedSearchQuery);
     }
-  }, [selectedDisciplineName, userId, currentPage]);
+  }, [selectedDisciplineName, userId, currentPage, debouncedSearchQuery]);
 
-  const fetchObjects = async (disciplineName, userId, page) => {
+
+  const fetchObjects = async (disciplineName, userId, page, query) => {
     setLoadingObjects(true);
+    setErrorObjects('');
     try {
       const response = await api.get(`api/v1/objects/${encodeURIComponent(disciplineName)}`, {
         params: {
           userId,
           page,
           limit,
+          objectName: query,
         },
       });
       setObjects(response.data.objects);
@@ -69,6 +93,13 @@ const ObjectsByDiscipline = () => {
   const handleDisciplineChange = (disciplineName) => {
     setSelectedDisciplineName(disciplineName);
     setCurrentPage(1); 
+    setSearchQuery('');
+
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+      debounceTimeoutRef.current = null;
+    }
+    setDebouncedSearchQuery('');
   };
 
   const handlePreviousPage = () => {
@@ -88,7 +119,7 @@ const ObjectsByDiscipline = () => {
   };
 
   const handleObjectCreated = () => {
-    fetchObjects(selectedDisciplineName, userId, currentPage);
+    fetchObjects(selectedDisciplineName, userId, currentPage, searchQuery);
   }
 
   const handleObjectUpdated = (updatedObject) => {
@@ -101,10 +132,24 @@ const ObjectsByDiscipline = () => {
     setObjects((prevObjects) => prevObjects.filter((object) => object._id !== deletedObjectId));
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1);
+  };
+
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Objetos por Disciplina</h1>
       <button onClick={openModal} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Crear Objeto</button>
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder='Buscar por nombre del objeto...'
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="w-full border p-2 rounded"
+        />
+      </div>
       <div className="mb-6">
         {loadingDisciplines ? (
           <div>Cargando disciplinas...</div>
