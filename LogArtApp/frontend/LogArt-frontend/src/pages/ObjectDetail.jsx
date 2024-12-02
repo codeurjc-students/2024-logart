@@ -18,8 +18,6 @@ const ObjectDetail = () => {
     const fetchObject = async () => {
       try {
         const response = await api.get(`api/v1/objects/details/${objectId}`);
-        console.log(response);
-        console.log('Fetched object:', response.data.object); 
         setObject(response.data.object);
         setLoading(false);
       } catch (err) {
