@@ -219,7 +219,7 @@ const getObjectById = async (req, res) => {
     }
 
     const object = await Object.findById(objectIdFromParams).populate('discipline', 'name').populate('createdBy', 'firstName lastName username');
-    const objectCreatedBy = object.createdBy._id;
+    const objectCreatedBy = object.createdBy._id.toString();
 
     if (!object) {
       return res.status(404).json({ error: true, message: 'Object not found' });
