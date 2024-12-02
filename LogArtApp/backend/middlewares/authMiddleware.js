@@ -6,12 +6,12 @@ async function verifyToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
   if (!token){
-    return res.status(401).json({ error: true, message: 'No token provided' });
+    return res.status(401).json({ error: true, message: 'Necesitas estar logueado para realizar esta acción' });
   }
   try {
   const blacklistedToken = await BlacklistedToken.findOne({ token });
   if (blacklistedToken) {
-    return res.status(401).json({ error: true, message: 'Token is blacklisted' });
+    return res.status(401).json({ error: true, message: 'Su token ha está en la lista negra, por favor inicie sesión nuevamente' });
   
   }
   jwt.verify(token, accessTokenSecret, (err, user) => {

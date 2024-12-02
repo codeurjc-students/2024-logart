@@ -17,6 +17,15 @@ const commentSchema = new Schema({
     ref: 'User',
     required: true
   },
+  isEditedByAdmin: {
+    type: Boolean,
+    default: false
+  },
+  editedBy: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    default: null
+  },
   createdAt: {
     type: Date,
     default: Date.now

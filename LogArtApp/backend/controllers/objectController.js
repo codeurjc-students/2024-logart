@@ -2,6 +2,7 @@ const Object = require('../models/object.model');
 const path = require('path');
 const fs = require('fs');
 const User = require('../models/user.model');
+const Comment = require('../models/comment.model');
 const Discipline = require('../models/discipline.model');
 const isValidMongoId = require('../utils/validId');
 
@@ -21,6 +22,12 @@ const createObject = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: true, message: 'Image is required' });
     }
+
+    const objetoDup = await Object.findOne({ name: name});
+    if (objetoDup) {
+      return res.status(400).json({ error: true, message: 'No se puede crear dos objetos con el mismo nombre' });
+    }
+
     const image = `${process.env.BASE_URL}/public/images/objects/${req.file.filename}`;
 
     const newObject = new Object({
@@ -73,7 +80,7 @@ const updateObject = async (req, res) => {
     if (disciplineName) {
       const discipline = await Discipline.findOne({ name: disciplineName });
       if (!discipline) {
-        return res.status(404).json({ error: true, message: 'Discipline not found' });
+        return res.status(404).json({ error: true, message: 'Disciplina no encontrada' });
       }
       object.discipline = discipline._id;
     }
@@ -122,11 +129,11 @@ const deleteObject = async (req, res) => {
       return res.status(403).json({ error: true, message: 'You are not authorized to delete this object' });
     }
 
-    const imagePath = path.join(__dirname, '..', 'public', 'images', path.basename(object.imageUrl));
-    if (fs.existsSync(imagePath)) {
-      fs.unlinkSync(imagePath); 
-    }
-
+    const imagePath = path.join(__dirname, '..', 'public', 'images','objects',path.basename(object.imageUrl));
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath); 
+      }
+    await Comment.deleteMany({ object: objectIdFromParams });
     await object.deleteOne();
 
     return res.status(200).json({ message: 'Object deleted successfully' });
@@ -146,11 +153,6 @@ const getGalleryByDiscipline = async (req, res) => {
     const user = await User.findById(userIdFromToken)
     const userRole = user.role;
 
-    if (!userId){
-      if (userRole !== 'admin') {
-        return res.status(403).json({ error: true, message: 'You are not authorized to view this' });
-      }
-    }
 
     if (userId){
       if (userId !== userIdFromToken && userRole !== 'admin') {
@@ -187,9 +189,11 @@ const getGalleryByDiscipline = async (req, res) => {
     const objects = await Object.find(filter).populate('createdBy', 'firstName lastName username').sort({ createdAt: -1 }).skip(skip).limit(limit);
 
     const objectsWithImageUrls = objects.map((obj) => ({
-  ...obj._doc, 
-  imageUrl: `${req.protocol}://${req.get('host')}/${obj.imageUrl.replace(/\\/g, '/')}`, 
-}));
+      ...obj._doc, 
+      imageUrl: obj.imageUrl.startsWith('http') 
+        ? obj.imageUrl 
+        : `${req.protocol}://${req.get('host')}/${obj.imageUrl.replace(/\\/g, '/')}`, 
+    }));
 
 
     return res.status(200).json({ 
@@ -207,5 +211,34 @@ const getGalleryByDiscipline = async (req, res) => {
   }
 };
 
+const getObjectById = async (req, res) => {
+  try {
+    const objectIdFromParams = req.params.objectId;
+    const userIdFromToken = req.user.userId;
+    const user = await User.findById(userIdFromToken)
+    const userRole = user.role;
 
-module.exports = { createObject, updateObject, deleteObject, getGalleryByDiscipline };
+    if (!isValidMongoId(objectIdFromParams)) {
+      return res.status(400).json({ error: true, message: 'Invalid object ID format' });
+    }
+
+    const object = await Object.findById(objectIdFromParams).populate('discipline', 'name').populate('createdBy', 'firstName lastName username');
+    const objectCreatedBy = object.createdBy._id.toString();
+
+    if (!object) {
+      return res.status(404).json({ error: true, message: 'Objeto no encontrado' });
+    }
+
+    if (objectCreatedBy !== userIdFromToken && userRole !== 'admin') {
+      return res.status(403).json({ error: true, message: 'No estás autorizado para ver este objeto' });
+    }
+
+    return res.status(200).json({ object });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: true, message: 'Internal server error' });
+  }
+};
+
+
+module.exports = { createObject, updateObject, deleteObject, getGalleryByDiscipline, getObjectById };

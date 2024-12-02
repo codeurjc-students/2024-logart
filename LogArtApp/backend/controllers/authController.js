@@ -28,7 +28,7 @@ const login = async (req, res) => {
     user.hastoken = true;
     await user.save();
 
-    return res.status(200).json({ accessToken, message: 'Login successful' });
+    return res.status(200).json({ accessToken, user, message: 'Login successful' });
   } catch (error) {
     return res.status(500).json({ message: 'Internal server error' });
   }
@@ -58,9 +58,8 @@ const register = async (req, res) => {
     const user = new User({ password: hashedPassword, email, firstName, lastName, username, verificationToken });
     await user.save();
 
-    // TODO Remove comments
-    // const verificationLink = `${process.env.BASE_URL}/api/v1/verify/${verificationToken}`;
-    // await sendVerificationEmail(email, verificationLink);
+    const verificationLink = `${process.env.BASE_URL}/api/v1/verify/${verificationToken}`;
+    await sendVerificationEmail(email, verificationLink);
 
 
     return res.status(201).location(`/api/v1/users/${user._id}`).json({ user: { firstName: user.firstName, lastName: user.lastName, email: user.email, username: user.username }, message: 'User registered, please check your email to verify your account' });

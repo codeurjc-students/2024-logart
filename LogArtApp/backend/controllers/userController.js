@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 const Object = require('../models/object.model');
+const Comment = require('../models/comment.model');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -69,7 +70,7 @@ const deleteUser = async (req, res) => {
 
     userObjects.forEach(async (object) => {
       if (object.imageUrl) {
-        const imagePath = path.join(__dirname, '..', 'public', 'images', path.basename(object.imageUrl));
+        const imagePath = path.join(__dirname, '..', 'public', 'images', 'profiles', path.basename(object.imageUrl));
         if (fs.existsSync(imagePath)) {
           fs.unlinkSync(imagePath);
         }
@@ -77,6 +78,8 @@ const deleteUser = async (req, res) => {
     });
 
     
+
+    await Comment.deleteMany({ user: userId });
     await Object.deleteMany({ createdBy: userId }); 
     await User.findByIdAndDelete(userId);
 
@@ -90,7 +93,7 @@ const deleteUser = async (req, res) => {
 const getUserProfile = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const user = await User.findById(userId).select('-password -createdAt -hasToken -role -isVerified -verificationToken -__v -_id');
+    const user = await User.findById(userId).select('-password -createdAt -hasToken -isVerified -verificationToken -__v');
 
     if (!user) {
       return res.status(404).json({ error: true, message: 'User not found' });
@@ -129,7 +132,6 @@ const updateUserProfile = async (req, res) => {
         fs.unlinkSync(oldImagePath);
       } catch (err) {
         console.error('Error al eliminar la imagen anterior:', err);
-        // Opcional: Puedes decidir no devolver un error y continuar con la actualización
       }
     }
   }
