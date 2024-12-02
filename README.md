@@ -65,7 +65,7 @@ Las entidades son **Usuario**, **Disciplina**, **Objetos** y **Comentarios**.
    - Filtrar y buscar objetos por nombre.
    - Subida de imágenes relacionadas con los objetos.
    - Mostrar la galería de objetos por disciplina.
-   - Moderación de objetos por parte de administradores.
+   
 3. Comentarios:
    - Permitir a los usuarios registrados crear, editar y eliminar comentarios sobre sus objetos.
    - Visualización de comentarios para cada objeto de forma correcta, dentro del propio objeto.
@@ -86,6 +86,7 @@ Las entidades son **Usuario**, **Disciplina**, **Objetos** y **Comentarios**.
 3. Dashboard de administrador:
 
    - Creación de un panel de control donde el administrador puede visualizar diferentes gráficos y datos sobre el desempeño de la aplicación.
+   - Moderación de objetos por parte de administradores, en el dashboard, dispondrán de una pestaña para ver todos los objetos de la aplicación.
 4. Gestión de datos:
 
    - Algoritmo de análisis de crecimiento, que muestre el aumento o disminución porcentual en un periodo de tiempo.

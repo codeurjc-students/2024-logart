@@ -22,6 +22,12 @@ const createObject = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: true, message: 'Image is required' });
     }
+
+    const objetoDup = await Object.findOne({ name: name});
+    if (objetoDup) {
+      return res.status(400).json({ error: true, message: 'No se puede crear dos objetos con el mismo nombre' });
+    }
+
     const image = `${process.env.BASE_URL}/public/images/objects/${req.file.filename}`;
 
     const newObject = new Object({
@@ -123,10 +129,10 @@ const deleteObject = async (req, res) => {
       return res.status(403).json({ error: true, message: 'You are not authorized to delete this object' });
     }
 
-    const imagePath = path.join(__dirname, '..', 'public', 'images', path.basename(object.imageUrl));
-    if (fs.existsSync(imagePath)) {
-      fs.unlinkSync(imagePath); 
-    }
+    const imagePath = path.join(__dirname, '..', 'public', 'images','objects',path.basename(object.imageUrl));
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath); 
+      }
     await Comment.deleteMany({ object: objectIdFromParams });
     await object.deleteOne();
 
@@ -220,11 +226,11 @@ const getObjectById = async (req, res) => {
     const objectCreatedBy = object.createdBy._id.toString();
 
     if (!object) {
-      return res.status(404).json({ error: true, message: 'Object not found' });
+      return res.status(404).json({ error: true, message: 'Objeto no encontrado' });
     }
 
     if (objectCreatedBy !== userIdFromToken && userRole !== 'admin') {
-      return res.status(403).json({ error: true, message: 'You are not authorized to view this object' });
+      return res.status(403).json({ error: true, message: 'No estás autorizado para ver este objeto' });
     }
 
     return res.status(200).json({ object });

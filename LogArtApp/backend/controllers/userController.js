@@ -70,7 +70,7 @@ const deleteUser = async (req, res) => {
 
     userObjects.forEach(async (object) => {
       if (object.imageUrl) {
-        const imagePath = path.join(__dirname, '..', 'public', 'images', path.basename(object.imageUrl));
+        const imagePath = path.join(__dirname, '..', 'public', 'images', 'profiles', path.basename(object.imageUrl));
         if (fs.existsSync(imagePath)) {
           fs.unlinkSync(imagePath);
         }
@@ -132,7 +132,6 @@ const updateUserProfile = async (req, res) => {
         fs.unlinkSync(oldImagePath);
       } catch (err) {
         console.error('Error al eliminar la imagen anterior:', err);
-        // Opcional: Puedes decidir no devolver un error y continuar con la actualización
       }
     }
   }

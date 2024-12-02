@@ -43,9 +43,7 @@ const ObjectCard = ({ object, onObjectUpdated, onObjectDeleted }) => {
             : object.description
           }
         </p>
-        <p className="text-gray-500 text-sm">
-          Disciplina: {object.discipline.name}
-        </p>
+        
         <p className="text-gray-500 text-sm">
           Creado por: {object.createdBy.firstName} {object.createdBy.lastName}
         </p>

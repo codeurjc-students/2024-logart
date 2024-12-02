@@ -3,6 +3,7 @@ import api from '../utilities/api';
 import { AuthContext } from '../context/AuthContext';
 import DisciplineSelector from '../components/DisciplineSelector';
 import ObjectCard from '../components/ObjectCard';
+import CreateObject from '../components/CreateObject';
 
 const ObjectsByDiscipline = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
@@ -17,6 +18,7 @@ const ObjectsByDiscipline = () => {
   const [totalPages, setTotalPages] = useState(1);
   const limit = 3;
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const userId = isAuthenticated && user ? user._id : null;
 
   useEffect(() => {
@@ -77,6 +79,18 @@ const ObjectsByDiscipline = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleObjectCreated = () => {
+    fetchObjects(selectedDisciplineName, userId, currentPage);
+  }
+
   const handleObjectUpdated = (updatedObject) => {
     setObjects((prevObjects) =>
       prevObjects.map((object) => (object._id === updatedObject._id ? updatedObject : object))
@@ -90,7 +104,7 @@ const ObjectsByDiscipline = () => {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Objetos por Disciplina</h1>
-
+      <button onClick={openModal} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Crear Objeto</button>
       <div className="mb-6">
         {loadingDisciplines ? (
           <div>Cargando disciplinas...</div>
@@ -149,6 +163,14 @@ const ObjectsByDiscipline = () => {
             Siguiente
           </button>
         </div>
+      )}
+
+      {isModalOpen && (
+        <CreateObject 
+          disciplines={disciplines} 
+          onClose={closeModal} 
+          onObjectCreated={handleObjectCreated} 
+        />
       )}
     </div>
   );
