@@ -8,7 +8,16 @@
 
 @layer base {
   html {
-    @apply bg-s2;
+     @apply bg-s2; 
+  }
+  .blur-bg{
+    filter:blur(2px);
+  }
+  .hero-img_res img {
+ 
+  max-width: 100%;
+  height: auto;
+  position: relative;
   }
 
   body {

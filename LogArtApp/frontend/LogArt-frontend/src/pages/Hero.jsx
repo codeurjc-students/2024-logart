@@ -1,9 +1,9 @@
 import { Element, Link as LinkScroll } from "react-scroll";
 import Button from "../components/Button.jsx";
-
+import Faq from "../components/Faq.jsx";
 const Hero = () => {
   return (
-    <section className="relative pt-60 pb-40 max-lg:pt-52 max-lg:pb-36 max-md:pt-36 max-md:pb-32">
+    <section className="relative pt-60 pb-40 max-lg:pt-52 max-lg:pb-36 max-md:pt-36 max-md:pb-32 bg-gradient-to-r from-blue-950 via-blue-600 to-blue-900 opacity-90">
       <Element name="hero">
         <div className="container">
           <div className="relative z-2 max-w-512 max-lg:max-w-388">
@@ -21,7 +21,7 @@ const Hero = () => {
             </LinkScroll>
           </div>
 
-          <div className="absolute top-0 left-[calc(50%-740px)] w-[1230px] pointer-events-none hero-img_res">
+          <div className="absolute top-40 left-[calc(50%-740px)] w-[1230px] pointer-events-none hero-img_res " >
             <img
               src="/images/spidernobg.png"
               className="size-1800 max-lg:h-auto"
@@ -30,6 +30,10 @@ const Hero = () => {
           </div>
         </div>
       </Element>
+    
+      <Faq />
+    
+      
     </section>
   );
 };
