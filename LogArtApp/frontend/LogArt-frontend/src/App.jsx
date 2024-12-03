@@ -8,16 +8,17 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ObjectDetails from "./pages/ObjectDetail";
 import Navbar from "./components/Navbar";
 import ObjectsByDiscipline from "./pages/ObjectsByDiscipline";
+import Header from "./components/Header";
 
 
 const App = () => {
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow container mx-auto px-4 py-6">
+        {/* <Navbar /> */}
+        <Header />
+        <main className="overflow-hidden">
           <Routes>
-            <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route
@@ -39,7 +40,7 @@ const App = () => {
              <Route path="/objects/:objectId" element={<ObjectDetails />} />
           </Routes>
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </Router>
   );
