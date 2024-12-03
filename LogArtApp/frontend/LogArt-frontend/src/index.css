@@ -10,15 +10,62 @@
   html {
      @apply bg-s2; 
   }
-  .blur-bg{
-    filter:blur(2px);
-  }
+
   .hero-img_res img {
  
   max-width: 100%;
   height: auto;
   position: relative;
   }
+@layer utilities {
+  .mask-gradient {
+    mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  }
+
+  .hover-pause {
+    animation-play-state: paused !important;
+    filter: grayscale(1);
+  }
+
+  .hover-pause:hover {
+    filter: grayscale(0);
+  }
+
+  @keyframes autoRun {
+    from {
+      left: 100%;
+    }
+    to {
+      left: calc(var(--width) * -1);
+    }
+  }
+
+  @keyframes reversePlay {
+    from {
+      left: calc(var(--width) * -1);
+    }
+    to {
+      left: 100%;
+    }
+  }
+
+  .animate-autoRun {
+    animation: autoRun 10s linear infinite;
+  }
+
+  .animate-reversePlay {
+    animation: reversePlay 10s linear infinite;
+  }
+
+  .group:hover .group-hover\:animation-play-state-paused {
+    animation-play-state: paused !important;
+    filter: grayscale(1);
+  }
+
+  .group:hover .group-hover\:grayscale {
+    filter: grayscale(0);
+  }
+}
 
   body {
     @apply font-poppins text-[16px] tracking-[-0.03em] text-p5;
