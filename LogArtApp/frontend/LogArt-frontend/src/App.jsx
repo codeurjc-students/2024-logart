@@ -9,6 +9,7 @@ import ObjectDetails from "./pages/ObjectDetail";
 import Navbar from "./components/Navbar";
 import ObjectsByDiscipline from "./pages/ObjectsByDiscipline";
 import Header from "./components/Header";
+import Hero from "./pages/Hero";
 
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
         <Header />
         <main className="overflow-hidden">
           <Routes>
+            <Route path="/" element={<Hero />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route
