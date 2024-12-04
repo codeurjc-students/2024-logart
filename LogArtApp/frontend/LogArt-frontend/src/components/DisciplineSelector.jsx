@@ -26,7 +26,7 @@ const DisciplineSelector = ({ disciplines, selectedDisciplineName, onDisciplineC
     <div className="relative inline-block w-full" ref={dropdownRef}>
       <button
         type="button"
-        className="w-full bg-white border border-gray-500 rounded px-6 py-3 text-left flex justify-between items-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-purple-600"
+        className="w-full bg-white border border-gray-500 rounded px-9 py-4 text-left font-medium text-3xl flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-purple-600"
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="listbox"
         aria-expanded={isOpen}

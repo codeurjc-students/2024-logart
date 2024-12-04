@@ -23,7 +23,7 @@ const Profile = () => {
         lastName: user.lastName || '',
         email: user.email || '',
         bio: user.bio || '',
-        profileImage: user.profileImage || null,
+        profileImage: null, 
       });
     }
   }, [user]);
@@ -67,82 +67,123 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white p-6 rounded shadow">
-      <h2 className="text-2xl mb-4">Mi Perfil</h2>
-      {error && <div className="bg-red-200 text-red-800 p-2 mb-4 rounded">{error}</div>}
-      {message && <div className="bg-green-200 text-green-800 p-2 mb-4 rounded">{message}</div>}
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <div className="mb-4">
-          <label className="block mb-1">Nombre de Usuario</label>
-          <input 
-            type="text" 
-            name="username"
-            value={formData.username} 
-            onChange={handleChange} 
-            className="w-full border p-2 rounded" 
-            required 
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-1">Nombre</label>
-          <input 
-            type="text" 
-            name="firstName"
-            value={formData.firstName} 
-            onChange={handleChange} 
-            className="w-full border p-2 rounded" 
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-1">Apellido</label>
-          <input 
-            type="text" 
-            name="lastName"
-            value={formData.lastName} 
-            onChange={handleChange} 
-            className="w-full border p-2 rounded" 
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-1">Correo Electrónico</label>
-          <input 
-            type="email" 
-            name="email"
-            value={formData.email} 
-            onChange={handleChange} 
-            className="w-full border p-2 rounded" 
-            required 
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-1">Biografía</label>
-          <textarea 
-            name="bio"
-            value={formData.bio} 
-            onChange={handleChange} 
-            className="w-full border p-2 rounded" 
-            rows="4"
-            maxLength="500"
-          ></textarea>
-        </div>
-        <div className="mb-4">
-          <label className="block mb-1">Foto de Perfil</label>
-          <input 
-            type="file" 
-            name="profileImage"
-            accept="image/*"
-            onChange={handleChange} 
-            className="w-full"
-          />
-        </div>
-        {user.profileImage && (
-          <div className="mb-4">
-            <img src={`http://localhost:443${user.profileImage}`} alt="Profile" className="w-32 h-32 object-cover rounded-full" />
+    <section>
+    <div className="min-h-screen  pt-24 flex items-center justify-center bg-gradient-to-r from-blue-950 via-blue-700 to-blue-900 opacity-90 p-4">
+      <div className='bg-transparent bg-gradient-to-r from-white/10 to-black/25 p-8 rounded-lg shadow-lg border border-gray-400 shadow-black'
+          style={{ backgroundSize: "80px" }}>
+      
+        <h2 className="text-3xl font-bold mb-6 text-white">Mi Perfil</h2>
+
+        {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6" role="alert">
+          <span className="block sm:inline">{error}</span>
+        </div>}
+
+        {message && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6" role="alert">
+          <span className="block sm:inline">{message}</span>
+        </div>}
+
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <div className="flex items-center mb-6">
+            <div className="mr-4">
+              {user.profileImage ? (
+                <img 
+                  src={`http://localhost:443${user.profileImage}`} 
+                  alt="Profile" 
+                  className="w-24 h-24 object-cover rounded-full border-2 border-gray-300"
+                />
+              ) : (
+                <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
+                  Sin Imagen
+                </div>
+              )}
+            </div>
+            <div className="flex-1">
+              <label className="block mb-2 text-white font-medium" htmlFor="profileImage">Foto de Perfil</label>
+              <input 
+                type="file" 
+                name="profileImage"
+                accept="image/*"
+                onChange={handleChange} 
+                className="w-full text-gray-300"
+              />
+            </div>
           </div>
-        )}
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">Actualizar Perfil</button>
-      </form>
+
+          <div className="mb-4">
+            <label className="block mb-1 text-white font-medium" htmlFor="username">Nombre de Usuario</label>
+            <input 
+              type="text" 
+              id="username"
+              name="username"
+              value={formData.username} 
+              onChange={handleChange} 
+              className="w-full px-4 py-2 bg-white/90 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
+              required 
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-1 text-white font-medium" htmlFor="firstName">Nombre</label>
+            <input 
+              type="text" 
+              id="firstName"
+              name="firstName"
+              value={formData.firstName} 
+              onChange={handleChange} 
+              className="w-full px-4 py-2 bg-white/90 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-1 text-white font-medium" htmlFor="lastName">Apellido</label>
+            <input 
+              type="text" 
+              id="lastName"
+              name="lastName"
+              value={formData.lastName} 
+              onChange={handleChange} 
+              className="w-full px-4 py-2 bg-white/90 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-1 text-white font-medium" htmlFor="email">Correo Electrónico</label>
+            <input 
+              type="email" 
+              id="email"
+              name="email"
+              value={formData.email} 
+              onChange={handleChange} 
+              className="w-full px-4 py-2 bg-white/90 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
+              required 
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block mb-2 text-white font-medium" htmlFor="bio">Biografía</label>
+            <textarea 
+              id="bio"
+              name="bio"
+              value={formData.bio} 
+              onChange={handleChange} 
+              className="w-full px-4 py-2 bg-white/90 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
+              rows="4"
+              maxLength="500"
+              placeholder="Escribe una breve biografía..."
+            ></textarea>
+            <p className="text-sm text-gray-400 mt-1">Máximo 500 caracteres.</p>
+          </div>
+
+          <button 
+            type="submit" 
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-purple-700 hover:underline transition-colors duration-300 font-semibold"
+          >
+            Actualizar Perfil
+          </button>
+        </form>
+      </div>
     </div>
+    </section>
   );
 };
 
