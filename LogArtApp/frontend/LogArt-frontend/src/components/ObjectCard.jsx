@@ -48,14 +48,14 @@ const ObjectCard = ({ object, disciplines, onObjectUpdated, onObjectDeleted }) =
         <Link to={`/objects/${object._id}`}>
           <h2 className="text-xl font-semibold mb-2 hover:underline">{object.name}</h2>
         </Link>
-        <p className="text-gray-600 mb-2">
+        <p className="text-gray-500 mb-2">
           {object.description.length > 100 
             ? `${object.description.substring(0, 100)}...` 
             : object.description
           }
         </p>
         
-        <p className="text-gray-500 text-sm">
+        <p className="text-gray-400 text-sm">
           Creado por: {object.createdBy.firstName} {object.createdBy.lastName}
         </p>
         <div className="mt-4 flex space-x-2">

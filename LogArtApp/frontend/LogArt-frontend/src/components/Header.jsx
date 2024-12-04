@@ -152,6 +152,12 @@ const Header = () => {
                       title="Perfil"
                       onClick={closeMenu}
                     />
+                    <NavItem
+                      type="router"
+                      to="/disciplines"
+                      title="Galerías"
+                      onClick={closeMenu}
+                    />
                     <button
                       onClick={() => {
                         handleLogout();
@@ -161,12 +167,7 @@ const Header = () => {
                     >
                       Cerrar sesión
                     </button>
-                    <NavItem
-                      type="router"
-                      to="/disciplines"
-                      title="Galerías"
-                      onClick={closeMenu}
-                    />
+                    
                   </li>
                 ) : (
                   !isInAuthPage && (
