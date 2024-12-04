@@ -9,12 +9,14 @@ import ObjectDetails from "./pages/ObjectDetail";
 import ObjectsByDiscipline from "./pages/ObjectsByDiscipline";
 import Header from "./components/Header";
 import Hero from "./pages/Hero";
+import { ModalProvider } from "./context/ModalContext";
 
 
 const App = () => {
   return (
+    <ModalProvider>
     <Router>
-      <div className="flex flex-col min-h-screen">
+      
         <Header />
         <main className="overflow-hidden">
           <Routes>
@@ -38,11 +40,13 @@ const App = () => {
              }
              />
              <Route path="/objects/:objectId" element={<ObjectDetails />} />
+             {/* Implementar error page */}
           </Routes>
         </main>
         {/* <Footer /> */}
-      </div>
+      
     </Router>
+    </ModalProvider>
   );
 }
 

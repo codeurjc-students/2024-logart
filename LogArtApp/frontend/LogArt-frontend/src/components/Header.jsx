@@ -2,11 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link as LinkScroll } from "react-scroll";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { ModalContext } from "../context/ModalContext";
 import clsx from "clsx";
 import NavItem from "./NavItem";
 
 const Header = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
+  const { currentModal } = useContext(ModalContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -39,6 +41,10 @@ const Header = () => {
   const closeMenu = () => {
     setIsOpen(false);
   };
+
+  if (currentModal) {
+    return null;
+  }
 
   return (
     <header

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import EditObject from './EditObject'; 
 import api from '../utilities/api';
+import { ModalContext } from '../context/ModalContext'; 
 
-const ObjectCard = ({ object, onObjectUpdated, onObjectDeleted }) => {
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+const ObjectCard = ({ object, disciplines, onObjectUpdated, onObjectDeleted }) => {
+  const { openModal } = useContext(ModalContext); 
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
@@ -22,6 +23,16 @@ const ObjectCard = ({ object, onObjectUpdated, onObjectDeleted }) => {
       setIsDeleting(false);
       alert(error.response?.data?.message || 'Error al eliminar el objeto.');
     }
+  };
+
+  const handleEdit = () => {
+    openModal(
+      <EditObject 
+        object={object} 
+        disciplines={disciplines} 
+        onObjectUpdated={onObjectUpdated} 
+      />
+    );
   };
 
   return (
@@ -49,8 +60,9 @@ const ObjectCard = ({ object, onObjectUpdated, onObjectDeleted }) => {
         </p>
         <div className="mt-4 flex space-x-2">
           <button
-            onClick={() => setIsEditModalOpen(true)}
+            onClick={handleEdit}
             className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+            aria-label={`Editar ${object.name}`}
           >
             Editar
           </button>
@@ -62,19 +74,12 @@ const ObjectCard = ({ object, onObjectUpdated, onObjectDeleted }) => {
                 ? 'bg-gray-400 cursor-not-allowed' 
                 : 'bg-red-500 text-white hover:bg-red-600'
             }`}
+            aria-label={`Eliminar ${object.name}`}
           >
             {isDeleting ? 'Eliminando...' : 'Eliminar'}
           </button>
         </div>
       </div>
-
-      {isEditModalOpen && (
-        <EditObject 
-          object={object} 
-          onClose={() => setIsEditModalOpen(false)} 
-          onObjectUpdated={onObjectUpdated} 
-        />
-      )}
     </div>
   );
 };
