@@ -21,7 +21,7 @@ const CommentItem = ({ comment, onCommentUpdated, onCommentDeleted, objectOwnerI
     if (!confirmDelete) return;
 
     try {
-      await api.delete(`api/v1/comments/${comment._id}`);
+      await api.delete(`/api/v1/comments/${comment._id}`);
       onCommentDeleted(); 
     } catch (err) {
       console.error('Error deleting comment:', err);
@@ -52,7 +52,7 @@ const CommentItem = ({ comment, onCommentUpdated, onCommentDeleted, objectOwnerI
 
   return (
     <div 
-      className={`p-4 rounded shadow ${backgroundClass}`}
+      className={`p-4 rounded shadow ${backgroundClass} break-words`}
     >
       {isEditing ? (
         <EditComment 
@@ -62,17 +62,18 @@ const CommentItem = ({ comment, onCommentUpdated, onCommentDeleted, objectOwnerI
         />
       ) : (
         <>
-          <p className="text-gray-800">{comment.content}</p>
+          <p className="text-gray-800 whitespace-pre-wrap">{comment.content}</p>
           <p className="text-gray-500 text-sm mt-2">
             Por: {comment.user.username} el {new Date(comment.createdAt).toLocaleDateString()}
           </p>
           {isEditedByAdmin && (
-            <p className="text-orange-600 text-sm mt-1">Comentario editado por un administrador</p>)}
+            <p className="text-orange-600 text-sm mt-1">Comentario editado por un administrador</p>
+          )}
           {isAuthor && (
-            <div className="mt-2">
+            <div className="mt-2 flex space-x-4">
               <button 
                 onClick={handleEdit} 
-                className="text-blue-500 hover:underline mr-4"
+                className="text-blue-500 hover:underline"
               >
                 Editar
               </button>

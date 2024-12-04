@@ -1,52 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import api from '../utilities/api';
+import { ModalContext } from '../context/ModalContext';
 
-const EditObject = ({ object, onClose, onObjectUpdated }) => {
+const EditObject = ({ object, disciplines, onObjectUpdated }) => {
+  const { closeModal } = useContext(ModalContext); 
   const [name, setName] = useState(object.name);
-  const [description, setDescription] = useState(object.description);
-  const [disciplineName, setDisciplineName] = useState(object.discipline.name);
-  const [imageFile, setImageFile] = useState(null);
+  const [description, setDescription] = useState(object.description || '');
+  const [disciplineName, setDisciplineName] = useState(object.disciplineName || (disciplines.length > 0 ? disciplines[0].name : ''));
+  const [image, setImage] = useState(null); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    setName(object.name);
+    setDescription(object.description || '');
+    setDisciplineName(object.disciplineName || (disciplines.length > 0 ? disciplines[0].name : ''));
+  }, [object, disciplines]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!name.trim()) {
+      setError('El nombre es obligatorio.');
+      return;
+    }
+    if (!disciplineName.trim()) {
+      setError('La disciplina es obligatoria.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('description', description);
-    formData.append('disciplineName', disciplineName);
-    if (imageFile) {
-      formData.append('imageUrl', imageFile);
-    }
-
     try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('description', description);
+      formData.append('disciplineName', disciplineName);
+      if (image) {
+        formData.append('imageUrl', image);
+      }
+
       const response = await api.put(`api/v1/objects/${object._id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+
+      setName('');
+      setDescription('');
+      setDisciplineName(disciplines.length > 0 ? disciplines[0].name : '');
+      setImage(null);
+
+      closeModal();
+
+      onObjectUpdated(response.data.object); 
+    } catch (err) {
+      console.error('Error al editar objeto:', err);
+      setError(err.response?.data?.message || 'Error al editar objeto.');
+    } finally {
       setLoading(false);
-      onObjectUpdated(response.data.object);
-      onClose();
-      alert('Objeto actualizado exitosamente.');
-    } catch (error) {
-      console.error('Error al actualizar el objeto:', error);
-      setLoading(false);
-      setError(error.response?.data?.message || 'Error al actualizar el objeto.');
+    }
+  };
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
     }
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white rounded-lg w-11/12 md:w-1/2 lg:w-1/3 p-6">
-        <h2 className="text-2xl font-bold mb-4">Editar Objeto</h2>
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
+        <h2 className="text-2xl font-bold mb-4 text-gray-700">Editar Objeto</h2>
         {error && <div className="text-red-500 mb-4">{error}</div>}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="name" className="block text-gray-700 mb-2">
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <div className="mb-4">
+            <label htmlFor="name" className="block text-gray-950 font-medium mb-2">
               Nombre:
             </label>
             <input
@@ -54,80 +84,71 @@ const EditObject = ({ object, onClose, onObjectUpdated }) => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="w-full p-2 border rounded text-gray-700 font-medium"
               required
-              className="w-full p-2 border rounded"
             />
           </div>
-          <div>
-            <label htmlFor="description" className="block text-gray-700 mb-2">
+
+          <div className="mb-4">
+            <label htmlFor="description" className="block text-gray-950 font-medium mb-2">
               Descripción:
             </label>
             <textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-gray-700 font-medium"
               rows="4"
             ></textarea>
           </div>
-          <div>
-            <label htmlFor="discipline" className="block text-gray-700 mb-2">
+
+          <div className="mb-4 ">
+            <label htmlFor="discipline" className="block text-gray-950 font-medium mb-2">
               Disciplina:
             </label>
-            <input
-              type="text"
+            <select
               id="discipline"
               value={disciplineName}
               onChange={(e) => setDisciplineName(e.target.value)}
+              className="w-full p-2 border rounded text-gray-700 font-medium"
               required
-              className="w-full p-2 border rounded"
-            />
+            >
+              {disciplines.map((discipline) => (
+                <option key={discipline._id} value={discipline.name}>
+                  {discipline.name}
+                </option>
+              ))}
+            </select>
           </div>
-          <div>
-            <label htmlFor="image" className="block text-gray-700 mb-2">
-              Imagen:
+
+          <div className="mb-4">
+            <label htmlFor="image" className="block text-gray-950 font-medium">
+              Imagen (dejar en blanco para mantener la actual):
             </label>
             <input
               type="file"
               id="image"
               accept="image/*"
-              onChange={(e) => setImageFile(e.target.files[0])}
+              onChange={handleImageChange}
               className="w-full"
             />
-            {object.imageUrl && !imageFile && (
-              <img 
-                src={object.imageUrl.startsWith('http') ? object.imageUrl : `http://localhost:443/${object.imageUrl}`} 
-                alt={object.name} 
-                className="mt-2 w-full h-32 object-cover rounded"
-              />
-            )}
-            {imageFile && (
-              <img 
-                src={URL.createObjectURL(imageFile)} 
-                alt="Preview" 
-                className="mt-2 w-full h-32 object-cover rounded"
-              />
-            )}
           </div>
-          <div className="flex justify-end space-x-2">
+
+          <div className="flex justify-end space-x-4">
             <button
               type="button"
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+              onClick={closeModal} 
+              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+              disabled={loading}
             >
               Cancelar
             </button>
             <button
               type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
               disabled={loading}
-              className={`px-4 py-2 rounded ${
-                loading 
-                  ? 'bg-gray-300 cursor-not-allowed' 
-                  : 'bg-green-500 text-white hover:bg-green-600'
-              }`}
             >
-              {loading ? 'Guardando...' : 'Guardar'}
+              {loading ? 'Editando...' : 'Editar'}
             </button>
           </div>
         </form>

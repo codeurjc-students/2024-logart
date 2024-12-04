@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import api from '../utilities/api';
+import { ModalContext } from '../context/ModalContext';
 
-const CreateObject = ({ disciplines, onClose, onObjectCreated }) => {
+const CreateObject = ({ disciplines, onObjectCreated }) => {
+  const { closeModal } = useContext(ModalContext); 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [disciplineName, setDisciplineName] = useState(disciplines.length > 0 ? disciplines[0].name : '');
@@ -46,7 +48,7 @@ const CreateObject = ({ disciplines, onClose, onObjectCreated }) => {
       setDisciplineName(disciplines.length > 0 ? disciplines[0].name : '');
       setImage(null);
 
-      onClose();
+      closeModal(); 
 
       onObjectCreated();
     } catch (err) {
@@ -66,11 +68,12 @@ const CreateObject = ({ disciplines, onClose, onObjectCreated }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
-        <h2 className="text-2xl font-bold mb-4">Crear Nuevo Objeto</h2>
+        <h2 className="text-2xl font-bold mb-4 text-gray-700">Crear Nuevo Objeto</h2>
         {error && <div className="text-red-500 mb-4">{error}</div>}
         <form onSubmit={handleSubmit} encType="multipart/form-data">
+          {/* Campos del formulario */}
           <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 mb-2">
+            <label htmlFor="name" className="block text-gray-950 font-medium mb-2">
               Nombre:
             </label>
             <input
@@ -78,33 +81,33 @@ const CreateObject = ({ disciplines, onClose, onObjectCreated }) => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-gray-700 font-medium"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="description" className="block text-gray-700 mb-2">
+            <label htmlFor="description" className="block text-gray-950 font-medium mb-2">
               Descripción:
             </label>
             <textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-gray-700 font-medium"
               rows="4"
             ></textarea>
           </div>
 
           <div className="mb-4">
-            <label htmlFor="discipline" className="block text-gray-700 mb-2">
+            <label htmlFor="discipline" className="block text-gray-950 font-medium mb-2">
               Disciplina:
             </label>
             <select
               id="discipline"
               value={disciplineName}
               onChange={(e) => setDisciplineName(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-gray-700 font-medium"
               required
             >
               {disciplines.map((discipline) => (
@@ -116,7 +119,7 @@ const CreateObject = ({ disciplines, onClose, onObjectCreated }) => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="image" className="block text-gray-700 mb-2">
+            <label htmlFor="image" className="block text-gray-950 font-medium">
               Imagen:
             </label>
             <input
@@ -132,7 +135,7 @@ const CreateObject = ({ disciplines, onClose, onObjectCreated }) => {
           <div className="flex justify-end space-x-4">
             <button
               type="button"
-              onClick={onClose}
+              onClick={closeModal} 
               className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
               disabled={loading}
             >

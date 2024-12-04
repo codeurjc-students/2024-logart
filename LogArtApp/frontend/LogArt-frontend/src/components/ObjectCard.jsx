@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import EditObject from './EditObject'; 
 import api from '../utilities/api';
+import { ModalContext } from '../context/ModalContext'; 
 
-const ObjectCard = ({ object, onObjectUpdated, onObjectDeleted }) => {
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+const ObjectCard = ({ object, disciplines, onObjectUpdated, onObjectDeleted }) => {
+  const { openModal } = useContext(ModalContext); 
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
@@ -24,6 +25,16 @@ const ObjectCard = ({ object, onObjectUpdated, onObjectDeleted }) => {
     }
   };
 
+  const handleEdit = () => {
+    openModal(
+      <EditObject 
+        object={object} 
+        disciplines={disciplines} 
+        onObjectUpdated={onObjectUpdated} 
+      />
+    );
+  };
+
   return (
     <div className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-300">
       <Link to={`/objects/${object._id}`}>
@@ -37,20 +48,21 @@ const ObjectCard = ({ object, onObjectUpdated, onObjectDeleted }) => {
         <Link to={`/objects/${object._id}`}>
           <h2 className="text-xl font-semibold mb-2 hover:underline">{object.name}</h2>
         </Link>
-        <p className="text-gray-600 mb-2">
+        <p className="text-gray-500 mb-2">
           {object.description.length > 100 
             ? `${object.description.substring(0, 100)}...` 
             : object.description
           }
         </p>
         
-        <p className="text-gray-500 text-sm">
+        <p className="text-gray-400 text-sm">
           Creado por: {object.createdBy.firstName} {object.createdBy.lastName}
         </p>
         <div className="mt-4 flex space-x-2">
           <button
-            onClick={() => setIsEditModalOpen(true)}
+            onClick={handleEdit}
             className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+            aria-label={`Editar ${object.name}`}
           >
             Editar
           </button>
@@ -62,19 +74,12 @@ const ObjectCard = ({ object, onObjectUpdated, onObjectDeleted }) => {
                 ? 'bg-gray-400 cursor-not-allowed' 
                 : 'bg-red-500 text-white hover:bg-red-600'
             }`}
+            aria-label={`Eliminar ${object.name}`}
           >
             {isDeleting ? 'Eliminando...' : 'Eliminar'}
           </button>
         </div>
       </div>
-
-      {isEditModalOpen && (
-        <EditObject 
-          object={object} 
-          onClose={() => setIsEditModalOpen(false)} 
-          onObjectUpdated={onObjectUpdated} 
-        />
-      )}
     </div>
   );
 };

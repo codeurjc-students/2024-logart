@@ -17,14 +17,19 @@ const CommentList = ({ objectId, refresh, objectOwnerId }) => {
   const fetchComments = async (page = 1) => {
     setLoading(true);
     try {
-      const response = await api.get(`api/v1/comments/${objectId}?page=${page}&limit=${limit}`);
+      const response = await api.get(`/api/v1/comments/${objectId}`, {
+        params: {
+          page,
+          limit,
+        },
+      });
       setComments(response.data.comments);
       const totalComments = response.data.totalComments;
       setTotalPages(Math.ceil(totalComments / limit));
       setLoading(false);
     } catch (err) {
       console.error('Error fetching comments:', err);
-      setError(err.response?.data?.message || 'Error fetching comments');
+      setError(err.response?.data?.message || 'Error al obtener los comentarios');
       setLoading(false);
     }
   };
@@ -34,9 +39,7 @@ const CommentList = ({ objectId, refresh, objectOwnerId }) => {
   }, [objectId, currentPage]);
 
   useEffect(() => {
-    
-      fetchComments(currentPage);
-    
+    fetchComments(currentPage);
   }, [refresh]);
 
   const handlePreviousPage = () => {
@@ -59,9 +62,9 @@ const CommentList = ({ objectId, refresh, objectOwnerId }) => {
     }
   };
   
-  if (loading) return <div>Cargando comentarios...</div>;
-  if (error) return <div className="text-red-500">{error}</div>;
-  if (comments.length === 0) return <div>No hay comentarios aún.</div>;
+  if (loading) return <div className="text-center text-gray-700">Cargando comentarios...</div>;
+  if (error) return <div className="text-center text-red-500">{error}</div>;
+  if (comments.length === 0) return <div className="text-center text-gray-700">No hay comentarios aún.</div>;
 
   return (
     <div>
@@ -76,24 +79,24 @@ const CommentList = ({ objectId, refresh, objectOwnerId }) => {
           />
         ))}
       </div>
-      <div className="flex justify-center mt-4 space-x-2">
+      <div className="flex justify-center mt-6 space-x-2">
         <button
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
           className={`px-4 py-2 rounded ${
-            currentPage === 1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 text-white'
+            currentPage === 1 ? 'bg-gray-300 text-gray-800 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-300'
           }`}
         >
           Anterior
         </button>
-        <span className="px-4 py-2">
+        <span className="px-4 py-2 text-gray-700">
           Página {currentPage} de {totalPages}
         </span>
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
           className={`px-4 py-2 rounded ${
-            currentPage === totalPages ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 text-white'
+            currentPage === totalPages ? 'bg-gray-300 text-gray-800 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-300'
           }`}
         >
           Siguiente
