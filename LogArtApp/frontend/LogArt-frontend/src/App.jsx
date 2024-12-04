@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import React from 'react'
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -10,6 +10,7 @@ import ObjectsByDiscipline from "./pages/ObjectsByDiscipline";
 import Header from "./components/Header";
 import Hero from "./pages/Hero";
 import { ModalProvider } from "./context/ModalContext";
+import ErrorPage from "./components/ErrorPage";
 
 
 const App = () => {
@@ -40,7 +41,8 @@ const App = () => {
              }
              />
              <Route path="/objects/:objectId" element={<ObjectDetails />} />
-             {/* Implementar error page */}
+             <Route path="/404-error" element={<ErrorPage />} />
+             <Route path="*" element={<Navigate to="/404-error" replace /> } />
           </Routes>
         </main>
         {/* <Footer /> */}

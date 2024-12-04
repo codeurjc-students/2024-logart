@@ -16,6 +16,7 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const isInAuthPage = ["/login", "/register"].includes(location.pathname);
+  const isErrorPage = location.pathname === "/404-error";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,7 +43,7 @@ const Header = () => {
     setIsOpen(false);
   };
 
-  if (currentModal) {
+  if (currentModal || isErrorPage) {
     return null;
   }
 
