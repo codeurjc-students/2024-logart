@@ -6,7 +6,6 @@ import Profile from "./pages/Profile";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ObjectDetails from "./pages/ObjectDetail";
-import Navbar from "./components/Navbar";
 import ObjectsByDiscipline from "./pages/ObjectsByDiscipline";
 import Header from "./components/Header";
 import Hero from "./pages/Hero";
@@ -16,7 +15,6 @@ const App = () => {
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
-        {/* <Navbar /> */}
         <Header />
         <main className="overflow-hidden">
           <Routes>

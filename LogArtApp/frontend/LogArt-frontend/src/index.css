@@ -48,6 +48,7 @@
       left: 100%;
     }
   }
+  
 
   .animate-autoRun {
     animation: autoRun 10s linear infinite;
