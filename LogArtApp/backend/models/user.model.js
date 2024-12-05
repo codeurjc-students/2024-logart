@@ -43,7 +43,7 @@ const userSchema = new Schema({
   },
   profileImage: {
     type: String,
-    default: '/public/images/profiles/default.png'
+    default: '/public/images/profiles/default-profile.png'
   },
   isVerified: {
     type: Boolean,

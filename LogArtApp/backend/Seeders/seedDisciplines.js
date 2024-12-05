@@ -4,11 +4,11 @@ const Discipline = require('../models/discipline.model');
 const seedDisciplines = async () => {
   try {
     const disciplines = [
-      { name: 'Libros', description: 'Libros que has leido' },
+      { name: 'Libros', description: 'Libros que has leído' },
       { name: 'Canciones', description: 'Canciones que has escuchado' },
       { name: 'Videojuegos', description: 'Videojuegos que has jugado' },
     ];
-    
+
     for (const discipline of disciplines) {
       const exist = await Discipline.findOne({ name: discipline.name });
       if (!exist) {
@@ -19,10 +19,10 @@ const seedDisciplines = async () => {
       }
     }
     console.log('Disciplines seeded successfully');
-
   } catch (error) {
     console.error('Error seeding disciplines:', error);
     process.exit(1);
   }
 };
+
 module.exports = seedDisciplines;
