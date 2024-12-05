@@ -1,179 +1,114 @@
-const Comment = require('../models/comment.model');
-const Object = require('../models/object.model');
-const User = require('../models/user.model');
-const isValidMongoId = require('../utils/validId');
+const commentService = require("../services/commentService");
 
 const createComment = async (req, res) => {
   try {
     const { content, objectId } = req.body;
-    const user = await User.findById(req.user.userId);
-    const userRole = user.role;
+    const userId = req.user.userId;
 
-    if (!isValidMongoId(objectId)) {
-      return res.status(400).json({ error: true, message: 'Invalid object ID format' });
-    }
-    
-
-    if (!content || !objectId || content.trim() === '' ){
-      return res.status(400).json({ error: true, message: 'Both content and object Id are required' });
-    }
-
-    const object = await Object.findById(objectId);
-
-    if (req.user.userId !== object.createdBy.toString() && userRole !== 'admin') {
-      return res.status(403).json({ error: true, message: 'You are not authorized to comment on this object' });
-    }
-
-    if (!object) {
-      return res.status(404).json({ error: true, message: 'Object not found' });
-    }
-
-    const newComment = new Comment({
+    const newComment = await commentService.createComment(
       content,
-      object: objectId,
-      user: req.user.userId,
-    });
+      objectId,
+      userId
+    );
 
-    await newComment.save();
-
-    return res.status(201).location(`/api/v1/comments/${object._id}/${newComment._id}`).json({ comment: newComment, message: 'Comment created successfully' });
+    return res
+      .status(201)
+      .location(`/api/v1/comments/${objectId}/${newComment._id}`)
+      .json({ comment: newComment, message: "Comment created successfully" });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: true, message: 'Internal server error' });
+    console.error("Error en createComment:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
   }
 };
 
 const updateComment = async (req, res) => {
   try {
-    const commentId = req.params.commentId;
+    const { commentId } = req.params;
     const { content } = req.body;
     const userId = req.user.userId;
-    const user = await User.findById(userId);
-    const userRole = user.role;
 
-    if (!isValidMongoId(commentId)) {
-      return res.status(400).json({ error: true, message: 'Invalid comment ID format' });
-    }
+    const updatedComment = await commentService.updateComment(
+      commentId,
+      content,
+      userId
+    );
 
-    const comment = await Comment.findById(commentId);
-    if (!comment) {
-      return res.status(404).json({ error: true, message: 'Comment not found' });
-    }
-    if (comment.user.toString() !== req.user.userId && userRole !== 'admin') {
-      return res.status(403).json({ error: true, message: 'You are not authorized to update this comment' });
-    }
-
-    if (!content || content.trim() === '') {
-      return res.status(400).json({ error: true, message: 'Content is required' });
-    }
-    
-    if (userRole === 'admin' && comment.user.toString() !== userId) {
-      comment.isEditedByAdmin = true;
-      comment.editedBy = userId;
-    }
-
-    comment.content = content;
-    comment.updatedAt = Date.now();
-
-    await comment.save();
-
-    return res.status(200).json({ comment, message: 'Comment updated successfully' });
+    return res
+      .status(200)
+      .json({
+        comment: updatedComment,
+        message: "Comment updated successfully",
+      });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: true, message: 'Internal server error' });
+    console.error("Error en updateComment:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
   }
 };
 
 const deleteComment = async (req, res) => {
   try {
-    const commentId = req.params.commentId;
+    const { commentId } = req.params;
     const userId = req.user.userId;
-    const user = await User.findById(userId);
-    const userRole = user.role;
 
-    if (!isValidMongoId(commentId)) {
-      return res.status(400).json({ error: true, message: 'Invalid comment ID format' });
-    }
+    const result = await commentService.deleteComment(commentId, userId);
 
-    const comment = await Comment.findById(commentId);
-    if (!comment) {
-      return res.status(404).json({ error: true, message: 'Comment not found' });
-    }
-    if (comment.user.toString() !== req.user.userId && userRole !== 'admin') {
-      return res.status(403).json({ error: true, message: 'You are not authorized to delete this comment' });
-    }
-
-    await comment.deleteOne();
-
-    return res.status(200).json({ message: 'Comment deleted successfully' });
+    return res.status(200).json(result);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: true, message: 'Internal server error' });
+    console.error("Error en deleteComment:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
   }
 };
 
 const getCommentsByObjectId = async (req, res) => {
   try {
-    const objectId = req.params.objectId;
-    const { page = 1, limit = 3, commentId } = req.query; 
-    const skip = (page - 1) * limit;
-    const userIdFromToken = req.user.userId;
-    
+    const { objectId } = req.params;
+    const query = req.query;
+    const userId = req.user.userId;
 
-    const user = await User.findById(userIdFromToken);
-    const userRole = user.role;
+    const commentsData = await commentService.getCommentsByObjectId(
+      objectId,
+      query,
+      userId
+    );
 
-    if (!isValidMongoId(objectId)) {
-      return res.status(400).json({ error: true, message: 'Invalid object ID format' });
-    }
-    const object = await Object.findById(objectId);
-
-    if (!object) {
-      return res.status(404).json({ error: true, message: 'Object not found' });
-    }
-
-    const userIdFromObject = object.createdBy.toString();
-
-    if (userIdFromToken !== userIdFromObject && userRole !== 'admin') {
-      return res.status(403).json({ error: true, message: 'You are not authorized to view comments for this object' });
-    }
-
-
-    if (commentId) {
-      if (!isValidMongoId(commentId)) {
-        return res.status(400).json({ error: true, message: 'Invalid comment ID format' });
-      }
-
-      const comment = await Comment.findOne({ _id: commentId, object: objectId }).populate('user', 'username email');
-      
-      if (!comment) {
-        return res.status(404).json({ error: true, message: 'Comment not found' });
-      }
-
-      return res.status(200).json({ comments: [comment], totalComments: 1, currentPage: 1, totalPages: 1 });
-    }
-
-
-    const totalComments = await Comment.countDocuments({ object: objectId });
-    
-    const comments = await Comment.find({ object: objectId })
-      .populate('user', 'username email role _id')
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
-
-    return res.status(200).json({
-      comments,
-      totalComments,
-      currentPage: parseInt(page),
-      totalPages: Math.ceil(totalComments / limit)
-    });
-
+    return res.status(200).json(commentsData);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: true, message: 'Internal server error' });
+    console.error("Error en getCommentsByObjectId:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
   }
 };
 
-
-module.exports = { createComment, updateComment, deleteComment, getCommentsByObjectId };
+module.exports = {
+  createComment,
+  updateComment,
+  deleteComment,
+  getCommentsByObjectId,
+};
