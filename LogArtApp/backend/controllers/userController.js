@@ -25,16 +25,17 @@ const findUserById = async (req, res) => {
   try {
     const userIdFromParams = req.params.userId;
     const userIdFromToken = req.user.userId;
+    const user = await User.findById(userIdFromToken);
+    const userRole = user.role;
     
     if (!isValidMongoId(userIdFromParams)) {
       return res.status(400).json({ error: true, message: 'Invalid user ID format' });
     }
 
-    if (userIdFromParams !== userIdFromToken) {
+    if (userIdFromParams !== userIdFromToken && userRole !== 'admin') {
       return res.status(401).json({ error: true, message: 'Unauthorized' });
     }
 
-    const user = await User.findById(userIdFromParams);
     if (!user) {
       return res.status(404).json({ error: true, message: 'User not found' });
     }
