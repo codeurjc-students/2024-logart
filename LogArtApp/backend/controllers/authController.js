@@ -1,5 +1,39 @@
 const authService = require("../services/authService");
 
+
+/**
+ * @swagger
+ * tags:
+ *   name: Autenticación
+ *   description: Operaciones relacionadas con la autenticación de usuarios
+ */
+
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Iniciar sesión de un usuario
+ *     tags: [Autenticación]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginRequest'
+ *     responses:
+ *       200:
+ *         description: Inicio de sesión exitoso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LoginResponse'
+ *       400:
+ *         description: Solicitud incorrecta
+ *       401:
+ *         description: Credenciales inválidas
+ *       500:
+ *         description: Error interno del servidor
+ */
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -22,6 +56,37 @@ const login = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Registrar un nuevo usuario
+ *     tags: [Autenticación]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RegisterRequest'
+ *     responses:
+ *       201:
+ *         description: Usuario registrado exitosamente
+ *         headers:
+ *           Location:
+ *             description: URL del nuevo usuario
+ *             schema:
+ *               type: string
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/RegisterResponse'
+ *       400:
+ *         description: Solicitud incorrecta
+ *       409:
+ *         description: El usuario ya existe
+ *       500:
+ *         description: Error interno del servidor
+ */
 const register = async (req, res) => {
   try {
     const registrationData = req.body;
@@ -45,6 +110,33 @@ const register = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /auth/verify/{token}:
+ *   get:
+ *     summary: Verificar la cuenta de un usuario
+ *     tags: [Autenticación]
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Token de verificación enviado por correo electrónico
+ *     responses:
+ *       200:
+ *         description: Usuario verificado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/VerifyUserResponse'
+ *       400:
+ *         description: Token inválido o expirado
+ *       404:
+ *         description: Usuario no encontrado
+ *       500:
+ *         description: Error interno del servidor
+ */
 const verifyUser = async (req, res) => {
   try {
     const { token } = req.params;
@@ -65,6 +157,26 @@ const verifyUser = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /auth/logout:
+ *   post:
+ *     summary: Cerrar sesión de un usuario
+ *     tags: [Autenticación]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Cierre de sesión exitoso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LogoutResponse'
+ *       401:
+ *         description: Token de autenticación inválido o ausente
+ *       500:
+ *         description: Error interno del servidor
+ */
 const logout = async (req, res) => {
   try {
     const authHeader = req.headers["authorization"];
