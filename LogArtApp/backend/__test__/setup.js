@@ -1,4 +1,4 @@
-const { connect, closeDatabase, clearDatabase } = require('./db');
+const { connect, closeDatabase, clearDatabase } = require('./dbtest');
 
 beforeAll(async () => {
   await connect();
