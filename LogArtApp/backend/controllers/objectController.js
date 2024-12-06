@@ -1,244 +1,145 @@
-const Object = require('../models/object.model');
-const path = require('path');
-const fs = require('fs');
-const User = require('../models/user.model');
-const Comment = require('../models/comment.model');
-const Discipline = require('../models/discipline.model');
-const isValidMongoId = require('../utils/validId');
+const objectService = require("../services/objectService");
 
 const createObject = async (req, res) => {
   try {
     const { name, description, disciplineName } = req.body;
-
-    if (!name || !disciplineName || name.trim() === '' ){
-      return res.status(400).json({ error: true, message: 'Both name and discipline are required' });
-    }
-
-    const discipline = await Discipline.findOne({ name: disciplineName });
-    if (!discipline) {
-      return res.status(404).json({ error: true, message: 'Discipline not found' });
-    }
+    const userId = req.user.userId;
+    const baseUrl = process.env.BASE_URL;
 
     if (!req.file) {
-      return res.status(400).json({ error: true, message: 'Image is required' });
+      return res
+        .status(400)
+        .json({ error: true, message: "Image is required" });
     }
 
-    const objetoDup = await Object.findOne({ name: name});
-    if (objetoDup) {
-      return res.status(400).json({ error: true, message: 'No se puede crear dos objetos con el mismo nombre' });
-    }
+    const imageUrl = `${baseUrl}/public/images/objects/${req.file.filename}`;
 
-    const image = `${process.env.BASE_URL}/public/images/objects/${req.file.filename}`;
+    const newObject = await objectService.createObject(
+      { name, description, disciplineName, imageUrl },
+      userId,
+      baseUrl
+    );
 
-    const newObject = new Object({
-      name,
-      description,
-      discipline: discipline._id,
-      createdBy: req.user.userId,
-      imageUrl: image
-    });
-
-    await newObject.save();
-
-    return res.status(201).location(`/api/v1/objects/${disciplineName}/${newObject._id}`).json({ object: newObject, message: 'Object created successfully' });
-
+    return res
+      .status(201)
+      .location(`/api/v1/objects/${newObject._id}`)
+      .json({ object: newObject, message: "Object created successfully" });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: true, message: 'Internal server error' });
-    
+    console.error("Error en createObject:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
   }
-}
+};
 
 const updateObject = async (req, res) => {
   try {
-    const objectIdFromParams = req.params.objectId;
+    const { objectId } = req.params;
     const { name, description, disciplineName } = req.body;
     const userId = req.user.userId;
-    const user = await User.findById(userId);
-    const userRole = user.role;
-    
 
-    if (!isValidMongoId(objectIdFromParams)) {
-      return res.status(400).json({ error: true, message: 'Invalid object ID format' });
-    }
-
-    if (!name || !disciplineName || name.trim() === '' ){
-      return res.status(400).json({ error: true, message: 'Both name and discipline are required' });
-    } 
-
-    const object = await Object.findById(objectIdFromParams);
-
-
-    if (!object) {
-      return res.status(404).json({ error: true, message: 'Object not found' });
-    }
-    if (object.createdBy.toString() !== userId && userRole !== 'admin') {
-      
-      return res.status(403).json({ error: true, message: 'You are not authorized to update this object' });
-    }
-
-    if (disciplineName) {
-      const discipline = await Discipline.findOne({ name: disciplineName });
-      if (!discipline) {
-        return res.status(404).json({ error: true, message: 'Disciplina no encontrada' });
-      }
-      object.discipline = discipline._id;
-    }
-
-    if (name) {
-      object.name = name;
-    }
-    if (description) {
-      object.description = description;
-    }
+    let imageUrl;
     if (req.file) {
-      const oldImagePath = path.join(__dirname, '..', 'public', 'images','objects',path.basename(object.imageUrl));
-      if (fs.existsSync(oldImagePath)) {
-        fs.unlinkSync(oldImagePath); 
-      }
-      object.imageUrl = `${process.env.BASE_URL}/public/images/objects/${req.file.filename}`;
+      imageUrl = `${process.env.BASE_URL}/public/images/objects/${req.file.filename}`;
     }
 
-    object.updatedAt = Date.now();
+    const updatedObject = await objectService.updateObject(
+      objectId,
+      { name, description, disciplineName, imageUrl },
+      userId
+    );
 
-    await object.save();
-    return res.status(200).json({ object, message: 'Object updated successfully' });
+    return res
+      .status(200)
+      .json({ object: updatedObject, message: "Object updated successfully" });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: true, message: 'Internal server error' });
+    console.error("Error en updateObject:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
   }
 };
 
 const deleteObject = async (req, res) => {
   try {
-    const objectIdFromParams = req.params.objectId;
+    const { objectId } = req.params;
     const userId = req.user.userId;
-    const user = await User.findById(userId);
-    const userRole = user.role;
 
-    if (!isValidMongoId(objectIdFromParams)) {
-      return res.status(400).json({ error: true, message: 'Invalid object ID format' });
-    }
+    const result = await objectService.deleteObject(objectId, userId);
 
-    const object = await Object.findById(objectIdFromParams);
-    if (!object) {
-      return res.status(404).json({ error: true, message: 'Object not found' });
-    }
-
-    if (object.createdBy.toString() !== userId && userRole !== 'admin') {
-      return res.status(403).json({ error: true, message: 'You are not authorized to delete this object' });
-    }
-
-    const imagePath = path.join(__dirname, '..', 'public', 'images','objects',path.basename(object.imageUrl));
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath); 
-      }
-    await Comment.deleteMany({ object: objectIdFromParams });
-    await object.deleteOne();
-
-    return res.status(200).json({ message: 'Object deleted successfully' });
+    return res.status(200).json(result);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: true, message: 'Internal server error' });
+    console.error("Error en deleteObject:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
   }
 };
 
 const getGalleryByDiscipline = async (req, res) => {
   try {
-    const disciplineName = req.params.disciplineName;
-    const disciplineId = await Discipline.findOne({ name: disciplineName }).select('_id');
-    const { userId, page=1, limit=3, objectName }  = req.query;
-    const skip = (page - 1) * limit;
-    const userIdFromToken = req.user.userId;
-    const user = await User.findById(userIdFromToken)
-    const userRole = user.role;
+    const { disciplineName } = req.params;
+    const query = req.query;
 
+    const gallery = await objectService.getGalleryByDiscipline(
+      disciplineName,
+      query
+    );
 
-    if (userId){
-      if (userId !== userIdFromToken && userRole !== 'admin') {
-        return res.status(403).json({ error: true, message: 'You are not authorized to view this' });
-      }
-
-    }
-
-
-    let totalObjects;
-    const countFilter = {discipline: disciplineId};
-    if (userId) {
-      countFilter.createdBy = userId;
-    }
-    if (objectName) {
-      countFilter.name = {$regex: new RegExp(objectName, 'i')};
-    }
-    totalObjects = await Object.countDocuments(countFilter);
-    
-
-    const discipline = await Discipline.findById(disciplineId);
-    if (!discipline) {
-      return res.status(404).json({ error: true, message: 'Discipline not found' });
-    }
-
-    const filter = {discipline: disciplineId};
-    if (userId) {
-      filter.createdBy = userId;
-    }
-    if (objectName) {
-      filter.name = {$regex: new RegExp(objectName, 'i')};
-    }
-
-    const objects = await Object.find(filter).populate('createdBy', 'firstName lastName username').sort({ createdAt: -1 }).skip(skip).limit(limit);
-
-    const objectsWithImageUrls = objects.map((obj) => ({
-      ...obj._doc, 
-      imageUrl: obj.imageUrl.startsWith('http') 
-        ? obj.imageUrl 
-        : `${req.protocol}://${req.get('host')}/${obj.imageUrl.replace(/\\/g, '/')}`, 
-    }));
-
-
-    return res.status(200).json({ 
-      discipline: {
-        id: discipline._id,
-        name: discipline.name,
-      }, totalObjects,
-      objects: objectsWithImageUrls,
-      currentPage: parseInt(page),
-      totalPages: Math.ceil(totalObjects / limit)
-    });
+    return res.status(200).json(gallery);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: true, message: 'Internal server error' });
+    console.error("Error en getGalleryByDiscipline:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
   }
 };
 
 const getObjectById = async (req, res) => {
   try {
-    const objectIdFromParams = req.params.objectId;
-    const userIdFromToken = req.user.userId;
-    const user = await User.findById(userIdFromToken)
-    const userRole = user.role;
+    const { objectId } = req.params;
+    const userId = req.user.userId;
 
-    if (!isValidMongoId(objectIdFromParams)) {
-      return res.status(400).json({ error: true, message: 'Invalid object ID format' });
-    }
-
-    const object = await Object.findById(objectIdFromParams).populate('discipline', 'name').populate('createdBy', 'firstName lastName username');
-    const objectCreatedBy = object.createdBy._id.toString();
-
-    if (!object) {
-      return res.status(404).json({ error: true, message: 'Objeto no encontrado' });
-    }
-
-    if (objectCreatedBy !== userIdFromToken && userRole !== 'admin') {
-      return res.status(403).json({ error: true, message: 'No estás autorizado para ver este objeto' });
-    }
+    const object = await objectService.getObjectById(objectId, userId);
 
     return res.status(200).json({ object });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: true, message: 'Internal server error' });
+    console.error("Error en getObjectById:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
   }
 };
 
-
-module.exports = { createObject, updateObject, deleteObject, getGalleryByDiscipline, getObjectById };
+module.exports = {
+  createObject,
+  updateObject,
+  deleteObject,
+  getGalleryByDiscipline,
+  getObjectById,
+};

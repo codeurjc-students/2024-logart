@@ -52,7 +52,7 @@ const ObjectDetail = () => {
             <div className="flex flex-col">
               <div>
                 <img 
-                  src={object.imageUrl.startsWith('http') ? object.imageUrl : `http://localhost:443/${object.imageUrl}`} 
+                  src={object.imageUrl.startsWith('http') ? object.imageUrl : `https://localhost:443/${object.imageUrl}`} 
                   alt={object.name} 
                   className="w-full h-auto rounded-lg object-cover shadow-md"
                 />

@@ -87,7 +87,7 @@ const Profile = () => {
             <div className="mr-4">
               {user.profileImage ? (
                 <img 
-                  src={`http://localhost:443${user.profileImage}`} 
+                  src={`https://localhost:443${user.profileImage}`} 
                   alt="Profile" 
                   className="w-24 h-24 object-cover rounded-full border-2 border-gray-300"
                 />

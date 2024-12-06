@@ -7,17 +7,15 @@ const commentRoutes = require('./routes/commentRoutes');
 const disciplineRoutes = require('./routes/disciplineRoutes');
 const connectDB = require('./config/db');
 const cors = require('cors');
-const seedDisciplines = require('./utils/seedDisciplines');
-const seedAdmins = require('./utils/seedAdmins');
+const seedDB = require('./Seeders/seedDB'); 
 
 
 const app = express();
 connectDB();
-seedDisciplines();
-seedAdmins();
+seedDB();
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
