@@ -27,8 +27,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-LogArtApp/backend/.env
-LogArtApp/backend/.env
 LogArtApp/backend/public/images/
 LogArtApp/backend/ssl/server.cert
 LogArtApp/backend/ssl/server.key

@@ -1,13 +1,95 @@
-const Discipline = require('../models/discipline.model');
+const disciplineService = require("../services/disciplineService");
 
 const getAllDisciplines = async (req, res) => {
   try {
-    const disciplines = await Discipline.find();
-    res.status(200).json({ disciplines });
+    const disciplines = await disciplineService.getAllDisciplines();
+    return res.status(200).json({ disciplines });
   } catch (error) {
-    console.error('Error getting disciplines:', error);
-    res.status(500).json({ error: 'Error getting disciplines' });
+    console.error("Error en getAllDisciplines:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Error obteniendo disciplinas" });
   }
 };
 
-module.exports = { getAllDisciplines };
+const createDiscipline = async (req, res) => {
+  try {
+    const disciplineData = req.body;
+    const newDiscipline = await disciplineService.createDiscipline(
+      disciplineData
+    );
+    return res
+      .status(201)
+      .json({
+        discipline: newDiscipline,
+        message: "Discipline created successfully",
+      });
+  } catch (error) {
+    console.error("Error en createDiscipline:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Error creando disciplina" });
+  }
+};
+
+const updateDiscipline = async (req, res) => {
+  try {
+    const { disciplineId } = req.params;
+    const updateData = req.body;
+    const updatedDiscipline = await disciplineService.updateDiscipline(
+      disciplineId,
+      updateData
+    );
+    return res
+      .status(200)
+      .json({
+        discipline: updatedDiscipline,
+        message: "Discipline updated successfully",
+      });
+  } catch (error) {
+    console.error("Error en updateDiscipline:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Error actualizando disciplina" });
+  }
+};
+
+const deleteDiscipline = async (req, res) => {
+  try {
+    const { disciplineId } = req.params;
+    const result = await disciplineService.deleteDiscipline(disciplineId);
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error en deleteDiscipline:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Error eliminando disciplina" });
+  }
+};
+
+module.exports = {
+  getAllDisciplines,
+  createDiscipline,
+  updateDiscipline,
+  deleteDiscipline,
+};
