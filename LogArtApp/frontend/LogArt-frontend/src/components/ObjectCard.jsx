@@ -39,7 +39,7 @@ const ObjectCard = ({ object, disciplines, onObjectUpdated, onObjectDeleted }) =
     <div className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-300">
       <Link to={`/objects/${object._id}`}>
         <img 
-          src={object.imageUrl.startsWith('http') ? object.imageUrl : `http://localhost:443/${object.imageUrl}`} 
+          src={object.imageUrl.startsWith('http') ? object.imageUrl : `https://localhost:443/${object.imageUrl}`} 
           alt={object.name} 
           className="w-full h-48 object-cover" 
         />

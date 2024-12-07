@@ -7,6 +7,7 @@ const seedObjects = async () => {
   try {
     const disciplines = await Discipline.find({});
     const users = await User.find({ role: 'user' });
+    const admins = await User.find({ role: 'admin' });
 
     if (disciplines.length === 0 || users.length === 0) {
       console.log('Ensure that disciplines and users are seeded before seeding objects.');
@@ -34,6 +35,20 @@ const seedObjects = async () => {
         imageUrl: 'public/images/objects/zelda.jpg',
         discipline: disciplines.find(d => d.name === 'Videojuegos')._id,
         createdBy: users[0]._id,
+      },
+      {
+        name: 'The Legend of Zelda 2',
+        description: 'Un famoso videojuego de aventura.',
+        imageUrl: 'public/images/objects/zelda.jpg',
+        discipline: disciplines.find(d => d.name === 'Videojuegos')._id,
+        createdBy: admins[0]._id,
+      },
+      {
+        name: 'The Legend of Zelda 3',
+        description: 'Un famoso videojuego de aventura.',
+        imageUrl: 'public/images/objects/zelda.jpg',
+        discipline: disciplines.find(d => d.name === 'Videojuegos')._id,
+        createdBy: admins[1]._id,
       },
     ];
 
