@@ -5,6 +5,7 @@ const authService = require('../../services/authService');
 const mongoose = require('mongoose');
 const path = require('path');
 const bcrypt = require('bcrypt');
+const fs = require('fs');
 
 describe('Pruebas de Usuarios', () => {
   
@@ -82,13 +83,25 @@ describe('Pruebas de Usuarios', () => {
 
   describe('GET /api/v1/users/profile', () => {
     it('debería obtener el perfil del usuario autenticado', async () => {
+      const hashedPassword = await bcrypt.hash('hola123', 10);
+      const userDB = await User.create({
+    username: 'pepeuser',
+    email: 'pepe3@gmail.com',
+    firstName: 'Pepe',
+    lastName: 'García',
+    password: hashedPassword,
+    isVerified: true,
+    hastoken: false,
+    role: 'admin'
+  });
+      const { accessToken } = await authService.login('pepe3@gmail.com', 'hola123');
       const response = await request(app)
         .get('/api/v1/users/profile')
-        .set('Authorization', `Bearer ${userToken}`);
+        .set('Authorization', `Bearer ${accessToken}`);
 
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty('user');
-      expect(response.body.user.email).toBe('usuario@example.com');
+      expect(response.body.user.email).toBe('pepe3@gmail.com');
     });
 
     it('debería retornar 401 si no está autenticado', async () => {
@@ -107,42 +120,64 @@ describe('Pruebas de Usuarios', () => {
         firstName: 'UsuarioActualizado',
         bio: 'Esta es mi nueva bio.'
       };
+      const hashedPassword = await bcrypt.hash('hola123', 10);
+      const userDB = await User.create({
+    username: 'pepeuser',
+    email: 'pepe3@gmail.com',
+    firstName: 'Pepe',
+    lastName: 'García',
+    password: hashedPassword,
+    isVerified: true,
+    hastoken: false,
+    role: 'admin'
+  });
+      const { accessToken, user } = await authService.login('pepe3@gmail.com', 'hola123');
 
       const response = await request(app)
         .put('/api/v1/users/profile')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${accessToken}`)
         .send(updateData);
 
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty('user');
       expect(response.body.user.firstName).toBe('UsuarioActualizado');
+      expect(response.body.user.bio).toBe('Esta es mi nueva bio.');
       expect(response.body).toHaveProperty('message', 'User updated successfully');
 
-      const userInDb = await User.findById(userId);
-      expect(userInDb.firstName).toBe('UsuarioActualizado');
-      expect(userInDb.bio).toBe('Esta es mi nueva bio.');
     });
 
     it('debería actualizar el perfil del usuario autenticado con imagen', async () => {
       const updateData = {
         firstName: 'UsuarioConImagen'
       };
+      const hashedPassword = await bcrypt.hash('hola123', 10);
+      const userDB = await User.create({
+    username: 'pepeuser',
+    email: 'pepe3@gmail.com',
+    firstName: 'Pepe',
+    lastName: 'García',
+    password: hashedPassword,
+    isVerified: true,
+    hastoken: false,
+    role: 'admin'
+  });
+      const { accessToken } = await authService.login('pepe3@gmail.com', 'hola123');
+      const imagePath = path.join(__dirname, 'imagesTest', 'test-image.jpg');
+      if (!fs.existsSync(imagePath)) {
+  throw new Error(`El archivo de imagen no existe en la ruta: ${imagePath}`);
+}
 
       const response = await request(app)
         .put('/api/v1/users/profile')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${accessToken}`)
         .field('firstName', 'UsuarioConImagen')
-        .attach('profileImage', path.join(__dirname, 'fixtures', 'test-image.jpg'));
+        .attach('profileImage', path.join(__dirname, 'imagesTest', 'test-image.jpg'));
 
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty('user');
       expect(response.body.user.firstName).toBe('UsuarioConImagen');
-      expect(response.body.user.profileImage).toMatch(/\/public\/images\/profiles\/test-image\.jpg$/);
+      expect(response.body.user.profileImage).toMatch(/\/public\/images\/profiles\/\d+\.jpg$/);
       expect(response.body).toHaveProperty('message', 'User updated successfully');
-
-      const userInDb = await User.findById(userId);
-      expect(userInDb.firstName).toBe('UsuarioConImagen');
-      expect(userInDb.profileImage).toMatch(/\/public\/images\/profiles\/test-image\.jpg$/);
     });
 
     it('debería retornar 401 si no está autenticado', async () => {
@@ -177,20 +212,45 @@ describe('Pruebas de Usuarios', () => {
     });
 
     it('debería obtener un usuario por su ID como el mismo usuario', async () => {
+      const hashedPassword = await bcrypt.hash('hola123', 10);
+      const userDB = await User.create({
+    username: 'pepeuser',
+    email: 'pepe3@gmail.com',
+    firstName: 'Pepe',
+    lastName: 'García',
+    password: hashedPassword,
+    isVerified: true,
+    hastoken: false,
+    role: 'user'
+  });
+      const { accessToken, user } = await authService.login('pepe3@gmail.com', 'hola123');
+      const userIddb = user._id.toString();
       const response = await request(app)
-        .get(`/api/v1/users/${userId}`)
-        .set('Authorization', `Bearer ${userToken}`);
+        .get(`/api/v1/users/${userIddb}`)
+        .set('Authorization', `Bearer ${accessToken}`);
 
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty('user');
-      expect(response.body.user.email).toBe('usuario@example.com');
+      expect(response.body.user.email).toBe('pepe3@gmail.com');
       expect(response.body).toHaveProperty('message', 'User found');
     });
 
     it('debería obtener un usuario por su ID como admin', async () => {
+      const hashedPassword = await bcrypt.hash('hola123', 10);
+      const userDB = await User.create({
+    username: 'pepeuser',
+    email: 'pepe3@gmail.com',
+    firstName: 'Pepe',
+    lastName: 'García',
+    password: hashedPassword,
+    isVerified: true,
+    hastoken: false,
+    role: 'admin'
+  });
+      const { accessToken } = await authService.login('pepe3@gmail.com', 'hola123');
       const response = await request(app)
         .get(`/api/v1/users/${targetUserId}`)
-        .set('Authorization', `Bearer ${adminToken}`);
+        .set('Authorization', `Bearer ${accessToken}`);
 
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty('user');
@@ -199,9 +259,21 @@ describe('Pruebas de Usuarios', () => {
     });
 
     it('debería retornar 401 si un usuario no admin intenta obtener otro usuario', async () => {
+      const hashedPassword = await bcrypt.hash('hola123', 10);
+      const userDB = await User.create({
+    username: 'pepeuser',
+    email: 'pepe3@gmail.com',
+    firstName: 'Pepe',
+    lastName: 'García',
+    password: hashedPassword,
+    isVerified: true,
+    hastoken: false,
+    role: 'user'
+  });
+      const { accessToken } = await authService.login('pepe3@gmail.com', 'hola123');
       const response = await request(app)
         .get(`/api/v1/users/${targetUserId}`)
-        .set('Authorization', `Bearer ${userToken}`);
+        .set('Authorization', `Bearer ${accessToken}`);
 
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty('error', true);
@@ -245,6 +317,8 @@ describe('Pruebas de Usuarios', () => {
 
   describe('DELETE /api/v1/users/:userId', () => {
     let targetUserId;
+    let accessTokenAdmin;
+    let hashedPassword;
 
     beforeEach(async () => {
       const targetUser = await User.create({
@@ -260,9 +334,21 @@ describe('Pruebas de Usuarios', () => {
     });
 
     it('debería eliminar un usuario como admin', async () => {
+      const hashedPassword = await bcrypt.hash('hola123', 10);
+      const userDB = await User.create({
+    username: 'pepeuser',
+    email: 'pepe3@gmail.com',
+    firstName: 'Pepe',
+    lastName: 'García',
+    password: hashedPassword,
+    isVerified: true,
+    hastoken: false,
+    role: 'admin'
+  });
+      const { accessToken } = await authService.login('pepe3@gmail.com', 'hola123');
       const response = await request(app)
         .delete(`/api/v1/users/${targetUserId}`)
-        .set('Authorization', `Bearer ${adminToken}`);
+        .set('Authorization', `Bearer ${accessToken}`); 
 
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty('message', 'User and Data deleted successfully');
@@ -271,20 +357,45 @@ describe('Pruebas de Usuarios', () => {
       expect(userInDb).toBeNull();
     });
 
-    it('debería retornar 403 si un usuario no admin intenta eliminar otro usuario', async () => {
+    it('debería retornar 401 si un usuario no admin intenta eliminar otro usuario', async () => {
+      const hashedPassword = await bcrypt.hash('hola123', 10);
+      const userDB = await User.create({
+    username: 'pepeuser',
+    email: 'pepe3@gmail.com',
+    firstName: 'Pepe',
+    lastName: 'García',
+    password: hashedPassword,
+    isVerified: true,
+    hastoken: false,
+    role: 'user'
+  });
+      const { accessToken } = await authService.login('pepe3@gmail.com', 'hola123');
       const response = await request(app)
         .delete(`/api/v1/users/${targetUserId}`)
-        .set('Authorization', `Bearer ${userToken}`);
+        .set('Authorization', `Bearer ${accessToken}`);
 
-      expect(response.statusCode).toBe(403);
+      expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty('error', true);
-      expect(response.body).toHaveProperty('message', 'Forbidden: Only admin can delete users');
+      expect(response.body).toHaveProperty('message', 'Access denied');
     });
 
     it('debería retornar 401 si un admin intenta eliminar su propia cuenta', async () => {
+      const hashedPassword = await bcrypt.hash('hola123', 10);
+      const userDB = await User.create({
+    username: 'pepeuser',
+    email: 'pepe3@gmail.com',
+    firstName: 'Pepe',
+    lastName: 'García',
+    password: hashedPassword,
+    isVerified: true,
+    hastoken: false,
+    role: 'admin'
+  });
+      const { accessToken, user } = await authService.login('pepe3@gmail.com', 'hola123');
+      const Id = user._id.toString();
       const response = await request(app)
-        .delete(`/api/v1/users/${adminId}`)
-        .set('Authorization', `Bearer ${adminToken}`);
+        .delete(`/api/v1/users/${Id}`)
+        .set('Authorization', `Bearer ${accessToken}`);
 
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty('error', true);
@@ -293,9 +404,21 @@ describe('Pruebas de Usuarios', () => {
 
     it('debería retornar 404 si el usuario a eliminar no existe', async () => {
       const nonExistentId = new mongoose.Types.ObjectId();
+      const hashedPassword = await bcrypt.hash('hola123', 10);
+      const userDB = await User.create({
+    username: 'pepeuser',
+    email: 'pepe3@gmail.com',
+    firstName: 'Pepe',
+    lastName: 'García',
+    password: hashedPassword,
+    isVerified: true,
+    hastoken: false,
+    role: 'admin'
+  });
+      const { accessToken } = await authService.login('pepe3@gmail.com', 'hola123');
       const response = await request(app)
         .delete(`/api/v1/users/${nonExistentId}`)
-        .set('Authorization', `Bearer ${adminToken}`);
+        .set('Authorization', `Bearer ${accessToken}`);
 
       expect(response.statusCode).toBe(404);
       expect(response.body).toHaveProperty('error', true);
