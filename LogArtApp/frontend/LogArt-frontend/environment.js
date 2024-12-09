@@ -9,4 +9,9 @@ export default {
   userWrongEmail: process.env.TEST_USER_WRONG_EMAIL || '', 
   userWrongPassword: process.env.TEST_USER_WRONG_PASSWORD || '',
   userNotVerified: process.env.TEST_USER_NOT_VERIFIED || '',
+  userNewEmail: process.env.TEST_USER_NEW_EMAIL || '',
+  userNewUserName: process.env.TEST_USER_NEW_USERNAME || '',
+  userNewFirstName: process.env.TEST_USER_NEW_FIRSTNAME || '',
+  userNewLastName: process.env.TEST_USER_NEW_LASTNAME || '',
+
 };
