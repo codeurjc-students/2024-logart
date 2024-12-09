@@ -80,6 +80,7 @@ const CreateObject = ({ disciplines, onObjectCreated }) => {
               type="text"
               id="name"
               value={name}
+              data-testid="create-object-name"
               onChange={(e) => setName(e.target.value)}
               className="w-full p-2 border rounded text-gray-700 font-medium"
               required
@@ -93,6 +94,7 @@ const CreateObject = ({ disciplines, onObjectCreated }) => {
             <textarea
               id="description"
               value={description}
+              data-testid="create-object-description"
               onChange={(e) => setDescription(e.target.value)}
               className="w-full p-2 border rounded text-gray-700 font-medium"
               rows="4"
@@ -106,6 +108,7 @@ const CreateObject = ({ disciplines, onObjectCreated }) => {
             <select
               id="discipline"
               value={disciplineName}
+              data-testid="create-object-discipline"
               onChange={(e) => setDisciplineName(e.target.value)}
               className="w-full p-2 border rounded text-gray-700 font-medium"
               required
@@ -127,6 +130,7 @@ const CreateObject = ({ disciplines, onObjectCreated }) => {
               id="image"
               accept="image/*"
               onChange={handleImageChange}
+              data-testid="create-object-imageUrl"
               className="w-full"
               required
             />
