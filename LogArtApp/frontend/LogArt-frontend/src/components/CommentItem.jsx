@@ -22,7 +22,7 @@ const CommentItem = ({ comment, onCommentUpdated, onCommentDeleted, objectOwnerI
 
     try {
       await api.delete(`/api/v1/comments/${comment._id}`);
-      onCommentDeleted(); 
+      onCommentDeleted();
     } catch (err) {
       console.error('Error deleting comment:', err);
       setDeleteError(err.response?.data?.message || 'Error al eliminar el comentario');
@@ -62,7 +62,7 @@ const CommentItem = ({ comment, onCommentUpdated, onCommentDeleted, objectOwnerI
         />
       ) : (
         <>
-          <p className="text-gray-800 whitespace-pre-wrap">{comment.content}</p>
+          <p className="text-gray-800 whitespace-pre-wrap" data-testid="comment-content">{comment.content}</p>
           <p className="text-gray-500 text-sm mt-2">
             Por: {comment.user.username} el {new Date(comment.createdAt).toLocaleDateString()}
           </p>
@@ -74,12 +74,14 @@ const CommentItem = ({ comment, onCommentUpdated, onCommentDeleted, objectOwnerI
               <button 
                 onClick={handleEdit} 
                 className="text-blue-500 hover:underline"
+                data-testid="edit-comment-button"
               >
                 Editar
               </button>
               <button 
                 onClick={handleDelete} 
                 className="text-red-500 hover:underline"
+                data-testid="delete-comment-button"
               >
                 Eliminar
               </button>

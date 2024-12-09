@@ -37,6 +37,7 @@ const AddComment = ({ objectId, onCommentAdded }) => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Escribe tu comentario aquí..."
+          data-testid="create-comment-textarea"
           className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800"
           rows="4"
           required
@@ -45,6 +46,7 @@ const AddComment = ({ objectId, onCommentAdded }) => {
         {success && <div className="text-green-500">{success}</div>}
         <button 
           type="submit" 
+          data-testid="create-comment-button"
           className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300 w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           disabled={loading}
         >
