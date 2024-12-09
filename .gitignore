@@ -30,3 +30,7 @@ dist-ssr
 LogArtApp/backend/public/images/
 LogArtApp/backend/ssl/server.cert
 LogArtApp/backend/ssl/server.key
+/LogArtApp/frontend/LogArt-frontend/playwright-report
+/LogArtApp/frontend/LogArt-frontend/test-results
+/LogArtApp/frontend/LogArt-frontend/ui-test/playwright-report
+/LogArtApp/frontend/LogArt-frontend/ui-test/test-results
