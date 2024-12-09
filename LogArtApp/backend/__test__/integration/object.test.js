@@ -186,53 +186,6 @@ describe("Pruebas de Objetos", () => {
       expect(response.body).toHaveProperty("error", true);
       expect(response.body.message).toBe("Discipline not found");
     });
-
-    it("debería fallar al crear un objeto con un nombre duplicado", async () => {
-      const user = await createUser({
-        email: "usuario5@example.com",
-        password: "password123",
-      });
-      const userToken = await loginUser(user.email, "password123");
-
-      const discipline = await createDiscipline({
-        name: "Libros",
-        description: "Libros que has leído",
-      });
-
-      const newObjectData = {
-        name: "Objeto5",
-        description: "Descripción del objeto 5",
-        disciplineName: "Libros",
-      };
-
-      await request(app)
-        .post("/api/v1/objects/")
-        .set("Authorization", `Bearer ${userToken}`)
-        .field("name", newObjectData.name)
-        .field("description", newObjectData.description)
-        .field("disciplineName", newObjectData.disciplineName)
-        .attach(
-          "imageUrl",
-          path.join(__dirname, "imagesTest", "test-image.jpg")
-        );
-
-      const response = await request(app)
-        .post("/api/v1/objects/")
-        .set("Authorization", `Bearer ${userToken}`)
-        .field("name", newObjectData.name)
-        .field("description", "Otra descripción")
-        .field("disciplineName", "Libros")
-        .attach(
-          "imageUrl",
-          path.join(__dirname, "imagesTest", "test-image.jpg")
-        );
-
-      expect(response.statusCode).toBe(400);
-      expect(response.body).toHaveProperty("error", true);
-      expect(response.body.message).toBe(
-        "Cannot create two objects with the same name"
-      );
-    });
   });
 
   describe("PUT /api/v1/objects/:objectId", () => {

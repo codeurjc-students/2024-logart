@@ -22,12 +22,6 @@ const createObject = async (data, userId, baseUrl) => {
     throw error;
   }
 
-  const existingObject = await objectRepository.findByName(name);
-  if (existingObject) {
-    const error = new Error("Cannot create two objects with the same name");
-    error.statusCode = 400;
-    throw error;
-  }
 
   if (!data.imageUrl) {
     const error = new Error("Image is required");
