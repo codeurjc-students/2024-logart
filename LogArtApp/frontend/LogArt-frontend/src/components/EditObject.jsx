@@ -83,6 +83,7 @@ const EditObject = ({ object, disciplines, onObjectUpdated }) => {
               type="text"
               id="name"
               value={name}
+              data-testid="edit-object-name"
               onChange={(e) => setName(e.target.value)}
               className="w-full p-2 border rounded text-gray-700 font-medium"
               required
@@ -96,6 +97,7 @@ const EditObject = ({ object, disciplines, onObjectUpdated }) => {
             <textarea
               id="description"
               value={description}
+              data-testid="edit-object-description"
               onChange={(e) => setDescription(e.target.value)}
               className="w-full p-2 border rounded text-gray-700 font-medium"
               rows="4"
@@ -109,6 +111,7 @@ const EditObject = ({ object, disciplines, onObjectUpdated }) => {
             <select
               id="discipline"
               value={disciplineName}
+              data-testid="edit-object-discipline"
               onChange={(e) => setDisciplineName(e.target.value)}
               className="w-full p-2 border rounded text-gray-700 font-medium"
               required
@@ -130,6 +133,7 @@ const EditObject = ({ object, disciplines, onObjectUpdated }) => {
               id="image"
               accept="image/*"
               onChange={handleImageChange}
+              data-testid="edit-object-imageUrl"
               className="w-full"
             />
           </div>
@@ -145,6 +149,7 @@ const EditObject = ({ object, disciplines, onObjectUpdated }) => {
             </button>
             <button
               type="submit"
+              data-testid="edit-object-submit"
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
               disabled={loading}
             >

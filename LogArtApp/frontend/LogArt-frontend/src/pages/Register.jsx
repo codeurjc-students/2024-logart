@@ -61,6 +61,7 @@ const Register = () => {
               <input
                 type="text"
                 value={username}
+                data-testid="register-userName"
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full px-4 py-2 bg-white border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
                 required
@@ -73,6 +74,7 @@ const Register = () => {
               <input
                 type="email"
                 value={email}
+                data-testid="register-email"
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2 bg-white border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
                 required
@@ -83,6 +85,7 @@ const Register = () => {
               <input
                 type="text"
                 value={firstName}
+                data-testid="register-firstName"
                 onChange={(e) => setFirstName(e.target.value)}
                 className="w-full px-4 py-2 bg-white border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
                 required
@@ -93,6 +96,7 @@ const Register = () => {
               <input
                 type="text"
                 value={lastName}
+                data-testid="register-lastName"
                 onChange={(e) => setLastName(e.target.value)}
                 className="w-full px-4 py-2 bg-white border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
                 required
@@ -103,6 +107,7 @@ const Register = () => {
               <input
                 type="password"
                 value={password}
+                data-testid="register-password"
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-2 bg-white border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-mediumf"
                 required

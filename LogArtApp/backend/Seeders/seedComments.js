@@ -50,6 +50,16 @@ const seedComments = async () => {
         object: objects.find(o => o.name === 'Cien Años de Soledad')._id,
         user: admins[0]._id,
       },
+      {
+        content: '¡Soy admin, y me encanta este juego!',
+        object: objects.find(o => o.name === 'The Legend of Zelda 2')._id,
+        user: admins[0]._id,
+      },
+      {
+        content: '¡Me encantó este juego!',
+        object: objects.find(o => o.name === 'The Legend of Zelda 3')._id,
+        user: admins[1]._id,
+      },
     ];
 
     for (const commentData of comments) {

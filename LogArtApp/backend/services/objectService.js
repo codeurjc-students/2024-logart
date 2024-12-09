@@ -22,12 +22,6 @@ const createObject = async (data, userId, baseUrl) => {
     throw error;
   }
 
-  const existingObject = await objectRepository.findByName(name);
-  if (existingObject) {
-    const error = new Error("Cannot create two objects with the same name");
-    error.statusCode = 400;
-    throw error;
-  }
 
   if (!data.imageUrl) {
     const error = new Error("Image is required");
@@ -105,7 +99,9 @@ const updateObject = async (objectId, data, userId) => {
   if (imageUrl) {
     if (
       object.imageUrl &&
-      object.imageUrl !== "/public/images/objects/default-object.png"
+      object.imageUrl !== "public/images/objects/zelda.jpg" && 
+      object.imageUrl !== "public/images/objects/bohemian_rhapsody.jpg" &&
+      object.imageUrl !== "public/images/objects/cien_años.jpg"
     ) {
       const oldImagePath = path.join(
         __dirname,
@@ -153,7 +149,7 @@ const deleteObject = async (objectId, userId) => {
     }
   }
 
-  if (object.imageUrl) {
+  if (object.imageUrl && object.imageUrl !== "public/images/objects/zelda.jpg" && object.imageUrl !== "public/images/objects/bohemian_rhapsody.jpg" && object.imageUrl !== "public/images/objects/cien_años.jpg") {
     const imagePath = path.join(
       __dirname,
       "..",

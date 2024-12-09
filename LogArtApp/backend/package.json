@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
     "generate-docs": "node api-docs/swagger.js ",
     "start": "nodemon server.js"
   },
@@ -13,16 +13,22 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "crypto-browserify": "^3.12.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
+    "mongodb-memory-server": "^10.1.2",
     "mongoose": "^8.8.3",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
     "nodemon": "^3.1.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
   }
 }

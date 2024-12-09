@@ -33,6 +33,7 @@ const EditComment = ({ comment, onCancel, onSave }) => {
     <form onSubmit={handleUpdate} className="space-y-2">
       <textarea
         value={content}
+        data-testid="edit-comment-textarea"
         onChange={(e) => setContent(e.target.value)}
         className="w-full p-2 border rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
         rows="3"
@@ -43,6 +44,7 @@ const EditComment = ({ comment, onCancel, onSave }) => {
       <div className="flex space-x-2">
         <button 
           type="submit" 
+          data-testid="edit-comment-button-save"
           className={`bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           disabled={loading}
         >
