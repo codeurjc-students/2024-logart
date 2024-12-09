@@ -11,8 +11,7 @@ const seedDB = require('./Seeders/seedDB');
 
 
 const app = express();
-connectDB();
-seedDB();
+
 
 app.use(cors({
   origin: 'https://localhost:5173',

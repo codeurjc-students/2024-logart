@@ -83,7 +83,7 @@ const deleteUser = async (req, res) => {
     return res.status(200).json(result);
   } catch (error) {
     console.error("Error en deleteUser:", error);
-    if (error.message === "Invalid object ID format") {
+    if (error.message === "Invalid user ID format") {
       return res.status(400).json({ error: true, message: error.message });
     } else if (error.message === "User not found") {
       return res.status(404).json({ error: true, message: error.message });

@@ -86,9 +86,10 @@ const Profile = () => {
           <div className="flex items-center mb-6">
             <div className="mr-4">
               {user.profileImage ? (
-                <img 
+                <img data-testid="profile-image-src"
                   src={`https://localhost:443${user.profileImage}`} 
                   alt="Profile" 
+                  
                   className="w-24 h-24 object-cover rounded-full border-2 border-gray-300"
                 />
               ) : (
@@ -103,7 +104,8 @@ const Profile = () => {
                 type="file" 
                 name="profileImage"
                 accept="image/*"
-                onChange={handleChange} 
+                onChange={handleChange}
+                data-testid="profile-image" 
                 className="w-full text-gray-300"
               />
             </div>
@@ -116,6 +118,7 @@ const Profile = () => {
               id="username"
               name="username"
               value={formData.username} 
+              data-testid="profile-username"
               onChange={handleChange} 
               className="w-full px-4 py-2 bg-white/90 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
               required 
@@ -129,6 +132,7 @@ const Profile = () => {
               id="firstName"
               name="firstName"
               value={formData.firstName} 
+              data-testid="profile-firstname"
               onChange={handleChange} 
               className="w-full px-4 py-2 bg-white/90 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
             />
@@ -141,6 +145,7 @@ const Profile = () => {
               id="lastName"
               name="lastName"
               value={formData.lastName} 
+              data-testid="profile-lastname"
               onChange={handleChange} 
               className="w-full px-4 py-2 bg-white/90 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
             />
@@ -153,6 +158,7 @@ const Profile = () => {
               id="email"
               name="email"
               value={formData.email} 
+              data-testid="profile-email"
               onChange={handleChange} 
               className="w-full px-4 py-2 bg-white/90 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
               required 
@@ -165,6 +171,7 @@ const Profile = () => {
               id="bio"
               name="bio"
               value={formData.bio} 
+              data-testid="profile-bio"
               onChange={handleChange} 
               className="w-full px-4 py-2 bg-white/90 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
               rows="4"
@@ -177,6 +184,7 @@ const Profile = () => {
           <button 
             type="submit" 
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-purple-700 hover:underline transition-colors duration-300 font-semibold"
+            data-testid="profile-submit"
           >
             Actualizar Perfil
           </button>

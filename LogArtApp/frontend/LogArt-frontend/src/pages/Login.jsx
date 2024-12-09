@@ -43,6 +43,7 @@ const Login = () => {
               <input
                 type="email"
                 value={email}
+                data-testid="login-email"
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2 bg-white/90 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-950 font-medium"
                 required
@@ -53,6 +54,7 @@ const Login = () => {
               <input
                 type="password"
                 value={password}
+                data-testid="login-password"
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-2 bg-white/90 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600 text-gray-950 font-medium"
                 required

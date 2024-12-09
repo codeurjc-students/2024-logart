@@ -60,25 +60,26 @@ const deleteUser = async (userId, requestingUserId) => {
     await commentRepository.deleteCommentsByObjectIds(objectIds);
 
     for (const object of userObjects) {
-      if (object.imageUrl) {
-        const imagePath = path.join(
-          __dirname,
-          "..",
-          "public",
-          "images",
-          "objects",
-          path.basename(object.imageUrl)
-        );
-        if (fs.existsSync(imagePath)) {
-          try {
-            fs.unlinkSync(imagePath);
-            console.log(`Imagen eliminada: ${imagePath}`);
-          } catch (err) {
-            console.error(`Error al eliminar la imagen ${imagePath}:`, err);
-          }
-        }
+      if (object.imageUrl && object.imageUrl !== "public/images/objects/zelda.jpg" && object.imageUrl !== "public/images/objects/bohemian_rhapsody.jpg" && object.imageUrl !== "public/images/objects/cien_años.jpg") {
+    const imagePath = path.join(
+      __dirname,
+      "..",
+      "public",
+      "images",
+      "objects",
+      path.basename(object.imageUrl)
+    );
+    if (fs.existsSync(imagePath)) {
+      try {
+        fs.unlinkSync(imagePath);
+      } catch (err) {
+        console.error("Error al eliminar la imagen del objeto:", err);
       }
     }
+  }
+    }
+
+  
 
     await userRepository.deleteManyObjectsByUserId(userId);
   } else {
@@ -86,6 +87,24 @@ const deleteUser = async (userId, requestingUserId) => {
   }
 
   await userRepository.deleteManyCommentsByUserId(userId);
+
+  if (user.profileImage && user.profileImage !== "public/images/users/default.png") {
+    const imagePath = path.join(
+      __dirname,
+      "..",
+      "public",
+      "images",
+      "profiles",
+      path.basename(user.profileImage)
+    );
+    if (fs.existsSync(imagePath)) {
+      try {
+        fs.unlinkSync(imagePath);
+      } catch (err) {
+        console.error("Error al eliminar la imagen del usuario:", err);
+      }
+    }
+  }
 
   await userRepository.deleteById(userId);
 

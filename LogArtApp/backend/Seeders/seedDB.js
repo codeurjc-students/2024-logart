@@ -5,9 +5,11 @@ const seedUsers = require('./seedUsers');
 const seedAdmins = require('./seedAdmins');
 const seedObjects = require('./seedObjects');
 const seedComments = require('./seedComments');
+const dropDatabase = require('./dropDatabase');
 
 const seedDB = async () => {
   try {
+    await dropDatabase();
     await seedDisciplines();
     await seedUsers();
     await seedAdmins();
