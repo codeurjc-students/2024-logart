@@ -27,6 +27,17 @@ const seedUsers = async () => {
         isVerified: true,
         verificationToken: null,
       },
+      {
+        username: 'notverified',
+        password: 'hola123',
+        email: 'notverified@gmail.com',
+        firstName: 'Bob',
+        lastName: 'Jones',
+        bio: 'Amante de la moda y la moda.',
+        role: 'user',
+        isVerified: false,
+        verificationToken: null,
+      },
     ];
 
     for (const userData of users) {

@@ -34,5 +34,17 @@ export default [
         { allowConstantExport: true },
       ],
     },
+    overrides: [
+      {
+      files: ['**/*.spec.js', '**/*.test.js', '**/*.spec.jsx', '**/*.test.jsx'],
+      env: {
+        node: true, 
+      },
+      rules: {
+        // Por ejemplo, si aún hay problemas con 'no-undef':
+        // 'no-undef': 'off',
+      },
+    },
+  ],
   },
 ]

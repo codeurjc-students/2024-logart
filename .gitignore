@@ -29,7 +29,11 @@ dist-ssr
 *.sw?
 LogArtApp/backend/ssl/server.cert
 LogArtApp/backend/ssl/server.key
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
+LogArtApp/frontend/LogArt-frontend/ui-test/test-results/
+LogArtApp/frontend/LogArt-frontend/ui-test/playwright-report/
+LogArtApp/frontend/LogArt-frontend/ui-test/blob-report/
+LogArtApp/frontend/LogArt-frontend/ui-test/playwright/.cache/
+/LogArtApp/backend/public/images
+/LogArtApp/frontend/LogArt-frontend/test-results
+/LogArtApp/frontend/LogArt-frontend/playwright-report
+/LogArtApp/backend/public
