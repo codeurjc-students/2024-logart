@@ -2,7 +2,6 @@ const swaggerJSDoc = require('swagger-jsdoc');
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
-const { profile } = require('console');
 
 const options = {
   definition: {
@@ -32,6 +31,7 @@ const options = {
         },
       },
       schemas: {
+        // Esquemas de Autenticación
         User: {
           type: 'object',
           properties: {
@@ -94,12 +94,12 @@ const options = {
             email: {
               type: 'string',
               format: 'email',
-              example: 'juan.perez@example.com',
+              example: 'pepe@gmail.com',
             },
             password: {
               type: 'string',
               format: 'password',
-              example: 'SecurePassword123',
+              example: 'hola123',
             },
           },
         },
@@ -177,6 +177,138 @@ const options = {
             },
           },
         },
+        // Esquemas de Usuarios
+        AllUsersResponse: {
+          type: 'object',
+          properties: {
+            users: {
+              type: 'array',
+              items: {
+                $ref: '#/components/schemas/User',
+              },
+            },
+            totalUsers: {
+              type: 'integer',
+              example: 50,
+            },
+            currentPage: {
+              type: 'integer',
+              example: 1,
+            },
+            totalPages: {
+              type: 'integer',
+              example: 10,
+            },
+          },
+        },
+        FindUserByIdResponse: {
+          type: 'object',
+          properties: {
+            user: {
+              $ref: '#/components/schemas/User',
+            },
+            message: {
+              type: 'string',
+              example: 'User found',
+            },
+          },
+        },
+        DeleteUserResponse: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'User and Data deleted successfully',
+            },
+          },
+        },
+        UserProfileResponse: {
+          type: 'object',
+          properties: {
+            user: {
+              $ref: '#/components/schemas/User',
+            },
+            message: {
+              type: 'string',
+              example: 'User profile retrieved successfully',
+            },
+          },
+        },
+        UpdateUserProfileRequest: {
+          type: 'object',
+          properties: {
+            firstName: {
+              type: 'string',
+              example: 'Juan',
+            },
+            lastName: {
+              type: 'string',
+              example: 'Pérez',
+            },
+            email: {
+              type: 'string',
+              format: 'email',
+              example: 'juan.perez@example.com',
+            },
+            username: {
+              type: 'string',
+              example: 'juanperez',
+            },
+            bio: {
+              type: 'string',
+              example: 'Nueva bio del usuario',
+            },
+          },
+        },
+        UpdateUserProfileResponse: {
+          type: 'object',
+          properties: {
+            user: {
+              $ref: '#/components/schemas/User',
+            },
+            message: {
+              type: 'string',
+              example: 'User updated successfully',
+            },
+          },
+        },
+        Discipline: {
+          type: 'object',
+          properties: {
+            _id: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cb',
+            },
+            name: {
+              type: 'string',
+              enum: ['Libros', 'Canciones', 'Videojuegos'],
+              example: 'Canciones',
+            },
+            description: {
+              type: 'string',
+              example: 'Canciones que has escuchado',
+            },
+          },
+        },
+        GetAllDisciplinesResponse: {
+          type: 'object',
+          properties: {
+            disciplines: {
+              type: 'array',
+              items: {
+                $ref: '#/components/schemas/Discipline',
+              },
+              minItems: 1,
+              maxItems:3,
+              uniqueItems: true,
+              example: [
+                { _id: '60d0fe4f5311236168a109cb', name: 'Libros', description: 'Libros que has leído' },
+                { _id: '60d0fe4f5311236168a109cc', name: 'Canciones', description: 'Canciones que has escuchado' },
+                { _id: '60d0fe4f5311236168a109cd', name: 'Videojuegos', description: 'Videojuegos que has jugado' },
+              ]
+            },
+          },
+        },
       },
     },
     security: [
@@ -185,13 +317,15 @@ const options = {
       },
     ],
   },
-  apis: [path.join(__dirname, '../controllers/*.js')],
+  apis: [path.join(__dirname, '../controllers/*.js')], // Ruta a tus controladores con anotaciones Swagger
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 
+// Generar YAML
 const swaggerYaml = yaml.dump(swaggerSpec);
 
+// Escribir el archivo YAML
 fs.writeFileSync(path.join(__dirname, 'api-docs.yaml'), swaggerYaml, 'utf8');
 
 console.log('Archivo api-docs.yaml generado exitosamente.');

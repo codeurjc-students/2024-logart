@@ -1,5 +1,45 @@
 const userService = require("../services/userService");
 
+/**
+ * @swagger
+ * tags:
+ *   name: Usuarios
+ *   description: Operaciones relacionadas con la gestión de usuarios
+ */
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Obtener todos los usuarios con paginación
+ *     tags: [Usuarios]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Número de página
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 5
+ *         description: Número de usuarios por página
+ *     responses:
+ *       200:
+ *         description: Lista de usuarios obtenida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AllUsersResponse'
+ *       401:
+ *         description: Error, Token de autenticación inválido o ausente
+ *       500:
+ *         description: Error interno del servidor
+ */
 const allUsers = async (req, res) => {
   try {
     const { page = 1, limit = 5 } = req.query;
@@ -18,6 +58,39 @@ const allUsers = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /users/{userId}:
+ *   get:
+ *     summary: Obtener un usuario por su ID
+ *     tags: [Usuarios]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID del usuario a buscar
+ *     responses:
+ *       200:
+ *         description: Usuario encontrado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/FindUserByIdResponse'
+ *       400:
+ *         description: Error, formato de ID de usuario inválido
+ *       401:
+ *         description: Error, no autorizado para acceder a este usuario
+ *       403:
+ *         description: Error, Solo admin puede buscar usuarios
+ *       404:
+ *         description: Usuario no encontrado
+ *       500:
+ *         description: Error interno del servidor
+ */
 const findUserById = async (req, res) => {
   try {
     const targetUserId = req.params.userId;
@@ -50,6 +123,39 @@ const findUserById = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /users/{userId}:
+ *   delete:
+ *     summary: Eliminar un usuario por su ID
+ *     tags: [Usuarios]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID del usuario a eliminar
+ *     responses:
+ *       200:
+ *         description: Usuario y datos eliminados exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/DeleteUserResponse'
+ *       400:
+ *         description: Error, formato de ID de usuario inválido
+ *       401:
+ *         description: Error, no autorizado para eliminar este usuario o eliminar cuenta propia
+ *       403:
+ *         description: Error, token de autenticación inválido o ausente
+ *       404:
+ *         description: Error, usuario no encontrado
+ *       500:
+ *         description: Error interno del servidor
+ */
 const deleteUser = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -100,6 +206,28 @@ const deleteUser = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /users/profile:
+ *   get:
+ *     summary: Obtener el perfil del usuario autenticado
+ *     tags: [Usuarios]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Perfil del usuario obtenido exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserProfileResponse'
+ *       400:
+ *         description: Error, formato de ID de usuario inválido
+ *       404:
+ *         description: Error, usuario no encontrado
+ *       500:
+ *         description: Error interno del servidor
+ */
 const getUserProfile = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -119,6 +247,55 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /users/profile:
+ *   put:
+ *     summary: Actualizar el perfil del usuario autenticado
+ *     tags: [Usuarios]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *                 example: "Juan"
+ *               lastName:
+ *                 type: string
+ *                 example: "Pérez"
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "juan.perez@example.com"
+ *               username:
+ *                 type: string
+ *                 example: "juanperez"
+ *               bio:
+ *                 type: string
+ *                 example: "Nueva bio del usuario"
+ *               profileImage:
+ *                 type: string
+ *                 format: binary
+ *                 description: Imagen de perfil del usuario
+ *     responses:
+ *       200:
+ *         description: Perfil del usuario actualizado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UpdateUserProfileResponse'
+ *       400:
+ *         description: Formato de ID de usuario inválido
+ *       404:
+ *         description: Usuario no encontrado
+ *       500:
+ *         description: Error interno del servidor
+ */
 const updateUserProfile = async (req, res) => {
   try {
     const userId = req.user.userId;

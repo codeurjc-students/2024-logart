@@ -1,5 +1,28 @@
 const disciplineService = require("../services/disciplineService");
 
+/**
+ * @swagger
+ * tags:
+ *   name: Disciplinas
+ *   description: Operaciones relacionadas con las disciplinas
+ */
+
+/**
+ * @swagger
+ * /disciplines:
+ *   get:
+ *     summary: Obtener todas las disciplinas
+ *     tags: [Disciplinas]
+ *     responses:
+ *       200:
+ *         description: Lista de disciplinas obtenida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/GetAllDisciplinesResponse'
+ *       500:
+ *         description: Error interno del servidor al obtener disciplinas
+ */
 const getAllDisciplines = async (req, res) => {
   try {
     const disciplines = await disciplineService.getAllDisciplines();
