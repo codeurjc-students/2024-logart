@@ -58,6 +58,22 @@ components:
           type: string
           format: date-time
           example: '2022-01-01T12:34:56Z'
+    UserRegistered:
+      type: object
+      properties:
+        firstName:
+          type: string
+          example: Juan
+        lastName:
+          type: string
+          example: Pérez
+        email:
+          type: string
+          format: email
+          example: juan.perez@example.com
+        username:
+          type: string
+          example: juanperez
     LoginRequest:
       type: object
       required:
@@ -113,7 +129,7 @@ components:
       type: object
       properties:
         user:
-          $ref: '#/components/schemas/User'
+          $ref: '#/components/schemas/UserRegistered'
         message:
           type: string
           example: User registered, please check your email to verify your account
@@ -250,6 +266,34 @@ components:
           type: string
           format: date-time
           example: '2022-06-01T12:34:56Z'
+    ObjectCreated:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Objeto de Ejemplo
+        description:
+          type: string
+          example: Descripción del objeto de ejemplo.
+        imageUrl:
+          type: string
+          example: https://example.com/images/objects/objeto-ejemplo.jpg
+        discipline:
+          type: string
+          example: 60d0fe4f5311236168a109cb
+        createdBy:
+          type: string
+          example: 60d0fe4f5311236168a109ca
+        _id:
+          type: string
+          example: 60d0fe4f5311236168a109cc
+        createdAt:
+          type: string
+          format: date-time
+          example: '2022-01-01T12:34:56Z'
+        __v:
+          type: integer
+          example: 0
     ObjectUpdated:
       type: object
       properties:
@@ -275,10 +319,49 @@ components:
           type: string
           format: date-time
           example: '2022-01-01T12:34:56Z'
-        updatedAt:
+        __v:
+          type: integer
+          example: 0
+    ObjectGetGalleryByDiscipline:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 60d0fe4f5311236168a109cc
+        name:
+          type: string
+          example: Objeto de Ejemplo
+        description:
+          type: string
+          example: Descripción del objeto de ejemplo.
+        imageUrl:
+          type: string
+          example: https://example.com/images/objects/objeto-ejemplo.jpg
+        discipline:
+          type: string
+          example: 60d0fe4f5311236168a109cb
+        createdBy:
+          type: object
+          properties:
+            id:
+              type: string
+              example: 60d0fe4f5311236168a109ca
+            username:
+              type: string
+              example: johndoe
+            firstName:
+              type: string
+              example: John
+            lastName:
+              type: string
+              example: Doe
+        createdAt:
           type: string
           format: date-time
-          example: '2022-06-01T12:34:56Z'
+          example: '2022-01-01T12:34:56Z'
+        __v:
+          type: integer
+          example: 0
     CreateObjectRequest:
       type: object
       required:
@@ -301,7 +384,7 @@ components:
       type: object
       properties:
         object:
-          $ref: '#/components/schemas/Object'
+          $ref: '#/components/schemas/ObjectCreated'
         message:
           type: string
           example: Object created successfully
@@ -351,22 +434,22 @@ components:
               example: Canciones
         totalObjects:
           type: integer
-          example: 20
+          example: 1
         objects:
           type: array
           items:
-            $ref: '#/components/schemas/Object'
+            $ref: '#/components/schemas/ObjectGetGalleryByDiscipline'
         currentPage:
           type: integer
           example: 1
         totalPages:
           type: integer
-          example: 4
+          example: 1
     GetObjectByIdResponse:
       type: object
       properties:
         object:
-          $ref: '#/components/schemas/Object'
+          $ref: '#/components/schemas/ObjectGetGalleryByDiscipline'
     Comment:
       type: object
       properties:
@@ -582,7 +665,7 @@ paths:
           description: Error, Token de autenticación inválido o ausente
         '500':
           description: Error interno del servidor
-  /auth/logout:
+  /logout:
     post:
       summary: Cerrar sesión de un usuario
       tags:
@@ -1090,11 +1173,11 @@ paths:
 tags:
   - name: Autenticación
     description: Operaciones relacionadas con la autenticación de usuarios
-  - name: Comentarios
-    description: Operaciones relacionadas con la gestión de comentarios
   - name: Disciplinas
     description: Operaciones relacionadas con las disciplinas
   - name: Objetos
     description: Operaciones relacionadas con la gestión de objetos
+  - name: Comentarios
+    description: Operaciones relacionadas con la gestión de comentarios
   - name: Usuarios
     description: Operaciones relacionadas con la gestión de usuarios

@@ -86,6 +86,28 @@ const options = {
             },
           },
         },
+        UserRegistered: {
+          type: 'object',
+          properties: {
+            firstName: {
+              type: 'string',
+              example: 'Juan',
+            },
+            lastName: {
+              type: 'string',
+              example: 'Pérez',
+            },
+            email: {
+              type: 'string',
+              format: 'email',
+              example: 'juan.perez@example.com',
+            },
+            username: {
+              type: 'string',
+              example: 'juanperez',
+            }
+          }
+        },
         LoginRequest: {
           type: 'object',
           required: ['email', 'password'],
@@ -150,7 +172,7 @@ const options = {
           type: 'object',
           properties: {
             user: {
-              $ref: '#/components/schemas/User',
+              $ref: '#/components/schemas/UserRegistered',
             },
             message: {
               type: 'string',
@@ -347,6 +369,45 @@ const options = {
             },
           },
         },
+        ObjectCreated: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+              example: 'Objeto de Ejemplo',
+            },
+            description: {
+              type: 'string',
+              example: 'Descripción del objeto de ejemplo.',
+            },
+            imageUrl: {
+              type: 'string',
+              example: 'https://example.com/images/objects/objeto-ejemplo.jpg',
+            },
+            discipline: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cb',
+            },
+            createdBy: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109ca', 
+            },
+            _id: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cc',
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2022-01-01T12:34:56Z',
+            },
+            __v: {
+              type: 'integer',
+              example: 0,
+            },
+            
+            }
+        },
         ObjectUpdated: {
           type: 'object',
           properties: {
@@ -379,12 +440,66 @@ const options = {
               format: 'date-time',
               example: '2022-01-01T12:34:56Z',
             },
-            updatedAt: {
-              type: 'string',
-              format: 'date-time',
-              example: '2022-06-01T12:34:56Z',
+            __v: {
+              type: 'integer',
+              example: 0,
             },
           },
+        },
+        ObjectGetGalleryByDiscipline: {
+          type: 'object',
+          properties: {
+            _id: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cc',
+            },
+            name: {
+              type: 'string',
+              example: 'Objeto de Ejemplo',
+            },
+            description: {
+              type: 'string',
+              example: 'Descripción del objeto de ejemplo.',
+            },
+            imageUrl: {
+              type: 'string',
+              example: 'https://example.com/images/objects/objeto-ejemplo.jpg',
+            },
+            discipline: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cb',
+            },
+            createdBy: {
+              "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "60d0fe4f5311236168a109ca"
+          },
+          "username": {
+            "type": "string",
+            "example": "johndoe"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          }
+        },
+      },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2022-01-01T12:34:56Z',
+            },
+            __v: {
+              type: 'integer',
+              example: 0,
+            },    
+        }
         },
         CreateObjectRequest: {
           type: 'object',
@@ -412,7 +527,7 @@ const options = {
           type: 'object',
           properties: {
             object: {
-              $ref: '#/components/schemas/Object',
+              $ref: '#/components/schemas/ObjectCreated',
             },
             message: {
               type: 'string',
@@ -481,12 +596,12 @@ const options = {
             },
             totalObjects: {
               type: 'integer',
-              example: 20,
+              example: 1,
             },
             objects: {
               type: 'array',
               items: {
-                $ref: '#/components/schemas/Object',
+                $ref: '#/components/schemas/ObjectGetGalleryByDiscipline',
               },
             },
             currentPage: {
@@ -495,7 +610,7 @@ const options = {
             },
             totalPages: {
               type: 'integer',
-              example: 4,
+              example: 1,
             },
           },
         },
@@ -503,7 +618,7 @@ const options = {
           type: 'object',
           properties: {
             object: {
-              $ref: '#/components/schemas/Object',
+              $ref: '#/components/schemas/ObjectGetGalleryByDiscipline',
             },
           },
         },

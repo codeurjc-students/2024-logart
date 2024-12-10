@@ -6,7 +6,7 @@ async function verifyToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
   if (!token){
-    return res.status(401).json({ error: true, message: 'Necesitas estar logueado para realizar esta acción' });
+    return res.status(401).json({ error: true, message: 'Necesitas estar logueado y un token válido para realizar esta acción' });
   }
   try {
   const blacklistedToken = await BlacklistedToken.findOne({ token });

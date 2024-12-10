@@ -135,7 +135,7 @@ const verifyUser = async (req, res) => {
 
 /**
  * @swagger
- * /auth/logout:
+ * /logout:
  *   post:
  *     summary: Cerrar sesión de un usuario
  *     tags: [Autenticación]
