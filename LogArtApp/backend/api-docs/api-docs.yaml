@@ -202,14 +202,18 @@ components:
           example: 60d0fe4f5311236168a109cb
         name:
           type: string
-          enum:
-            - Libros
-            - Canciones
-            - Videojuegos
           example: Canciones
         description:
           type: string
-          example: Canciones que has escuchado
+          example: Canciones que has escuchado.
+        createdAt:
+          type: string
+          format: date-time
+          example: '2022-01-01T12:34:56Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2022-06-01T12:34:56Z'
     GetAllDisciplinesResponse:
       type: object
       properties:
@@ -217,19 +221,277 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Discipline'
-          minItems: 1
-          maxItems: 3
-          uniqueItems: true
-          example:
-            - _id: 60d0fe4f5311236168a109cb
-              name: Libros
-              description: Libros que has leído
-            - _id: 60d0fe4f5311236168a109cc
-              name: Canciones
-              description: Canciones que has escuchado
-            - _id: 60d0fe4f5311236168a109cd
-              name: Videojuegos
-              description: Videojuegos que has jugado
+    Object:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 60d0fe4f5311236168a109cc
+        name:
+          type: string
+          example: Objeto de Ejemplo
+        description:
+          type: string
+          example: Descripción del objeto de ejemplo.
+        imageUrl:
+          type: string
+          example: https://example.com/images/objects/objeto-ejemplo.jpg
+        discipline:
+          type: string
+          example: 60d0fe4f5311236168a109cb
+        createdBy:
+          type: string
+          example: 60d0fe4f5311236168a109ca
+        createdAt:
+          type: string
+          format: date-time
+          example: '2022-01-01T12:34:56Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2022-06-01T12:34:56Z'
+    ObjectUpdated:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 60d0fe4f5311236168a109cc
+        name:
+          type: string
+          example: Objeto Actualizado
+        description:
+          type: string
+          example: Descripción actualizada del objeto.
+        imageUrl:
+          type: string
+          example: https://example.com/images/objects/objeto-actualizado.jpg
+        discipline:
+          type: string
+          example: 60d0fe4f5311236168a109cb
+        createdBy:
+          type: string
+          example: 60d0fe4f5311236168a109ca
+        createdAt:
+          type: string
+          format: date-time
+          example: '2022-01-01T12:34:56Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2022-06-01T12:34:56Z'
+    CreateObjectRequest:
+      type: object
+      required:
+        - name
+        - disciplineName
+      properties:
+        name:
+          type: string
+          example: Objeto de Ejemplo
+        description:
+          type: string
+          example: Descripción del objeto de ejemplo.
+        disciplineName:
+          type: string
+          example: Canciones
+        imageUrl:
+          type: string
+          example: https://example.com/images/objects/objeto-ejemplo.jpg
+    CreateObjectResponse:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/Object'
+        message:
+          type: string
+          example: Object created successfully
+    UpdateObjectRequest:
+      type: object
+      required:
+        - name
+        - disciplineName
+      properties:
+        name:
+          type: string
+          example: Objeto Actualizado
+        description:
+          type: string
+          example: Descripción actualizada del objeto.
+        disciplineName:
+          type: string
+          example: Canciones
+        imageUrl:
+          type: string
+          example: https://example.com/images/objects/objeto-actualizado.jpg
+    UpdateObjectResponse:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/ObjectUpdated'
+        message:
+          type: string
+          example: Object updated successfully
+    DeleteObjectResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Object deleted successfully
+    GetGalleryByDisciplineResponse:
+      type: object
+      properties:
+        discipline:
+          type: object
+          properties:
+            id:
+              type: string
+              example: 60d0fe4f5311236168a109cb
+            name:
+              type: string
+              example: Canciones
+        totalObjects:
+          type: integer
+          example: 20
+        objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Object'
+        currentPage:
+          type: integer
+          example: 1
+        totalPages:
+          type: integer
+          example: 4
+    GetObjectByIdResponse:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/Object'
+    Comment:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 60d0fe4f5311236168a109cd
+        content:
+          type: string
+          example: Este es un comentario de ejemplo.
+        object:
+          type: string
+          example: 60d0fe4f5311236168a109cc
+        user:
+          type: string
+          example: 60d0fe4f5311236168a109ca
+        isEditedByAdmin:
+          type: boolean
+          example: false
+        editedBy:
+          type: string
+          example: null
+        createdAt:
+          type: string
+          format: date-time
+          example: '2022-01-01T12:34:56Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2022-01-02T12:34:56Z'
+    CommentUpdated:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 60d0fe4f5311236168a109cd
+        content:
+          type: string
+          example: Contenido actualizado del comentario.
+        object:
+          type: string
+          example: 60d0fe4f5311236168a109cc
+        user:
+          type: string
+          example: 60d0fe4f5311236168a109ca
+        isEditedByAdmin:
+          type: boolean
+          example: false
+        editedBy:
+          type: string
+          example: null
+        createdAt:
+          type: string
+          format: date-time
+          example: '2022-01-01T12:34:56Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2022-01-02T12:34:56Z'
+    CreateCommentRequest:
+      type: object
+      required:
+        - content
+        - objectId
+      properties:
+        content:
+          type: string
+          example: Este es un comentario de ejemplo.
+        objectId:
+          type: string
+          example: 60d0fe4f5311236168a109cc
+    CreateCommentResponse:
+      type: object
+      properties:
+        comment:
+          $ref: '#/components/schemas/Comment'
+        message:
+          type: string
+          example: Comment created successfully
+    UpdateCommentRequest:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          example: Contenido actualizado del comentario.
+    UpdateCommentResponse:
+      type: object
+      properties:
+        comment:
+          $ref: '#/components/schemas/CommentUpdated'
+        message:
+          type: string
+          example: Comment updated successfully
+    DeleteCommentResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Comment deleted successfully
+    GetCommentsByObjectIdResponse:
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+      example:
+        comments:
+          - _id: 60d0fe4f5311236168a109cd
+            content: Este es un comentario de ejemplo.
+            object: 60d0fe4f5311236168a109cc
+            user: 60d0fe4f5311236168a109ca
+            isEditedByAdmin: false
+            editedBy: null
+            createdAt: '2022-01-01T12:34:56Z'
+            updatedAt: '2022-01-02T12:34:56Z'
+          - _id: 60d0fe4f5311236168a109ce
+            content: Este es otro comentario de ejemplo editado por un admin.
+            object: 60d0fe4f5311236168a109cc
+            user: 60d0fe4f5311236168a109ca
+            isEditedByAdmin: true
+            editedBy: 60d0fe4f5311236168a109ca
+            createdAt: '2022-01-02T12:34:56Z'
+            updatedAt: '2022-01-03T12:34:56Z'
 security:
   - BearerAuth: []
 paths:
@@ -340,6 +602,148 @@ paths:
           description: Error, token inválido
         '500':
           description: Error interno del servidor
+  /comments:
+    post:
+      summary: Crear un nuevo comentario
+      tags:
+        - Comentarios
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCommentRequest'
+      responses:
+        '201':
+          description: Comentario creado exitosamente
+          headers:
+            Location:
+              description: URL del nuevo comentario
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCommentResponse'
+        '400':
+          description: Error, solicitud incorrecta o datos faltantes
+        '403':
+          description: Error, no autorizado para comentar en este objeto
+        '404':
+          description: Error, objeto o usuario no encontrado
+        '500':
+          description: Error interno del servidor
+  /comments/{commentId}:
+    put:
+      summary: Actualizar un comentario existente
+      tags:
+        - Comentarios
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: commentId
+          required: true
+          schema:
+            type: string
+          description: ID del comentario a actualizar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCommentRequest'
+      responses:
+        '200':
+          description: Comentario actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateCommentResponse'
+        '400':
+          description: Error, solicitud incorrecta o formato de ID inválido
+        '403':
+          description: Error, no autorizado para actualizar este comentario
+        '404':
+          description: Error, comentario o usuario no encontrado
+        '500':
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar un comentario por su ID
+      tags:
+        - Comentarios
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: commentId
+          required: true
+          schema:
+            type: string
+          description: ID del comentario a eliminar
+      responses:
+        '200':
+          description: Comentario eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteCommentResponse'
+        '400':
+          description: Error, formato de ID de comentario inválido
+        '403':
+          description: Error, no autorizado para eliminar este comentario
+        '404':
+          description: Error, comentario o usuario no encontrado
+        '500':
+          description: Error interno del servidor
+  /comments/{objectId}:
+    get:
+      summary: Obtener comentarios por ID de objeto
+      tags:
+        - Comentarios
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: objectId
+          required: true
+          schema:
+            type: string
+          description: ID del objeto para el cual se desean obtener los comentarios
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Número de página para paginación
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 3
+          description: Número de comentarios por página
+        - in: query
+          name: commentId
+          schema:
+            type: string
+          description: ID específico de un comentario para obtener detalles
+      responses:
+        '200':
+          description: Lista de comentarios obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCommentsByObjectIdResponse'
+        '400':
+          description: Error, formato de ID de objeto o comentario inválido
+        '403':
+          description: Error, no autorizado para ver comentarios de este objeto
+        '404':
+          description: Error, objeto o comentario no encontrado
+        '500':
+          description: Error interno del servidor
   /disciplines:
     get:
       summary: Obtener todas las disciplinas
@@ -354,6 +758,206 @@ paths:
                 $ref: '#/components/schemas/GetAllDisciplinesResponse'
         '500':
           description: Error interno del servidor al obtener disciplinas
+  /objects:
+    post:
+      summary: Crear un nuevo objeto
+      tags:
+        - Objetos
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Objeto de Ejemplo
+                description:
+                  type: string
+                  example: Descripción del objeto de ejemplo.
+                disciplineName:
+                  type: string
+                  example: Canciones
+                imageUrl:
+                  type: string
+                  format: binary
+                  description: Imagen del objeto
+      responses:
+        '201':
+          description: Objeto creado exitosamente
+          headers:
+            Location:
+              description: URL del nuevo objeto
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateObjectResponse'
+        '400':
+          description: Error, solicitud incorrecta o datos faltantes
+        '404':
+          description: Error, disciplina no encontrada
+        '500':
+          description: Error interno del servidor
+  /objects/{objectId}:
+    put:
+      summary: Actualizar un objeto existente
+      tags:
+        - Objetos
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: objectId
+          required: true
+          schema:
+            type: string
+          description: ID del objeto a actualizar
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Objeto Actualizado
+                description:
+                  type: string
+                  example: Descripción actualizada del objeto.
+                disciplineName:
+                  type: string
+                  example: Canciones
+                imageUrl:
+                  type: string
+                  format: binary
+                  description: Nueva imagen del objeto
+      responses:
+        '200':
+          description: Objeto actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateObjectResponse'
+        '400':
+          description: >-
+            Error, solicitud incorrecta, datos faltantes o formato de ID
+            inválido
+        '403':
+          description: Error, no autorizado para actualizar este objeto
+        '404':
+          description: Error, objeto o disciplina no encontrada
+        '500':
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar un objeto por su ID
+      tags:
+        - Objetos
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: objectId
+          required: true
+          schema:
+            type: string
+          description: ID del objeto a eliminar
+      responses:
+        '200':
+          description: Objeto eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteObjectResponse'
+        '400':
+          description: Error, formato de ID de objeto inválido
+        '403':
+          description: Error, no autorizado para eliminar este objeto
+        '404':
+          description: Error, objeto no encontrado
+        '500':
+          description: Error interno del servidor
+  /objects/{disciplineName}:
+    get:
+      summary: Obtener la galería de objetos por disciplina
+      tags:
+        - Objetos
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: disciplineName
+          required: true
+          schema:
+            type: string
+          description: Nombre de la disciplina
+        - in: query
+          name: userId
+          schema:
+            type: string
+          description: Filtrar objetos por ID de usuario
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Número de página para paginación
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 3
+          description: Número de objetos por página
+        - in: query
+          name: objectName
+          schema:
+            type: string
+          description: Filtrar objetos por nombre
+      responses:
+        '200':
+          description: Galería de objetos obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGalleryByDisciplineResponse'
+        '404':
+          description: Error, disciplina no encontrada
+        '500':
+          description: Error interno del servidor
+  /objects/details/{objectId}:
+    get:
+      summary: Obtener detalles de un objeto por su ID
+      tags:
+        - Objetos
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: objectId
+          required: true
+          schema:
+            type: string
+          description: ID del objeto a buscar
+      responses:
+        '200':
+          description: Detalles del objeto obtenidos exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetObjectByIdResponse'
+        '400':
+          description: Error, formato de ID de objeto inválido
+        '403':
+          description: Error, no autorizado para ver este objeto
+        '404':
+          description: Error, objeto no encontrado
+        '500':
+          description: Error interno del servidor
   /users/{userId}:
     get:
       summary: Obtener un usuario por su ID
@@ -486,7 +1090,11 @@ paths:
 tags:
   - name: Autenticación
     description: Operaciones relacionadas con la autenticación de usuarios
+  - name: Comentarios
+    description: Operaciones relacionadas con la gestión de comentarios
   - name: Disciplinas
     description: Operaciones relacionadas con las disciplinas
+  - name: Objetos
+    description: Operaciones relacionadas con la gestión de objetos
   - name: Usuarios
     description: Operaciones relacionadas con la gestión de usuarios

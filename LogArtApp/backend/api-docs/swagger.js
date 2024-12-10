@@ -31,7 +31,6 @@ const options = {
         },
       },
       schemas: {
-        // Esquemas de Autenticación
         User: {
           type: 'object',
           properties: {
@@ -177,7 +176,6 @@ const options = {
             },
           },
         },
-        // Esquemas de Usuarios
         AllUsersResponse: {
           type: 'object',
           properties: {
@@ -281,12 +279,21 @@ const options = {
             },
             name: {
               type: 'string',
-              enum: ['Libros', 'Canciones', 'Videojuegos'],
               example: 'Canciones',
             },
             description: {
               type: 'string',
-              example: 'Canciones que has escuchado',
+              example: 'Canciones que has escuchado.',
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2022-01-01T12:34:56Z',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2022-06-01T12:34:56Z',
             },
           },
         },
@@ -298,15 +305,377 @@ const options = {
               items: {
                 $ref: '#/components/schemas/Discipline',
               },
-              minItems: 1,
-              maxItems:3,
-              uniqueItems: true,
-              example: [
-                { _id: '60d0fe4f5311236168a109cb', name: 'Libros', description: 'Libros que has leído' },
-                { _id: '60d0fe4f5311236168a109cc', name: 'Canciones', description: 'Canciones que has escuchado' },
-                { _id: '60d0fe4f5311236168a109cd', name: 'Videojuegos', description: 'Videojuegos que has jugado' },
-              ]
             },
+          },
+        },
+        Object: {
+          type: 'object',
+          properties: {
+            _id: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cc',
+            },
+            name: {
+              type: 'string',
+              example: 'Objeto de Ejemplo',
+            },
+            description: {
+              type: 'string',
+              example: 'Descripción del objeto de ejemplo.',
+            },
+            imageUrl: {
+              type: 'string',
+              example: 'https://example.com/images/objects/objeto-ejemplo.jpg',
+            },
+            discipline: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cb',
+            },
+            createdBy: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109ca', 
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2022-01-01T12:34:56Z',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2022-06-01T12:34:56Z',
+            },
+          },
+        },
+        ObjectUpdated: {
+          type: 'object',
+          properties: {
+            _id: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cc',
+            },
+            name: {
+              type: 'string',
+              example: 'Objeto Actualizado',
+            },
+            description: {
+              type: 'string',
+              example: 'Descripción actualizada del objeto.',
+            },
+            imageUrl: {
+              type: 'string',
+              example: 'https://example.com/images/objects/objeto-actualizado.jpg',
+            },
+            discipline: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cb', 
+            },
+            createdBy: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109ca', 
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2022-01-01T12:34:56Z',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2022-06-01T12:34:56Z',
+            },
+          },
+        },
+        CreateObjectRequest: {
+          type: 'object',
+          required: ['name', 'disciplineName'],
+          properties: {
+            name: {
+              type: 'string',
+              example: 'Objeto de Ejemplo',
+            },
+            description: {
+              type: 'string',
+              example: 'Descripción del objeto de ejemplo.',
+            },
+            disciplineName: {
+              type: 'string',
+              example: 'Canciones',
+            },
+            imageUrl: {
+              type: 'string',
+              example: 'https://example.com/images/objects/objeto-ejemplo.jpg',
+            },
+          },
+        },
+        CreateObjectResponse: {
+          type: 'object',
+          properties: {
+            object: {
+              $ref: '#/components/schemas/Object',
+            },
+            message: {
+              type: 'string',
+              example: 'Object created successfully',
+            },
+          },
+        },
+        UpdateObjectRequest: {
+          type: 'object',
+          required: ['name', 'disciplineName'],
+          properties: {
+            name: {
+              type: 'string',
+              example: 'Objeto Actualizado',
+            },
+            description: {
+              type: 'string',
+              example: 'Descripción actualizada del objeto.',
+            },
+            disciplineName: {
+              type: 'string',
+              example: 'Canciones',
+            },
+            imageUrl: {
+              type: 'string',
+              example: 'https://example.com/images/objects/objeto-actualizado.jpg',
+            },
+          },
+        },
+        UpdateObjectResponse: {
+          type: 'object',
+          properties: {
+            object: {
+              $ref: '#/components/schemas/ObjectUpdated',
+            },
+            message: {
+              type: 'string',
+              example: 'Object updated successfully',
+            },
+          },
+        },
+        DeleteObjectResponse: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Object deleted successfully',
+            },
+          },
+        },
+        GetGalleryByDisciplineResponse: {
+          type: 'object',
+          properties: {
+            discipline: {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string',
+                  example: '60d0fe4f5311236168a109cb',
+                },
+                name: {
+                  type: 'string',
+                  example: 'Canciones',
+                },
+              },
+            },
+            totalObjects: {
+              type: 'integer',
+              example: 20,
+            },
+            objects: {
+              type: 'array',
+              items: {
+                $ref: '#/components/schemas/Object',
+              },
+            },
+            currentPage: {
+              type: 'integer',
+              example: 1,
+            },
+            totalPages: {
+              type: 'integer',
+              example: 4,
+            },
+          },
+        },
+        GetObjectByIdResponse: {
+          type: 'object',
+          properties: {
+            object: {
+              $ref: '#/components/schemas/Object',
+            },
+          },
+        },
+        Comment: {
+          type: 'object',
+          properties: {
+            _id: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cd',
+            },
+            content: {
+              type: 'string',
+              example: 'Este es un comentario de ejemplo.',
+            },
+            object: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cc', 
+            },
+            user: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109ca', 
+            },
+            isEditedByAdmin: {
+              type: 'boolean',
+              example: false,
+            },
+            editedBy: {
+              type: 'string',
+              example: null, 
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2022-01-01T12:34:56Z',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2022-01-02T12:34:56Z',
+            },
+          },
+        },
+        CommentUpdated: {
+          type: 'object',
+          properties: {
+            _id: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cd',
+            },
+            content: {
+              type: 'string',
+              example: 'Contenido actualizado del comentario.',
+            },
+            object: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cc', 
+            },
+            user: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109ca', 
+            },
+            isEditedByAdmin: {
+              type: 'boolean',
+              example: false,
+            },
+            editedBy: {
+              type: 'string',
+              example: null, 
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2022-01-01T12:34:56Z',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2022-01-02T12:34:56Z',
+            },
+          },
+        },
+        CreateCommentRequest: {
+          type: 'object',
+          required: ['content', 'objectId'],
+          properties: {
+            content: {
+              type: 'string',
+              example: 'Este es un comentario de ejemplo.',
+            },
+            objectId: {
+              type: 'string',
+              example: '60d0fe4f5311236168a109cc',
+            },
+          },
+        },
+        CreateCommentResponse: {
+          type: 'object',
+          properties: {
+            comment: {
+              $ref: '#/components/schemas/Comment',
+            },
+            message: {
+              type: 'string',
+              example: 'Comment created successfully',
+            },
+          },
+        },
+        UpdateCommentRequest: {
+          type: 'object',
+          required: ['content'],
+          properties: {
+            content: {
+              type: 'string',
+              example: 'Contenido actualizado del comentario.',
+            },
+          },
+        },
+        UpdateCommentResponse: {
+          type: 'object',
+          properties: {
+            comment: {
+              $ref: '#/components/schemas/CommentUpdated',
+            },
+            message: {
+              type: 'string',
+              example: 'Comment updated successfully',
+            },
+          },
+        },
+        DeleteCommentResponse: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Comment deleted successfully',
+            },
+          },
+        },
+        GetCommentsByObjectIdResponse: {
+          type: 'object',
+          properties: {
+            comments: {
+              type: 'array',
+              items: {
+                $ref: '#/components/schemas/Comment',
+                
+              },
+            },
+          },
+            example: {
+            comments: [
+              {
+                _id: '60d0fe4f5311236168a109cd',
+                content: 'Este es un comentario de ejemplo.',
+                object: '60d0fe4f5311236168a109cc',
+                user: '60d0fe4f5311236168a109ca',
+                isEditedByAdmin: false,
+                editedBy: null,
+                createdAt: '2022-01-01T12:34:56Z',
+                updatedAt: '2022-01-02T12:34:56Z',
+              },
+              {
+                _id: '60d0fe4f5311236168a109ce',
+                content: 'Este es otro comentario de ejemplo editado por un admin.',
+                object: '60d0fe4f5311236168a109cc',
+                user: '60d0fe4f5311236168a109ca',
+                isEditedByAdmin: true,
+                editedBy: '60d0fe4f5311236168a109ca',
+                createdAt: '2022-01-02T12:34:56Z',
+                updatedAt: '2022-01-03T12:34:56Z',
+              },
+            ],
           },
         },
       },
@@ -317,15 +686,13 @@ const options = {
       },
     ],
   },
-  apis: [path.join(__dirname, '../controllers/*.js')], // Ruta a tus controladores con anotaciones Swagger
+  apis: [path.join(__dirname, '../controllers/*.js')], 
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 
-// Generar YAML
 const swaggerYaml = yaml.dump(swaggerSpec);
 
-// Escribir el archivo YAML
 fs.writeFileSync(path.join(__dirname, 'api-docs.yaml'), swaggerYaml, 'utf8');
 
 console.log('Archivo api-docs.yaml generado exitosamente.');
