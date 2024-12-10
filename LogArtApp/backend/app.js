@@ -14,7 +14,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: 'https://localhost:5173',
+  origin: ['https://localhost:5173', 'https://editor.swagger.io'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true

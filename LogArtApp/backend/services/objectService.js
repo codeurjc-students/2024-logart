@@ -229,7 +229,8 @@ const getObjectById = async (objectId, userId) => {
 
   if (object.createdBy._id.toString() !== userId) {
     const user = await User.findById(userId);
-    if (user.role !== "admin") {
+    const userRole = user.role;
+    if (userRole !== "admin") {
       const error = new Error("You are not authorized to view this object");
       error.statusCode = 403;
       throw error;

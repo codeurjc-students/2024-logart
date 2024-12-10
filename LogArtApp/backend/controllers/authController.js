@@ -10,7 +10,7 @@ const authService = require("../services/authService");
 
 /**
  * @swagger
- * /auth/login:
+ * /auth/:
  *   post:
  *     summary: Iniciar sesión de un usuario
  *     tags: [Autenticación]
@@ -28,9 +28,9 @@ const authService = require("../services/authService");
  *             schema:
  *               $ref: '#/components/schemas/LoginResponse'
  *       400:
- *         description: Solicitud incorrecta
+ *         description: Error, ambos campos son obligatorios
  *       401:
- *         description: Credenciales inválidas
+ *         description: Errores de autenticación, Credenciales inválidas/usuario no encontrado/token inválido, cuenta sin verificación.
  *       500:
  *         description: Error interno del servidor
  */
@@ -58,7 +58,7 @@ const login = async (req, res) => {
 
 /**
  * @swagger
- * /auth/register:
+ * /users:
  *   post:
  *     summary: Registrar un nuevo usuario
  *     tags: [Autenticación]
@@ -81,9 +81,11 @@ const login = async (req, res) => {
  *             schema:
  *               $ref: '#/components/schemas/RegisterResponse'
  *       400:
- *         description: Solicitud incorrecta
+ *         description: Error, todos los campos son obligatorios
+ *       401:
+ *         description: Errores de autenticación, usuario ya logueado
  *       409:
- *         description: El usuario ya existe
+ *         description: Error, el usuario ya existe
  *       500:
  *         description: Error interno del servidor
  */
@@ -110,33 +112,7 @@ const register = async (req, res) => {
   }
 };
 
-/**
- * @swagger
- * /auth/verify/{token}:
- *   get:
- *     summary: Verificar la cuenta de un usuario
- *     tags: [Autenticación]
- *     parameters:
- *       - in: path
- *         name: token
- *         required: true
- *         schema:
- *           type: string
- *         description: Token de verificación enviado por correo electrónico
- *     responses:
- *       200:
- *         description: Usuario verificado exitosamente
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/VerifyUserResponse'
- *       400:
- *         description: Token inválido o expirado
- *       404:
- *         description: Usuario no encontrado
- *       500:
- *         description: Error interno del servidor
- */
+
 const verifyUser = async (req, res) => {
   try {
     const { token } = req.params;
@@ -159,7 +135,7 @@ const verifyUser = async (req, res) => {
 
 /**
  * @swagger
- * /auth/logout:
+ * /logout:
  *   post:
  *     summary: Cerrar sesión de un usuario
  *     tags: [Autenticación]
@@ -173,7 +149,9 @@ const verifyUser = async (req, res) => {
  *             schema:
  *               $ref: '#/components/schemas/LogoutResponse'
  *       401:
- *         description: Token de autenticación inválido o ausente
+ *         description: Errores de autenticación, token vacio, token en la lista negra
+ *       403:
+ *         description: Error, token inválido
  *       500:
  *         description: Error interno del servidor
  */
