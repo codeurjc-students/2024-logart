@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
 
   app:
-    image: davidmorenoo/logartapp:latest-final
+    image: davidmorenoo/logartapp:latest17
     ports:
       - "443:443"
     healthcheck:
