@@ -81,7 +81,7 @@ describe("Pruebas de Usuarios", () => {
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
         "message",
-        "Necesitas estar logueado para realizar esta acción"
+        "Necesitas estar logueado y un token válido para realizar esta acción"
       );
     });
   });
@@ -119,7 +119,7 @@ describe("Pruebas de Usuarios", () => {
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
         "message",
-        "Necesitas estar logueado para realizar esta acción"
+        "Necesitas estar logueado y un token válido para realizar esta acción"
       );
     });
   });
@@ -221,7 +221,7 @@ describe("Pruebas de Usuarios", () => {
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
         "message",
-        "Necesitas estar logueado para realizar esta acción"
+        "Necesitas estar logueado y un token válido para realizar esta acción"
       );
     });
   });
