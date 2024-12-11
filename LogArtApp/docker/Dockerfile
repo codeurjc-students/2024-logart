@@ -1,41 +1,32 @@
-# Etapa de build del frontend
-FROM node:20 AS frontend-build
-
+FROM node:20-alpine AS frontend-build
 WORKDIR /app/frontend
-
 COPY frontend/LogArt-frontend/package*.json ./
 RUN npm install --legacy-peer-deps
 COPY frontend/LogArt-frontend/ ./
 RUN npm run build
 
-# Etapa final (backend)
-FROM node:20 AS production
-
+FROM node:20-alpine AS backend-build
 WORKDIR /app/backend
 
-# Primero copiamos solo package.json y package-lock.json del backend
+RUN apk add --no-cache make gcc g++ python3
+
 COPY backend/package*.json ./
+RUN npm install --legacy-peer-deps
 
-# Instalamos las dependencias de compilación y luego las dependencias del backend
-# Aquí es donde bcrypt se compila correctamente para el entorno actual
-RUN apt-get update && apt-get install -y make gcc g++ python3 && \
-  npm install --legacy-peer-deps && \
-  npm rebuild bcrypt --build-from-source && \
-  apt-get remove -y make gcc g++ python3 && apt-get autoremove -y && \
-  rm -rf /var/lib/apt/lists/*
-RUN ls -la
-
-# Ahora copiamos el resto del backend
 COPY backend/ ./
-RUN ls -la
 
+RUN npm rebuild bcrypt --build-from-source
 
-RUN apt-get update && apt-get install -y make gcc g++ python3 && \
-  npm rebuild bcrypt --build-from-source && \
-  apt-get remove -y make gcc g++ python3 && apt-get autoremove -y && \
-  rm -rf /var/lib/apt/lists/*
+RUN npm prune --production
 
-# Copiamos el build del frontend
+RUN npm cache clean --force
+
+RUN apk del make gcc g++ python3
+
+FROM node:20-alpine AS production
+WORKDIR /app/backend
+
+COPY --from=backend-build /app/backend ./
 COPY --from=frontend-build /app/frontend/dist ./public
 
 EXPOSE 443

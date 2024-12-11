@@ -5,8 +5,10 @@ services:
     image: mongo:latest
     environment:
       MONGO_INITDB_DATABASE: logartdb
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      test: ["CMD", "mongo", "--username", "${MONGO_INITDB_ROOT_USERNAME}", "--password", "${MONGO_INITDB_ROOT_PASSWORD}", "--authenticationDatabase", "admin", "--eval", "db.adminCommand('ping')"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -16,17 +18,7 @@ services:
     restart: unless-stopped
 
   app:
-    image: davidmorenoo/logartapp:latest11
-    environment:
-      DB_CONNECTION_STRING: mongodb://mongo:27017/logartdb
-      ACCESS_TOKEN_SECRET: d18ffd46f4a3b9360f723b22a49648cd75e429655966acd1d6d313ec43a05cd738c8330385d6decb45e84f8afe89c9c45396b83c8df070ed981744bdfc6e2491
-      EMAIL_USER: logartappverify@gmail.com
-      EMAIL_PASS: "exib pxbx crys mzki"
-      BASE_URL: https://localhost:443
-      SSL_KEY_PATH: ssl/server.key
-      SSL_CERT_PATH: ssl/server.cert
-      NODE_ENV: production
-      PORT: 443
+    image: davidmorenoo/logartapp:latest18
     ports:
       - "443:443"
     healthcheck:
@@ -36,3 +28,5 @@ services:
       retries: 5
       start_period: 30s
     restart: unless-stopped
+    env_file:
+      - .env
