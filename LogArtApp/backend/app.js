@@ -28,5 +28,14 @@ app.use('/api/v1/objects', objectRoutes);
 app.use('/api/v1/comments', commentRoutes);
 app.use('/api/v1/disciplines', disciplineRoutes);
 
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+app.use(express.static(path.join(__dirname, 'public')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+
 
 module.exports = app;

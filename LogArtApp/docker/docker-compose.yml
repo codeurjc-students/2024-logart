@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_DATABASE: logartdb
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+
+  app:
+    image: davidmorenoo/logartapp:latest11
+    environment:
+      DB_CONNECTION_STRING: mongodb://mongo:27017/logartdb
+      ACCESS_TOKEN_SECRET: d18ffd46f4a3b9360f723b22a49648cd75e429655966acd1d6d313ec43a05cd738c8330385d6decb45e84f8afe89c9c45396b83c8df070ed981744bdfc6e2491
+      EMAIL_USER: logartappverify@gmail.com
+      EMAIL_PASS: "exib pxbx crys mzki"
+      BASE_URL: https://localhost:443
+      SSL_KEY_PATH: ssl/server.key
+      SSL_CERT_PATH: ssl/server.cert
+      NODE_ENV: production
+      PORT: 443
+    ports:
+      - "443:443"
+    healthcheck:
+      test: ["CMD", "curl", "-k", "https://localhost:443/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
