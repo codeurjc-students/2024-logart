@@ -542,3 +542,14 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 
 
 ![Imagen de db](DocFiles/images/phase2/databaseSquema.png)
+
+<br><br>
+
+# 📑 Diagrama de clases del backend
+<div style="text-align: justify"> Este diagrama muestra las clases de la aplicación y las relaciones entre ellas. (se han excluido clases como seeders o configuración de base de datos, .env, server, etc.)
+ </div>
+<br>
+
+
+![Imagen de clasesBackend](DocFiles/images/phase2/final.svg)
+
