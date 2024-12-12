@@ -553,3 +553,13 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 
 ![Imagen de clasesBackend](DocFiles/images/phase2/final.svg)
 
+<br><br>
+
+# 📝 Diagrama de clases y templates SPA 
+<div style="text-align: justify"> Este diagrama muestra las páginas y componentes de la aplicación, junto con archivos de contexto y utilidades. Tambien muestra las relaciones entre todos estos. (se han excluido cosas como tailwind, configuración de base de datos, .env, server, etc.)
+ </div>
+<br>
+
+
+![Imagen de clasesSPA](DocFiles/images/phase2/finalspa.svg)
+
