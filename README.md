@@ -350,7 +350,7 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 # **Fase 1**
 <br>
 
-# Capturas de pantalla de la aplicación
+# 📸 Capturas de pantalla de la aplicación
 
 ## Pantalla Hero (home)
 
@@ -522,3 +522,13 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 
 
 ![Imagen de error](DocFiles/images/phase2/404error.png)
+
+<br><br>
+
+# 🗺️ Diagrama de Navegación
+<div style="text-align: justify"> Este diagrama muestra cómo se navega entre las diferentes páginas de la aplicación.
+ </div>
+<br>
+
+
+![Imagen de wireframe](DocFiles/images/phase2/wireframe.png)
