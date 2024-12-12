@@ -460,7 +460,7 @@ describe('Pruebas de Comentarios', () => {
 
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty('error', true);
-      expect(response.body).toHaveProperty('message', 'Necesitas estar logueado para realizar esta acción');
+      expect(response.body).toHaveProperty('message', 'Necesitas estar logueado y un token válido para realizar esta acción');
 
       const commentInDb = await Comment.findById(comment._id);
       expect(commentInDb.content).toBe('Comentario original sin autenticación');
@@ -674,7 +674,7 @@ describe('Pruebas de Comentarios', () => {
 
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty('error', true);
-      expect(response.body).toHaveProperty('message', 'Necesitas estar logueado para realizar esta acción');
+      expect(response.body).toHaveProperty('message', 'Necesitas estar logueado y un token válido para realizar esta acción');
 
       const commentInDb = await Comment.findById(comment._id);
       expect(commentInDb).not.toBeNull();
@@ -914,7 +914,7 @@ describe('Pruebas de Comentarios', () => {
 
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty('error', true);
-      expect(response.body).toHaveProperty('message', 'Necesitas estar logueado para realizar esta acción');
+      expect(response.body).toHaveProperty('message', 'Necesitas estar logueado y un token válido para realizar esta acción');
     });
 
     it('debería fallar al obtener comentarios con un objectId inválido', async () => {
