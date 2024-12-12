@@ -563,7 +563,7 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 
 ![Imagen de clasesSPA](DocFiles/images/phase2/finalspa.svg)
 
-# Construcción de la imagen Docker
+# 🐋 Construcción de la imagen Docker
 
 ## Requisitos previos
 
@@ -609,7 +609,9 @@ docker push davidmorenoo/logartapp:latest17
 
 - [Repositorio de dockerhub](https://hub.docker.com/r/davidmorenoo/logartapp/tags)
 
-## Ejecución de la aplicación dockerizada
+<br><br>
+
+# 🐳 Ejecución de la aplicación dockerizada
 
 - Desde la misma carpeta docker, debemos tener un archivo docker-compose.yml
 ```
@@ -649,3 +651,10 @@ db.objects.find().pretty()
 docker compose down
 ```
 - Con esto, el contenedor se detendrá y se eliminará. Para volver a usar la aplicación, deberemos volver a ejecutar el comando `docker compose up`
+
+
+<br><br>
+
+# ▶️ Video de demostración
+
+[LogArt Demo ](https://youtu.be/jGPRqOFaC10)
