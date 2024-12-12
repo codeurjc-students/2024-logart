@@ -563,3 +563,89 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 
 ![Imagen de clasesSPA](DocFiles/images/phase2/finalspa.svg)
 
+# Construcción de la imagen Docker
+
+## Requisitos previos
+
+- Docker instalado ([Guía de instalación](https://docs.docker.com/get-docker/))
+- Docker Compose instalado ([Guía de instalación](https://docs.docker.com/compose/install/))
+- Tener cuenta en dockerhub y loguearse ([Guía](https://docs.docker.com/docker-hub/quickstart/))
+
+
+## Construcción de la imagen
+
+- Abrir el terminal y situarnos en la carpeta raiz del proyecto
+```
+\2024-logart>
+```
+- Navegar a la carpeta LogArtApp
+```
+cd .\LogArtApp\
+```
+- Ejecutar el comando para construir la imagen, con el tag (-t) y con su ubicación (-f)
+```
+docker build -t nombre_usuario/nombre_imagen:tag -f docker/Dockerfile .
+```
+- En este caso:
+```
+docker build -t davidmorenoo/logartapp:latest17 -f docker/Dockerfile .
+```
+
+## Subir la imagen a dockerhub
+
+- Abrir el terminal y situarnos en la carpeta docker
+```
+cd .\docker\
+```
+- Ejecutar el comando para subir la imagen a dockerhub
+```
+docker push nombre_usuario/nombre_imagen:tag
+```
+- En este caso:
+```
+docker push davidmorenoo/logartapp:latest17
+```
+## Enlace al repositorio de dockerhub
+
+- [Repositorio de dockerhub](https://hub.docker.com/r/davidmorenoo/logartapp/tags)
+
+## Ejecución de la aplicación dockerizada
+
+- Desde la misma carpeta docker, debemos tener un archivo docker-compose.yml
+```
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        11/12/2024     19:46             78 .dockerignore
+-a----        11/12/2024     20:14            527 .env
+-a----        11/12/2024     21:28            925 docker-compose.yml
+-a----        11/12/2024     19:21            785 Dockerfile
+```
+- Ejecutar el comando para levantar la aplicación
+```
+docker compose up
+```
+- Ahora, tenemos acceso a la aplicación desde el navegador dirigiendonos a https://localhost
+
+-Notas, al usar certificados SSL autofirmados, el navegador puede mostrar una advertencia de seguridad. Deberás clicar en "configuración avanzada" y en "Acceder a localhost (sitio no seguro)".
+
+## Probar la aplicación dockerizada
+
+- Después de haber realizado algún cambio en la aplicación (por ejemplo, crear un nuevo objeto), y con el contenedor todavía arrancado, abrimos el terminal y nos situamos en la misma carpeta docker, donde debemos ejecutar el comando
+```
+docker exec -it docker-mongo-1 mongosh --username davidmoreno --password hRcZqOOBm6ick63X --authenticationDatabase admin
+```
+- Ahora, podemos hacer consultas a la base de datos. Para ver el nuevo objeto, escribimos
+```
+use logartdb
+```
+```
+show collections
+```
+```
+db.objects.find().pretty()
+```
+- Una vez hayamos terminado de usar la aplicación, nos dirigimos a la carpeta docker y ejecutamos el comando
+```
+docker compose down
+```
+- Con esto, el contenedor se detendrá y se eliminará. Para volver a usar la aplicación, deberemos volver a ejecutar el comando `docker compose up`
