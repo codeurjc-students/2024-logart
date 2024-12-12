@@ -532,3 +532,13 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 
 
 ![Imagen de wireframe](DocFiles/images/phase2/wireframe.png)
+
+<br><br>
+
+# 🔭 Diagrama de Entidades de la Base de Datos
+<div style="text-align: justify"> Este diagrama muestra las entidades de la base de datos y las relaciones entre ellas.
+ </div>
+<br>
+
+
+![Imagen de db](DocFiles/images/phase2/databaseSquema.png)
