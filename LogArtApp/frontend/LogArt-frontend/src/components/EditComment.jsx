@@ -1,34 +1,33 @@
-import React, { useState } from 'react';
-import api from '../utilities/api';
+import React, { useState } from "react";
+import api from "../utilities/api";
 
 const EditComment = ({ comment, onCancel, onSave }) => {
   const [content, setContent] = useState(comment.content);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (!content.trim()) {
-      setError('El contenido del comentario no puede estar vacío.');
+      setError("El contenido del comentario no puede estar vacío.");
       return;
     }
-
     try {
       setLoading(true);
       await api.put(`/api/v1/comments/${comment._id}`, { content });
-      setSuccess('Comentario actualizado exitosamente.');
-      setError('');
+      setSuccess("Comentario actualizado exitosamente.");
+      setError("");
       onSave();
     } catch (err) {
-      console.error('Error updating comment:', err);
-      setError(err.response?.data?.message || 'Error al actualizar el comentario.');
-      setSuccess('');
+      console.error("Error updating comment:", err);
+      setError(
+        err.response?.data?.message || "Error al actualizar el comentario."
+      );
+      setSuccess("");
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <form onSubmit={handleUpdate} className="space-y-2">
       <textarea
@@ -42,17 +41,19 @@ const EditComment = ({ comment, onCancel, onSave }) => {
       {error && <div className="text-red-500">{error}</div>}
       {success && <div className="text-green-500">{success}</div>}
       <div className="flex space-x-2">
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           data-testid="edit-comment-button-save"
-          className={`bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors duration-300 ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={loading}
         >
-          {loading ? 'Guardando...' : 'Guardar'}
+          {loading ? "Guardando..." : "Guardar"}
         </button>
-        <button 
-          type="button" 
-          onClick={onCancel} 
+        <button
+          type="button"
+          onClick={onCancel}
           className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors duration-300"
         >
           Cancelar

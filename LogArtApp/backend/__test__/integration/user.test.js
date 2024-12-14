@@ -12,7 +12,6 @@ describe("Pruebas de Usuarios", () => {
   let adminToken;
   let userId;
   let adminId;
-
   beforeAll(async () => {
     const user = await User.create({
       firstName: "Usuario",
@@ -29,7 +28,6 @@ describe("Pruebas de Usuarios", () => {
       "password123"
     );
     userToken = userLogin.accessToken;
-
     const admin = await User.create({
       firstName: "Administrador",
       lastName: "Principal",
@@ -60,12 +58,10 @@ describe("Pruebas de Usuarios", () => {
           role: "user",
         });
       }
-
       const response = await request(app)
         .get("/api/v1/users")
         .set("Authorization", `Bearer ${adminToken}`)
         .query({ page: 2, limit: 5 });
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("users");
       expect(response.body.users.length).toBe(5);
@@ -76,7 +72,6 @@ describe("Pruebas de Usuarios", () => {
 
     it("debería retornar 401 si no está autenticado", async () => {
       const response = await request(app).get("/api/v1/users");
-
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
@@ -106,7 +101,6 @@ describe("Pruebas de Usuarios", () => {
       const response = await request(app)
         .get("/api/v1/users/profile")
         .set("Authorization", `Bearer ${accessToken}`);
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("user");
       expect(response.body.user.email).toBe("pepe3@gmail.com");
@@ -114,7 +108,6 @@ describe("Pruebas de Usuarios", () => {
 
     it("debería retornar 401 si no está autenticado", async () => {
       const response = await request(app).get("/api/v1/users/profile");
-
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
@@ -145,12 +138,10 @@ describe("Pruebas de Usuarios", () => {
         "pepe3@gmail.com",
         "hola123"
       );
-
       const response = await request(app)
         .put("/api/v1/users/profile")
         .set("Authorization", `Bearer ${accessToken}`)
         .send(updateData);
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("user");
       expect(response.body.user.firstName).toBe("UsuarioActualizado");
@@ -186,7 +177,6 @@ describe("Pruebas de Usuarios", () => {
           `El archivo de imagen no existe en la ruta: ${imagePath}`
         );
       }
-
       const response = await request(app)
         .put("/api/v1/users/profile")
         .set("Authorization", `Bearer ${accessToken}`)
@@ -195,7 +185,6 @@ describe("Pruebas de Usuarios", () => {
           "profileImage",
           path.join(__dirname, "imagesTest", "test-image.jpg")
         );
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("user");
       expect(response.body.user.firstName).toBe("UsuarioConImagen");
@@ -212,11 +201,9 @@ describe("Pruebas de Usuarios", () => {
       const updateData = {
         firstName: "SinAutenticacion",
       };
-
       const response = await request(app)
         .put("/api/v1/users/profile")
         .send(updateData);
-
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
@@ -228,7 +215,6 @@ describe("Pruebas de Usuarios", () => {
 
   describe("GET /api/v1/users/:userId", () => {
     let targetUserId;
-
     beforeEach(async () => {
       const targetUser = await User.create({
         firstName: "Target",
@@ -262,7 +248,6 @@ describe("Pruebas de Usuarios", () => {
       const response = await request(app)
         .get(`/api/v1/users/${userIddb}`)
         .set("Authorization", `Bearer ${accessToken}`);
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("user");
       expect(response.body.user.email).toBe("pepe3@gmail.com");
@@ -288,7 +273,6 @@ describe("Pruebas de Usuarios", () => {
       const response = await request(app)
         .get(`/api/v1/users/${targetUserId}`)
         .set("Authorization", `Bearer ${accessToken}`);
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("user");
       expect(response.body.user.email).toBe("target@example.com");
@@ -314,7 +298,6 @@ describe("Pruebas de Usuarios", () => {
       const response = await request(app)
         .get(`/api/v1/users/${targetUserId}`)
         .set("Authorization", `Bearer ${accessToken}`);
-
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty("message", "Unauthorized");
@@ -325,7 +308,6 @@ describe("Pruebas de Usuarios", () => {
       const response = await request(app)
         .get(`/api/v1/users/${nonExistentId}`)
         .set("Authorization", `Bearer ${adminToken}`);
-
       expect(response.statusCode).toBe(404);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty("message", "User not found");
@@ -351,7 +333,6 @@ describe("Pruebas de Usuarios", () => {
       const response = await request(app)
         .get(`/api/v1/users/${invalidId}`)
         .set("Authorization", `Bearer ${accessToken}`);
-
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty("message", "Invalid user ID format");
@@ -362,7 +343,6 @@ describe("Pruebas de Usuarios", () => {
     let targetUserId;
     let accessTokenAdmin;
     let hashedPassword;
-
     beforeEach(async () => {
       const targetUser = await User.create({
         firstName: "Delete",
@@ -395,13 +375,11 @@ describe("Pruebas de Usuarios", () => {
       const response = await request(app)
         .delete(`/api/v1/users/${targetUserId}`)
         .set("Authorization", `Bearer ${accessToken}`);
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty(
         "message",
         "User and Data deleted successfully"
       );
-
       const userInDb = await User.findById(targetUserId);
       expect(userInDb).toBeNull();
     });
@@ -425,7 +403,6 @@ describe("Pruebas de Usuarios", () => {
       const response = await request(app)
         .delete(`/api/v1/users/${targetUserId}`)
         .set("Authorization", `Bearer ${accessToken}`);
-
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty("message", "Access denied");
@@ -451,7 +428,6 @@ describe("Pruebas de Usuarios", () => {
       const response = await request(app)
         .delete(`/api/v1/users/${Id}`)
         .set("Authorization", `Bearer ${accessToken}`);
-
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
@@ -480,7 +456,6 @@ describe("Pruebas de Usuarios", () => {
       const response = await request(app)
         .delete(`/api/v1/users/${nonExistentId}`)
         .set("Authorization", `Bearer ${accessToken}`);
-
       expect(response.statusCode).toBe(404);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty("message", "User not found");
@@ -506,7 +481,6 @@ describe("Pruebas de Usuarios", () => {
       const response = await request(app)
         .delete(`/api/v1/users/${invalidId}`)
         .set("Authorization", `Bearer ${accessToken}`);
-
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty("message", "Invalid user ID format");

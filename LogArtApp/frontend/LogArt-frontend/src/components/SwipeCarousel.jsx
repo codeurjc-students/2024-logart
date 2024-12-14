@@ -1,33 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { motion, useMotionValue } from "framer-motion";
 
-const imgs = [
-  "/images/swipe1.jpg",
-  "/images/swipe2.jpg",
-  "/images/swipe3.jpg",
-  
-];
-
+const imgs = ["/images/swipe1.jpg", "/images/swipe2.jpg", "/images/swipe3.jpg"];
 const ONE_SECOND = 1000;
 const AUTO_DELAY = ONE_SECOND * 10;
 const DRAG_BUFFER = 50;
-
 const SPRING_OPTIONS = {
   type: "spring",
   mass: 3,
   stiffness: 400,
   damping: 50,
 };
-
 const SwipeCarousel = () => {
   const [imgIndex, setImgIndex] = useState(0);
-
   const dragX = useMotionValue(0);
-
   useEffect(() => {
     const intervalRef = setInterval(() => {
       const x = dragX.get();
-
       if (x === 0) {
         setImgIndex((pv) => {
           if (pv === imgs.length - 1) {
@@ -37,20 +26,16 @@ const SwipeCarousel = () => {
         });
       }
     }, AUTO_DELAY);
-
     return () => clearInterval(intervalRef);
   }, []);
-
   const onDragEnd = () => {
     const x = dragX.get();
-
     if (x <= -DRAG_BUFFER && imgIndex < imgs.length - 1) {
       setImgIndex((pv) => pv + 1);
     } else if (x >= DRAG_BUFFER && imgIndex > 0) {
       setImgIndex((pv) => pv - 1);
     }
   };
-
   return (
     <div className="relative overflow-hidden bg-neutral-950 py-8">
       <motion.div
@@ -71,13 +56,11 @@ const SwipeCarousel = () => {
       >
         <Images imgIndex={imgIndex} />
       </motion.div>
-
       <Dots imgIndex={imgIndex} setImgIndex={setImgIndex} />
       <GradientEdges />
     </div>
   );
 };
-
 const Images = ({ imgIndex }) => {
   return (
     <>
@@ -101,7 +84,6 @@ const Images = ({ imgIndex }) => {
     </>
   );
 };
-
 const Dots = ({ imgIndex, setImgIndex }) => {
   return (
     <div className="mt-4 flex w-full justify-center gap-2">
@@ -119,7 +101,6 @@ const Dots = ({ imgIndex, setImgIndex }) => {
     </div>
   );
 };
-
 const GradientEdges = () => {
   return (
     <>

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const DisciplineSchema = new Schema({
@@ -6,12 +6,12 @@ const DisciplineSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    enum: ['Libros', 'Canciones', 'Videojuegos']
+    enum: ["Libros", "Canciones", "Videojuegos"],
   },
   description: {
     type: String,
-    default: ''
+    default: "",
   },
-  });
+});
 
-  module.exports = mongoose.model('Discipline', DisciplineSchema);
+module.exports = mongoose.model("Discipline", DisciplineSchema);

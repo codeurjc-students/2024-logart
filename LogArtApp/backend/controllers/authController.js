@@ -1,6 +1,5 @@
 const authService = require("../services/authService");
 
-
 /**
  * @swagger
  * tags:
@@ -37,9 +36,7 @@ const authService = require("../services/authService");
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const { accessToken, user } = await authService.login(email, password);
-
     return res
       .status(200)
       .json({ accessToken, user, message: "Login successful" });
@@ -92,9 +89,7 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   try {
     const registrationData = req.body;
-
     const { user, message } = await authService.register(registrationData);
-
     return res
       .status(201)
       .location(`/api/v1/users/${user._id}`)
@@ -112,13 +107,10 @@ const register = async (req, res) => {
   }
 };
 
-
 const verifyUser = async (req, res) => {
   try {
     const { token } = req.params;
-
     const result = await authService.verifyUser(token);
-
     return res.status(200).json(result);
   } catch (error) {
     console.error("Error en verifyUser:", error);
@@ -160,9 +152,7 @@ const logout = async (req, res) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
     const userId = req.user.userId;
-
     const result = await authService.logout(token, userId);
-
     return res.status(200).json(result);
   } catch (error) {
     console.error("Error en logout:", error);

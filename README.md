@@ -1,16 +1,26 @@
 # Aplicación: LogArt
+
 Alumno: David Moreno Martín
 
 Tutor: Micael Gallego Carrillo
 
 # 🛠️ Herramientas
 
-- [Github Projects](https://github.com/users/DavidMorenoo/projects/1/views/1)
-- [Primera entrada del Blog](https://medium.com/@davidmorenom17/sentando-las-bases-primera-release-da9ede55ca3b)
+- [Github Projects](https://github.com/orgs/codeurjc-students/projects/12)
+- [Github Pages Documentación API](https://codeurjc-students.github.io/2024-logart/)
+- [Postman Documentación API ](https://documenter.getpostman.com/view/40050684/2sAYHwH3u8#16fc5064-f928-4384-bf5f-5e6b81922e60)
+- [Video LogArt Demo ](https://youtu.be/jGPRqOFaC10)
 - [Figma](https://www.figma.com/design/rCnGcWEIXcScpNjtIBcZKp/wireFrame?node-id=1-2&t=VRMJLtGbOjGuZY8N-1)
-<br><br>
+- [Blog LogArt: Un giro radical hacia el MERN Stack](https://medium.com/@davidmorenom17/logart-un-giro-radical-hacia-el-mern-stack-060ebde31bc5)
+- [Blog LogArt: Construyendo una Aplicación Full-Stack MERN: Empezando con el Backend.](https://medium.com/@davidmorenom17/construyendo-una-aplicación-full-stack-mern-empezando-con-el-backend-da0e0a14fb8d)
+- [Blog LogArt: Construyendo una Aplicación Full-Stack MERN: Frontend.](https://medium.com/@davidmorenom17/construyendo-una-aplicación-full-stack-mern-frontend-de824052cd30)
+- [Blog LogArt: Testeo e2e en LogArt: Asegurando la Calidad con Jest, Supertest y Playwright.](https://medium.com/@davidmorenom17/testeo-e2e-en-logart-asegurando-la-calidad-con-jest-supertest-y-playwright-cde6b2ff2d59)
+- [Blog LogArt: Docker y Docker Compose en LogArt: Simplificando el Desarrollo y Despliegue](https://medium.com/@davidmorenom17/docker-y-docker-compose-en-logart-simplificando-el-desarrollo-y-despliegue-577e25f77956)
+
+  <br><br>
 
 # **Fase 0**
+
 # ❓ Palabras clave
 
 <div style="text-align: justify">
@@ -46,7 +56,7 @@ Tutor: Micael Gallego Carrillo
 Las entidades son **Usuario**, **Disciplina**, **Objetos** y **Comentarios**.
 <br>
 
- Están relacionadas de la siguiente forma: Un **Usuario** escoge una **Disciplina**, y crea un **Objeto** dentro de ella. A su vez el **Usuario** puede crear **Comentarios** dentro de los **Objetos** creados. </div>
+Están relacionadas de la siguiente forma: Un **Usuario** escoge una **Disciplina**, y crea un **Objeto** dentro de ella. A su vez el **Usuario** puede crear **Comentarios** dentro de los **Objetos** creados. </div>
 <br><br>
 
 # 🔧 Funcionalidades y aspectos principales de la aplicación
@@ -60,13 +70,14 @@ Las entidades son **Usuario**, **Disciplina**, **Objetos** y **Comentarios**.
    - Registro de usuarios con verificación de email.
    - Login/logout seguro.
    - Diferentes roles: no registrado, registrado y administrador.
+
 2. Gestión de objetos y disciplinas:
 
    - Crear, editar y eliminar objetos dentro de las disciplinas (Libros, Canciones, videojuegos)
    - Filtrar y buscar objetos por nombre.
    - Subida de imágenes relacionadas con los objetos.
    - Mostrar la galería de objetos por disciplina.
-   
+
 3. Comentarios:
    - Permitir a los usuarios registrados crear, editar y eliminar comentarios sobre sus objetos.
    - Visualización de comentarios para cada objeto de forma correcta, dentro del propio objeto.
@@ -74,26 +85,27 @@ Las entidades son **Usuario**, **Disciplina**, **Objetos** y **Comentarios**.
 4. Perfiles de usuarios:
    - Creación y edición del perfil, incluyendo la subida de una foto de perfil.
 
-
 ### **Funcionalidades avanzadas**:
 
 1. Autenticación y autorización de usuarios:
 
    - Recuperación de contraseña a través de email.
+
 2. Gestión de objetos y disciplinas:
 
    - Compartir objetos con otros usuarios y que estos puedan verlos aún sin estar logeados.
    - Sistema de favoritos o “me gusta” para poder filtrarlos de esa manera.
+
 3. Dashboard de administrador:
 
    - Creación de un panel de control donde el administrador puede visualizar diferentes gráficos y datos sobre el desempeño de la aplicación.
    - Moderación de objetos por parte de administradores, en el dashboard, dispondrán de una pestaña para ver todos los objetos de la aplicación.
+
 4. Gestión de datos:
 
    - Algoritmo de análisis de crecimiento, que muestre el aumento o disminución porcentual en un periodo de tiempo.
-<br>
-<br>
-
+     <br>
+     <br>
 
 ### ⚠️ La lista de funcionalidades está abierta a ser ampliada si dichas funcionalidades favorecen la efectividad y comodidad de la web para los usuarios. ⚠️
 
@@ -107,24 +119,21 @@ Las entidades son **Usuario**, **Disciplina**, **Objetos** y **Comentarios**.
 
 **Usuario No registrado**: Podrá ver los objetos de la galería de un usuario, siempre y cuando esa persona haya decidido compartir dicho objeto. No podrá crear ni editar objetos dentro de ninguna galería.
 
-**Usuario registrado**: Podrá ver los objetos de la galería de otro usuario, siempre y cuando esa persona haya decidió compartir dicho objeto. Además, podrá crear nuevos objetos en cada galería y editarlos/eliminarlos a su gusto. 
+**Usuario registrado**: Podrá ver los objetos de la galería de otro usuario, siempre y cuando esa persona haya decidió compartir dicho objeto. Además, podrá crear nuevos objetos en cada galería y editarlos/eliminarlos a su gusto.
 
 Si los objetos son suyos, dentro podrá añadir/editar/eliminar comentarios sobre su experiencia, y dependiendo del tipo de galería en la que esté el objeto, podrá también añadir una imagen de un mapa (videojuegos) o los autores (libros y Canciones) de dicho objeto.
 
-**Usuario administrador**: En el caso del administrador, podrá ver las galerías y los objetos de todos los usuarios registrados en la aplicación, hayan decidido compartirlos o no. Además de esto, también podrá eliminar los objetos que considere que no son apropiados. 
+**Usuario administrador**: En el caso del administrador, podrá ver las galerías y los objetos de todos los usuarios registrados en la aplicación, hayan decidido compartirlos o no. Además de esto, también podrá eliminar los objetos que considere que no son apropiados.
 
 De forma similar, también podrá eliminar los comentarios que existan dentro de cada objeto. Por último el administrador dispondrá de una página especial, en la que podrá ver una serie de estadísticas y gráficos relacionados con el funcionamiento de la aplicación y la creación de objetos/comentarios.
-
-
-
 
  </div>
 
 # 🔐 Permisos de usuario
+
 <div style="text-align: justify">
 
 Relacionado con lo comentado en el punto anterior, los permisos de los usuarios varían dependiendo del tipo de usuario:
-
 
 **Usuario anónimo**: No tiene ningún tipo de permiso/responsabilidad, no es dueño de ningún dato/entidad, solo puede ver los objetos de las galerías de ciertos usuarios si ellos así lo desean.
 
@@ -132,9 +141,7 @@ Relacionado con lo comentado en el punto anterior, los permisos de los usuarios 
 
 **Usuario administrador**: Tiene todos los permisos posibles, incluyendo la eliminación de objetos/comentarios de cualquier usuario que no sea administrador, y la posibilidad de entrar a objetos de galerías que los usuarios no hayan decidido compartir. Será dueño de las entidades Objeto y Comentarios, sin importar quien las haya creado
 
-
  </div>
-
 
 # 🖼️ Imágenes
 
@@ -142,11 +149,9 @@ Relacionado con lo comentado en el punto anterior, los permisos de los usuarios 
 
 La web permitirá la subida de imágenes en varios sentidos, el primero de ellos a la hora de crear/modificar el perfil, donde podrás añadir una foto de tu gusto. Luego, cuando creas un nuevo objeto, podrás añadir la imagen que mejor represente ese objeto según tu opinión.
 
- Por último, también podrás añadir una imagen dentro de los objetos de la galería “Videojuegos” siendo esta imagen el mapa del juego.
-
+Por último, también podrás añadir una imagen dentro de los objetos de la galería “Videojuegos” siendo esta imagen el mapa del juego.
 
 Por lo tanto, las entidades asociadas con imágenes son: **Usuario** (foto de perfil) y **Objeto** (imagen de objeto, y mapa si la disciplina es videojuego)
-
 
  </div>
 
@@ -155,10 +160,10 @@ Por lo tanto, las entidades asociadas con imágenes son: **Usuario** (foto de pe
 <div style="text-align: justify">
 
 En la pantalla de administrador se mostrarán 2 gráficos, ambos sobre una medida de tiempo (días, meses...)
- 
- El primero, sobre los objetos creados por parte de los usuarios, y el segundo sobre los comentarios creados dentro de los objetos. 
- 
- Estos gráficos serán de barra en principio, pudiendo cambiar el estilo en un futuro si el hacerlo refleja mejor los datos.
+
+El primero, sobre los objetos creados por parte de los usuarios, y el segundo sobre los comentarios creados dentro de los objetos.
+
+Estos gráficos serán de barra en principio, pudiendo cambiar el estilo en un futuro si el hacerlo refleja mejor los datos.
 
 </div>
 
@@ -174,21 +179,17 @@ Como tecnología complementaría, la web empleará un método de verificación d
 
 <div style="text-align: justify">
 
-En la pestaña de administrador, se mostrarán el número de objetos y comentarios creados por unidad de tiempo, junto a sus respectivos gráficos. 
+En la pestaña de administrador, se mostrarán el número de objetos y comentarios creados por unidad de tiempo, junto a sus respectivos gráficos.
 
 El algoritmo/consulta avanzada consistirá en averiguar (y mostrar en la pantalla) el aumento/disminución en porcentaje de estos.
 
- Por ejemplo -> Objetos totales: 1.239, +20.4% con respecto al mes pasado.
+Por ejemplo -> Objetos totales: 1.239, +20.4% con respecto al mes pasado.
 (Reflejado en el wireframe para entenderlo mejor)
-
 
  </div>
 <br><br><br>
 
 ---
-
-
-
 
 # Wireframe pantallas de la aplicación
 
@@ -205,8 +206,7 @@ ponerlos públicos). Para ello, pulsaremos en el botón del menú arriba a la de
 por username.
 <br><br>
 
-![Imagen de pantalla de inicio](DocFiles/images/phase1/unregisteredHome.png) 
-
+![Imagen de pantalla de inicio](DocFiles/images/phase1/unregisteredHome.png)
 
 Al bajar un poco, tienes el carrusel, donde se muestran varios ejemplos en pequeño, y siguiendo el estilo del disco de vinilo, es un carrusel infinito donde se van repitiendo las imágenes.
 <br><br>
@@ -224,10 +224,6 @@ Por último, abajo del todo tenemos la última sección de la página principal 
 
 </div>
 
-
-
-
-
 ## Pantalla de Registro
 
 <div style="text-align: justify"> Se accede pulsando el botón en la pantalla de inicio
@@ -236,7 +232,6 @@ Aquí podremos registrarnos, para así usar la aplicación en su totalidad, crea
 <br><br>
 Para registrarse necesitas un username, un email válido, y una contraseña. Es importante que el email sea correcto y verificable, ya que necesitarás superar una comprobación adicional vía mail para poder completar el registro. </div>
 <br>
-
 
 ![Imagen de registro](DocFiles/images/phase1/signUp.png)
 
@@ -249,7 +244,6 @@ Para logearse, será necesario introducir el username y la contraseña de tu usu
 Es importante que el email esté validado antes de hacer el login, de lo contrario no podremos acceder a nuestra cuenta. </div>
 <br>
 
-
 ![Imagen de login](DocFiles/images/phase1/login.png)
 
 ## Pantalla de La Biblioteca
@@ -260,7 +254,6 @@ Esta será la única vez que se verá la pantalla (por sesión), ya que después
 
 </div>
 <br>
-
 
 ![Imagen de la biblioteca](DocFiles/images/phase1/library0.png)
 ![Imagen de la biblioteca](DocFiles/images/phase1/libraryGames.png)
@@ -276,7 +269,6 @@ Al lado de ese botón, habrá otro para añadir nuevos objetos a la galería.
 En cada uno de estos objetos aparecerá un nombre, una foto, un corazón para añadirlo a favoritos, una papelera para eliminar el objeto, y una opción para compartir el objeto con el resto de personas (usuarios y no usuarios de la aplicación) </div>
 <br>
 
-
 ![Imagen de la galeria Juegos](DocFiles/images/phase1/galleryGames.png)
 ![Imagen de la galeria Libros](DocFiles/images/phase1/galleryBooks.png)
 ![Imagen de la galeria Canciones](DocFiles/images/phase1/galleryMusic.png)
@@ -290,7 +282,6 @@ Además podrás publicar comentarios sobre tu experiencia con ese objeto.
 Por último, también podrás editarlo, tanto el objeto en sí, (foto y nombre), como los comentarios/mapa/autores del objeto. </div>
 <br>
 
-
 ![Imagen de Objeto concreto juego](DocFiles/images/phase1/objectGame.png)
 ![Imagen de Objeto concreto libro](DocFiles/images/phase1/objectBook.png)
 ![Imagen de Objeto concreto Canciones](DocFiles/images/phase1/objectMusic.png)
@@ -303,7 +294,6 @@ Para hacerlo clicaremos en el menú desplegable del header e iremos a perfil.
  </div>
 <br>
 
-
 ![Imagen de perfil](DocFiles/images/phase1/profile.png)
 
 ## Pantalla de Admin Dashboard
@@ -313,7 +303,6 @@ Para hacerlo clicaremos en el menú desplegable del header e iremos a perfil.
 Aquí se reflejarán una serie de estadísticas y gráficos ya comentados en la parte de "Gráficos" y "Algoritmo o consulta avanzada"
  </div>
 <br>
-
 
 ![Imagen de dashboard](DocFiles/images/phase1/adminDashboard.png)
 
@@ -325,7 +314,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
  </div>
 <br>
 
-
 ![Imagen de contacto](DocFiles/images/phase1/contactUs.png)
 
 ## Pantalla de Error 404
@@ -334,7 +322,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
  </div>
 <br>
 
-
 ![Imagen de error](DocFiles/images/phase1/error404.png)
 
 <br>
@@ -342,12 +329,12 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 
 # Wireframe de navegación de la aplicación
 
-
 ![Imagen de Wireframe de navegación](DocFiles/images/phase1/navWireframe.png)
 
 <br><br><br><br>
 
 # **Fase 1**
+
 <br>
 
 # 📸 Capturas de pantalla de la aplicación
@@ -358,7 +345,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
  </div>
 <br>
 
-
 ![Imagen de hero1](DocFiles/images/phase2/hero1home.png)
 
 ## Pantalla Hero (FAQ)
@@ -366,7 +352,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 <div style="text-align: justify"> Si bajamos, nos encontramos con la sección de preguntas comunes
  </div>
 <br>
-
 
 ![Imagen de faq](DocFiles/images/phase2/hero2faq.png)
 
@@ -376,7 +361,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
  </div>
 <br>
 
-
 ![Imagen de carrusel](DocFiles/images/phase2/hero3infcarousel.png)
 
 ## Pantalla Hero (slider)
@@ -384,7 +368,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 <div style="text-align: justify"> Por último tenemos un slider de imágenes que representan las disciplinas de la app
  </div>
 <br>
-
 
 ![Imagen de slider](DocFiles/images/phase2/hero4imgslider.png)
 
@@ -394,7 +377,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
  </div>
 <br>
 
-
 ![Imagen de registro](DocFiles/images/phase2/register.png)
 
 ## Pantalla de Login
@@ -402,7 +384,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 <div style="text-align: justify"> Si en cualquier momento clicamos en iniciar sesión, o nos registramos, llegaremos a esta pantalla
  </div>
 <br>
-
 
 ![Imagen de login](DocFiles/images/phase2/login.png)
 
@@ -412,7 +393,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
  </div>
 <br>
 
-
 ![Imagen de galería 1](DocFiles/images/phase2/gallery1.png)
 
 ## Pantalla de Galería (continuación)
@@ -420,7 +400,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 <div style="text-align: justify"> En la parte de arriba podemos ver una opción para filtrar por nombre, y abajo la paginación
  </div>
 <br>
-
 
 ![Imagen de galería 2](DocFiles/images/phase2/gallery2.png)
 
@@ -430,7 +409,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
  </div>
 <br>
 
-
 ![Imagen de selector de disciplina](DocFiles/images/phase2/disciplineSelector.png)
 
 ## Pantalla de Crear objeto
@@ -438,7 +416,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 <div style="text-align: justify"> Si clicamos en el botón de crear objeto, nos saldrá el modal de creación, donde introducir los datos
  </div>
 <br>
-
 
 ![Imagen de crearObjeto](DocFiles/images/phase2/createObject.png)
 
@@ -448,7 +425,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
  </div>
 <br>
 
-
 ![Imagen de editarObject](DocFiles/images/phase2/updateObject.png)
 
 ## Pantalla de detalles del objeto
@@ -456,7 +432,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 <div style="text-align: justify"> Si clicamos en la tarjeta de un objeto, o su nombre, llegaremos a la pantalla de detalles
  </div>
 <br>
-
 
 ![Imagen de detalles1](DocFiles/images/phase2/objectDetail1.png)
 
@@ -466,7 +441,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
  </div>
 <br>
 
-
 ![Imagen de detalles2](DocFiles/images/phase2/objectDetail2.png)
 
 ## Pantalla de editar comentario
@@ -474,7 +448,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 <div style="text-align: justify"> Si clicamos en el botón de editar, podremos modificar nuestro comentario
  </div>
 <br>
-
 
 ![Imagen de editar comentario](DocFiles/images/phase2/editComment.png)
 
@@ -484,7 +457,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
  </div>
 <br>
 
-
 ![Imagen de perfil1](DocFiles/images/phase2/profile1.png)
 
 ## Pantalla de perfil (continuación)
@@ -492,7 +464,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 <div style="text-align: justify"> Como se puede ver, podemos editar cualquier valor menos la contraseña
  </div>
 <br>
-
 
 ![Imagen de perfil2](DocFiles/images/phase2/profile2.png)
 
@@ -502,7 +473,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
  </div>
 <br>
 
-
 ![Imagen de detalles admin](DocFiles/images/phase2/objectDetailAdminView1.png)
 
 ## Pantalla de detalles como admin (continuación)
@@ -510,7 +480,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 <div style="text-align: justify"> Como se puede ver, los comentarios de un administrador tendrán un color diferente para diferenciarlos
  </div>
 <br>
-
 
 ![Imagen de detalles admin2](DocFiles/images/phase2/objectDetailAdminView2.png)
 
@@ -520,46 +489,45 @@ Aquí podremos obtener más información sobre los propietarios de la web.
  </div>
 <br>
 
-
 ![Imagen de error](DocFiles/images/phase2/404error.png)
 
 <br><br>
 
 # 🗺️ Diagrama de Navegación
+
 <div style="text-align: justify"> Este diagrama muestra cómo se navega entre las diferentes páginas de la aplicación.
  </div>
 <br>
-
 
 ![Imagen de wireframe](DocFiles/images/phase2/wireframe.png)
 
 <br><br>
 
 # 🔭 Diagrama de Entidades de la Base de Datos
+
 <div style="text-align: justify"> Este diagrama muestra las entidades de la base de datos y las relaciones entre ellas.
  </div>
 <br>
-
 
 ![Imagen de db](DocFiles/images/phase2/databaseSquema.png)
 
 <br><br>
 
 # 📑 Diagrama de clases del backend
+
 <div style="text-align: justify"> Este diagrama muestra las clases de la aplicación y las relaciones entre ellas. (se han excluido clases como seeders o configuración de base de datos, .env, server, etc.)
  </div>
 <br>
-
 
 ![Imagen de clasesBackend](DocFiles/images/phase2/final.svg)
 
 <br><br>
 
-# 📝 Diagrama de clases y templates SPA 
+# 📝 Diagrama de clases y templates SPA
+
 <div style="text-align: justify"> Este diagrama muestra las páginas y componentes de la aplicación, junto con archivos de contexto y utilidades. Tambien muestra las relaciones entre todos estos. (se han excluido cosas como tailwind, configuración de base de datos, .env, server, etc.)
  </div>
 <br>
-
 
 ![Imagen de clasesSPA](DocFiles/images/phase2/finalspa.svg)
 
@@ -571,22 +539,28 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 - Docker Compose instalado ([Guía de instalación](https://docs.docker.com/compose/install/))
 - Tener cuenta en dockerhub y loguearse ([Guía](https://docs.docker.com/docker-hub/quickstart/))
 
-
 ## Construcción de la imagen
 
 - Abrir el terminal y situarnos en la carpeta raiz del proyecto
+
 ```
 \2024-logart>
 ```
+
 - Navegar a la carpeta LogArtApp
+
 ```
 cd .\LogArtApp\
 ```
+
 - Ejecutar el comando para construir la imagen, con el tag (-t) y con su ubicación (-f)
+
 ```
 docker build -t nombre_usuario/nombre_imagen:tag -f docker/Dockerfile .
 ```
+
 - En este caso:
+
 ```
 docker build -t davidmorenoo/logartapp:latest17 -f docker/Dockerfile .
 ```
@@ -594,17 +568,23 @@ docker build -t davidmorenoo/logartapp:latest17 -f docker/Dockerfile .
 ## Subir la imagen a dockerhub
 
 - Abrir el terminal y situarnos en la carpeta docker
+
 ```
 cd .\docker\
 ```
+
 - Ejecutar el comando para subir la imagen a dockerhub
+
 ```
 docker push nombre_usuario/nombre_imagen:tag
 ```
+
 - En este caso:
+
 ```
 docker push davidmorenoo/logartapp:latest17
 ```
+
 ## Enlace al repositorio de dockerhub
 
 - [Repositorio de dockerhub](https://hub.docker.com/r/davidmorenoo/logartapp/tags)
@@ -614,6 +594,7 @@ docker push davidmorenoo/logartapp:latest17
 # 🐳 Ejecución de la aplicación dockerizada
 
 - Desde la misma carpeta docker, debemos tener un archivo docker-compose.yml
+
 ```
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
@@ -622,10 +603,13 @@ Mode                 LastWriteTime         Length Name
 -a----        11/12/2024     21:28            925 docker-compose.yml
 -a----        11/12/2024     19:21            785 Dockerfile
 ```
+
 - Ejecutar el comando para levantar la aplicación
+
 ```
 docker compose up
 ```
+
 - Ahora, tenemos acceso a la aplicación desde el navegador dirigiendonos a https://localhost
 
 -Notas, al usar certificados SSL autofirmados, el navegador puede mostrar una advertencia de seguridad. Deberás clicar en "configuración avanzada" y en "Acceder a localhost (sitio no seguro)".
@@ -633,25 +617,32 @@ docker compose up
 ## Probar la aplicación dockerizada
 
 - Después de haber realizado algún cambio en la aplicación (por ejemplo, crear un nuevo objeto), y con el contenedor todavía arrancado, abrimos el terminal y nos situamos en la misma carpeta docker, donde debemos ejecutar el comando
+
 ```
 docker exec -it docker-mongo-1 mongosh --username davidmoreno --password hRcZqOOBm6ick63X --authenticationDatabase admin
 ```
+
 - Ahora, podemos hacer consultas a la base de datos. Para ver el nuevo objeto, escribimos
+
 ```
 use logartdb
 ```
+
 ```
 show collections
 ```
+
 ```
 db.objects.find().pretty()
 ```
+
 - Una vez hayamos terminado de usar la aplicación, nos dirigimos a la carpeta docker y ejecutamos el comando
+
 ```
 docker compose down
 ```
-- Con esto, el contenedor se detendrá y se eliminará. Para volver a usar la aplicación, deberemos volver a ejecutar el comando `docker compose up`
 
+- Con esto, el contenedor se detendrá y se eliminará. Para volver a usar la aplicación, deberemos volver a ejecutar el comando `docker compose up`
 
 <br><br>
 

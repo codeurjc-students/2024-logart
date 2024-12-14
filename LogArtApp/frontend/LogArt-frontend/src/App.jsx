@@ -1,5 +1,10 @@
-import {BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import React from 'react'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import React from "react";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
@@ -12,12 +17,10 @@ import Hero from "./pages/Hero";
 import { ModalProvider } from "./context/ModalContext";
 import ErrorPage from "./components/ErrorPage";
 
-
 const App = () => {
   return (
     <ModalProvider>
-    <Router>
-      
+      <Router>
         <Header />
         <main className="overflow-hidden">
           <Routes>
@@ -25,31 +28,29 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route
-             path="/profile"
-             element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-             }
-             />
-             <Route
-             path="/disciplines"
-             element={
-              <ProtectedRoute>
-                <ObjectsByDiscipline />
-              </ProtectedRoute>
-             }
-             />
-             <Route path="/objects/:objectId" element={<ObjectDetails />} />
-             <Route path="/404-error" element={<ErrorPage />} />
-             <Route path="*" element={<Navigate to="/404-error" replace /> } />
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/disciplines"
+              element={
+                <ProtectedRoute>
+                  <ObjectsByDiscipline />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/objects/:objectId" element={<ObjectDetails />} />
+            <Route path="/404-error" element={<ErrorPage />} />
+            <Route path="*" element={<Navigate to="/404-error" replace />} />
           </Routes>
         </main>
-        {/* <Footer /> */}
-      
-    </Router>
+      </Router>
     </ModalProvider>
   );
-}
+};
 
-export default App
+export default App;

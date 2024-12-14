@@ -11,25 +11,19 @@ const Header = () => {
   const { currentModal } = useContext(ModalContext);
   const navigate = useNavigate();
   const location = useLocation();
-
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
   const isInAuthPage = ["/login", "/register"].includes(location.pathname);
   const isErrorPage = location.pathname === "/404-error";
-
   useEffect(() => {
     const handleScroll = () => {
       setHasScrolled(window.scrollY > 32);
     };
-
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
   const handleLogout = async () => {
     try {
       await logout();
@@ -38,15 +32,12 @@ const Header = () => {
       console.error("Error al cerrar sesión:", error);
     }
   };
-
   const closeMenu = () => {
     setIsOpen(false);
   };
-
   if (currentModal || isErrorPage) {
     return null;
   }
-
   return (
     <header
       className={clsx(
@@ -80,7 +71,6 @@ const Header = () => {
             <img src="/images/logonb.svg" width={100} height={55} alt="logo" />
           </LinkScroll>
         )}
-
         <div
           className={clsx(
             "w-full max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:w-full max-lg:bg-s2 max-lg:opacity-0",
@@ -106,7 +96,6 @@ const Header = () => {
                     />
                   </li>
                 )}
-
                 <li
                   className={clsx(
                     "nav-logo",
@@ -144,7 +133,6 @@ const Header = () => {
                     </LinkScroll>
                   )}
                 </li>
-
                 {isAuthenticated ? (
                   <li className="nav-li mt-4">
                     <NavItem
@@ -168,7 +156,6 @@ const Header = () => {
                     >
                       Cerrar sesión
                     </button>
-                    
                   </li>
                 ) : (
                   !isInAuthPage && (
@@ -190,7 +177,6 @@ const Header = () => {
                 )}
               </ul>
             </nav>
-
             <div className="lg:hidden block absolute top-1/2 left-0 w-[960px] h-[380px] translate-x-[-290px] -translate-y-1/2 rotate-90">
               <img
                 src="/images/bg-outlines.svg"
@@ -209,7 +195,6 @@ const Header = () => {
             </div>
           </div>
         </div>
-
         {!isInAuthPage && (
           <button
             className="lg:hidden z-2 size-10 border-2 border-s4/25 rounded-full flex justify-center items-center"

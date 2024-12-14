@@ -20,16 +20,12 @@ describe("Pruebas de Disciplinas", () => {
           description: "Disciplina relacionada con videojuegos",
         },
       ];
-
       await Discipline.insertMany(disciplinesData);
-
       const response = await request(app).get("/api/v1/disciplines/").send();
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("disciplines");
       expect(Array.isArray(response.body.disciplines)).toBe(true);
       expect(response.body.disciplines.length).toBe(3);
-
       const returnedNames = response.body.disciplines.map((d) => d.name).sort();
       const expectedNames = disciplinesData.map((d) => d.name).sort();
       expect(returnedNames).toEqual(expectedNames);
@@ -37,7 +33,6 @@ describe("Pruebas de Disciplinas", () => {
 
     it("debería obtener un array vacío si no hay disciplinas", async () => {
       const response = await request(app).get("/api/v1/disciplines/").send();
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("disciplines");
       expect(Array.isArray(response.body.disciplines)).toBe(true);
@@ -49,16 +44,13 @@ describe("Pruebas de Disciplinas", () => {
       Discipline.find = jest.fn().mockImplementation(() => {
         throw new Error("Error de base de datos");
       });
-
       const response = await request(app).get("/api/v1/disciplines/").send();
-
       expect(response.statusCode).toBe(500);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
         "message",
         "Error obteniendo disciplinas"
       );
-
       Discipline.find = originalFind;
     });
   });

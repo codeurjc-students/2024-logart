@@ -95,16 +95,13 @@ const findUserById = async (req, res) => {
   try {
     const targetUserId = req.params.userId;
     const requestingUserId = req.user.userId;
-
     const requestingUserProfile = await userService.getUserProfile(
       requestingUserId
     );
     const userRole = requestingUserProfile.user.role;
-
     if (targetUserId !== requestingUserId && userRole !== "admin") {
       return res.status(401).json({ error: true, message: "Unauthorized" });
     }
-
     const user = await userService.getUserById(targetUserId);
     return res.status(200).json({ user, message: "User found" });
   } catch (error) {
@@ -160,29 +157,22 @@ const deleteUser = async (req, res) => {
   try {
     const { userId } = req.params;
     const requestingUserId = req.user.userId;
-
     const requestingUserProfile = await userService.getUserProfile(
       requestingUserId
     );
     const userRole = requestingUserProfile.user.role;
-
     if (userRole !== "admin") {
-      return res
-        .status(403)
-        .json({
-          error: true,
-          message: "Forbidden: Only admin can delete users",
-        });
+      return res.status(403).json({
+        error: true,
+        message: "Forbidden: Only admin can delete users",
+      });
     }
-
     if (requestingUserId === userId) {
-      return res
-        .status(401)
-        .json({
-          error: true,
-          message:
-            "You cannot delete your own account, contact the system administrator",
-        });
+      return res.status(401).json({
+        error: true,
+        message:
+          "You cannot delete your own account, contact the system administrator",
+      });
     }
 
     const result = await userService.deleteUser(userId, requestingUserId);
@@ -301,7 +291,6 @@ const updateUserProfile = async (req, res) => {
     const userId = req.user.userId;
     const updateData = req.body;
     const file = req.file;
-
     const result = await userService.updateUserProfile(
       userId,
       updateData,

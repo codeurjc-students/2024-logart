@@ -5,16 +5,13 @@ import { useNavigate, Link } from "react-router-dom";
 const Register = () => {
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
-
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await register(
@@ -33,7 +30,6 @@ const Register = () => {
       setMessage("");
     }
   };
-
   return (
     <section>
       <div className="min-h-screen pt-24 flex flex-col items-center justify-start bg-gradient-to-r from-blue-950 via-blue-600 to-blue-900 opacity-90">
