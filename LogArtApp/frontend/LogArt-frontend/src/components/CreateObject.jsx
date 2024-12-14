@@ -1,79 +1,76 @@
-import React, { useState, useContext } from 'react';
-import api from '../utilities/api';
-import { ModalContext } from '../context/ModalContext';
+import React, { useState, useContext } from "react";
+import api from "../utilities/api";
+import { ModalContext } from "../context/ModalContext";
 
 const CreateObject = ({ disciplines, onObjectCreated }) => {
-  const { closeModal } = useContext(ModalContext); 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [disciplineName, setDisciplineName] = useState(disciplines.length > 0 ? disciplines[0].name : '');
+  const { closeModal } = useContext(ModalContext);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [disciplineName, setDisciplineName] = useState(
+    disciplines.length > 0 ? disciplines[0].name : ""
+  );
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
+  const [error, setError] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!name.trim()) {
-      setError('El nombre es obligatorio.');
+      setError("El nombre es obligatorio.");
       return;
     }
     if (!disciplineName.trim()) {
-      setError('La disciplina es obligatoria.');
+      setError("La disciplina es obligatoria.");
       return;
     }
     if (!image) {
-      setError('La imagen es obligatoria.');
+      setError("La imagen es obligatoria.");
       return;
     }
-
     setLoading(true);
-    setError('');
-
+    setError("");
     try {
       const formData = new FormData();
-      formData.append('name', name);
-      formData.append('description', description);
-      formData.append('disciplineName', disciplineName);
-      formData.append('imageUrl', image);
-
-      const response = await api.post('api/v1/objects/', formData, {
+      formData.append("name", name);
+      formData.append("description", description);
+      formData.append("disciplineName", disciplineName);
+      formData.append("imageUrl", image);
+      const response = await api.post("api/v1/objects/", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
-
-      setName('');
-      setDescription('');
-      setDisciplineName(disciplines.length > 0 ? disciplines[0].name : '');
+      setName("");
+      setDescription("");
+      setDisciplineName(disciplines.length > 0 ? disciplines[0].name : "");
       setImage(null);
-
-      closeModal(); 
-
+      closeModal();
       onObjectCreated();
     } catch (err) {
-      console.error('Error al crear objeto:', err);
-      setError(err.response?.data?.message || 'Error al crear objeto.');
+      console.error("Error al crear objeto:", err);
+      setError(err.response?.data?.message || "Error al crear objeto.");
     } finally {
       setLoading(false);
     }
   };
-
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setImage(e.target.files[0]);
     }
   };
-
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
-        <h2 className="text-2xl font-bold mb-4 text-gray-700">Crear Nuevo Objeto</h2>
+        <h2 className="text-2xl font-bold mb-4 text-gray-700">
+          Crear Nuevo Objeto
+        </h2>
         {error && <div className="text-red-500 mb-4">{error}</div>}
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           {/* Campos del formulario */}
           <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-950 font-medium mb-2">
+            <label
+              htmlFor="name"
+              className="block text-gray-950 font-medium mb-2"
+            >
               Nombre:
             </label>
             <input
@@ -86,9 +83,11 @@ const CreateObject = ({ disciplines, onObjectCreated }) => {
               required
             />
           </div>
-
           <div className="mb-4">
-            <label htmlFor="description" className="block text-gray-950 font-medium mb-2">
+            <label
+              htmlFor="description"
+              className="block text-gray-950 font-medium mb-2"
+            >
               Descripción:
             </label>
             <textarea
@@ -100,9 +99,11 @@ const CreateObject = ({ disciplines, onObjectCreated }) => {
               rows="4"
             ></textarea>
           </div>
-
           <div className="mb-4">
-            <label htmlFor="discipline" className="block text-gray-950 font-medium mb-2">
+            <label
+              htmlFor="discipline"
+              className="block text-gray-950 font-medium mb-2"
+            >
               Disciplina:
             </label>
             <select
@@ -120,7 +121,6 @@ const CreateObject = ({ disciplines, onObjectCreated }) => {
               ))}
             </select>
           </div>
-
           <div className="mb-4">
             <label htmlFor="image" className="block text-gray-950 font-medium">
               Imagen:
@@ -135,11 +135,10 @@ const CreateObject = ({ disciplines, onObjectCreated }) => {
               required
             />
           </div>
-
           <div className="flex justify-end space-x-4">
             <button
               type="button"
-              onClick={closeModal} 
+              onClick={closeModal}
               className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
               disabled={loading}
             >
@@ -150,7 +149,7 @@ const CreateObject = ({ disciplines, onObjectCreated }) => {
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
               disabled={loading}
             >
-              {loading ? 'Creando...' : 'Crear'}
+              {loading ? "Creando..." : "Crear"}
             </button>
           </div>
         </form>

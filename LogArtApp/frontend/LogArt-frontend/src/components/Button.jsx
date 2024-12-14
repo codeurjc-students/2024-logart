@@ -15,7 +15,6 @@ const Button = ({
         <span className="absolute -left-[1px]">
           <Marker markerFill={markerFill} />
         </span>
-
         {icon && (
           <img
             src={icon}
@@ -23,12 +22,10 @@ const Button = ({
             className="size-10 mr-5 object-contain z-10"
           />
         )}
-
         <span className="relative z-2 font-poppins base-bold text-p1 ">
           {children}
         </span>
       </span>
-
       <span className="glow-before glow-after" />
     </>
   );
@@ -36,7 +33,7 @@ const Button = ({
     <a
       className={clsx(
         "relative p-0.5 g5 rounded-2xl shadow-500 group",
-        containerClassName,
+        containerClassName
       )}
       href={href}
     >
@@ -46,7 +43,7 @@ const Button = ({
     <button
       className={clsx(
         "relative p-0.5 g5 rounded-2xl shadow-500 group",
-        containerClassName,
+        containerClassName
       )}
       onClick={onClick}
     >

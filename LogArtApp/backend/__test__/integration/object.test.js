@@ -18,15 +18,12 @@ const createUser = async (overrides = {}) => {
     hastoken: false,
     role: "user",
   };
-
   const userData = { ...defaultData, ...overrides };
   const hashedPassword = await bcrypt.hash(userData.password, 10);
-
   const user = await User.create({
     ...userData,
     password: hashedPassword,
   });
-
   return user;
 };
 
@@ -34,20 +31,15 @@ const loginUser = async (email, password) => {
   const response = await request(app)
     .post("/api/v1/auth/")
     .send({ email, password });
-
   return response.body.accessToken;
 };
-
 const createDiscipline = async (overrides = {}) => {
   const defaultData = {
     name: "Libros",
     description: "Libros que has leído",
   };
-
   const disciplineData = { ...defaultData, ...overrides };
-
   const discipline = await Discipline.create(disciplineData);
-
   return discipline;
 };
 
@@ -65,18 +57,15 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const userToken = await loginUser(user.email, "password123");
-
       const discipline = await createDiscipline({
         name: "Libros",
         description: "Libros que has leído",
       });
-
       const newObjectData = {
         name: "Objeto1",
         description: "Descripción del objeto 1",
         disciplineName: "Libros",
       };
-
       const response = await request(app)
         .post("/api/v1/objects/")
         .set("Authorization", `Bearer ${userToken}`)
@@ -87,7 +76,6 @@ describe("Pruebas de Objetos", () => {
           "imageUrl",
           path.join(__dirname, "imagesTest", "test-image.jpg")
         );
-
       expect(response.statusCode).toBe(201);
       expect(response.body).toHaveProperty("object");
       expect(response.body.object.name).toBe(newObjectData.name);
@@ -102,23 +90,19 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const userToken = await loginUser(user.email, "password123");
-
       const discipline = await createDiscipline({
         name: "Canciones",
         description: "Canciones que has escuchado",
       });
-
       const newObjectData = {
         name: "Objeto2",
         description: "Descripción del objeto 2",
         disciplineName: "Canciones",
       };
-
       const response = await request(app)
         .post("/api/v1/objects/")
         .set("Authorization", `Bearer ${userToken}`)
         .send(newObjectData);
-
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty("message", "Image is required");
@@ -130,17 +114,14 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const userToken = await loginUser(user.email, "password123");
-
       const discipline = await createDiscipline({
         name: "Videojuegos",
         description: "Videojuegos que has jugado",
       });
-
       const newObjectData = {
         name: "Objeto3",
         description: "Descripción del objeto 3",
       };
-
       const response = await request(app)
         .post("/api/v1/objects/")
         .set("Authorization", `Bearer ${userToken}`)
@@ -150,7 +131,6 @@ describe("Pruebas de Objetos", () => {
           "imageUrl",
           path.join(__dirname, "imagesTest", "test-image.jpg")
         );
-
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body.message).toBe(
@@ -164,13 +144,11 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const userToken = await loginUser(user.email, "password123");
-
       const newObjectData = {
         name: "Objeto4",
         description: "Descripción del objeto 4",
         disciplineName: "Fotografía",
       };
-
       const response = await request(app)
         .post("/api/v1/objects/")
         .set("Authorization", `Bearer ${userToken}`)
@@ -181,7 +159,6 @@ describe("Pruebas de Objetos", () => {
           "imageUrl",
           path.join(__dirname, "imagesTest", "test-image.jpg")
         );
-
       expect(response.statusCode).toBe(404);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body.message).toBe("Discipline not found");
@@ -195,12 +172,10 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const userToken = await loginUser(user.email, "password123");
-
       const discipline = await createDiscipline({
         name: "Canciones",
         description: "Canciones que has escuchado",
       });
-
       const object = await ObjectModel.create({
         name: "Objeto6",
         description: "Descripción del objeto 6",
@@ -208,18 +183,15 @@ describe("Pruebas de Objetos", () => {
         createdBy: user._id,
         imageUrl: "/public/images/objects/test-image.jpg",
       });
-
       const updatedData = {
         name: "Objeto6 Actualizado",
         description: "Descripción actualizada del objeto 6",
         disciplineName: "Canciones",
       };
-
       const response = await request(app)
         .put(`/api/v1/objects/${object._id}`)
         .set("Authorization", `Bearer ${userToken}`)
         .send(updatedData);
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("object");
       expect(response.body.object.name).toBe(updatedData.name);
@@ -239,12 +211,10 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const userToken = await loginUser(user.email, "password123");
-
       const discipline = await createDiscipline({
         name: "Videojuegos",
         description: "Videojuegos que has jugado",
       });
-
       const object = await ObjectModel.create({
         name: "Objeto7",
         description: "Descripción del objeto 7",
@@ -252,13 +222,11 @@ describe("Pruebas de Objetos", () => {
         createdBy: user._id,
         imageUrl: "/public/images/objects/test-image.jpg",
       });
-
       const updatedData = {
         name: "Objeto7 Actualizado",
         description: "Descripción actualizada del objeto 7",
         disciplineName: "Videojuegos",
       };
-
       const response = await request(app)
         .put(`/api/v1/objects/${object._id}`)
         .set("Authorization", `Bearer ${userToken}`)
@@ -269,7 +237,6 @@ describe("Pruebas de Objetos", () => {
           "imageUrl",
           path.join(__dirname, "imagesTest", "test-image-2.jpg")
         );
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("object");
       expect(response.body.object.name).toBe(updatedData.name);
@@ -288,7 +255,6 @@ describe("Pruebas de Objetos", () => {
         name: "Libros",
         description: "Libros que has leído",
       });
-
       const object = await ObjectModel.create({
         name: "Objeto8",
         description: "Descripción del objeto 8",
@@ -296,17 +262,14 @@ describe("Pruebas de Objetos", () => {
         createdBy: new mongoose.Types.ObjectId(),
         imageUrl: "/public/images/objects/test-image.jpg",
       });
-
       const updatedData = {
         name: "Objeto8 Actualizado",
         description: "Descripción actualizada del objeto 8",
         disciplineName: "Libros",
       };
-
       const response = await request(app)
         .put(`/api/v1/objects/${object._id}`)
         .send(updatedData);
-
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
@@ -321,19 +284,16 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const userToken = await loginUser(user.email, "password123");
-
       const invalidId = "12345";
       const updatedData = {
         name: "Objeto9 Actualizado",
         description: "Descripción actualizada del objeto 9",
         disciplineName: "Libros",
       };
-
       const response = await request(app)
         .put(`/api/v1/objects/${invalidId}`)
         .set("Authorization", `Bearer ${userToken}`)
         .send(updatedData);
-
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
@@ -348,19 +308,16 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const userToken = await loginUser(user.email, "password123");
-
       const nonExistentId = new mongoose.Types.ObjectId();
       const updatedData = {
         name: "Objeto10 Actualizado",
         description: "Descripción actualizada del objeto 10",
         disciplineName: "Libros",
       };
-
       const response = await request(app)
         .put(`/api/v1/objects/${nonExistentId}`)
         .set("Authorization", `Bearer ${userToken}`)
         .send(updatedData);
-
       expect(response.statusCode).toBe(404);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty("message", "Object not found");
@@ -372,18 +329,15 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const ownerToken = await loginUser(ownerUser.email, "password123");
-
       const anotherUser = await createUser({
         email: "another@example.com",
         password: "password123",
       });
       const anotherToken = await loginUser(anotherUser.email, "password123");
-
       const discipline = await createDiscipline({
         name: "Canciones",
         description: "Canciones que has escuchado",
       });
-
       const object = await ObjectModel.create({
         name: "Objeto11",
         description: "Descripción del objeto 11",
@@ -391,18 +345,15 @@ describe("Pruebas de Objetos", () => {
         createdBy: ownerUser._id,
         imageUrl: "/public/images/objects/test-image.jpg",
       });
-
       const updatedData = {
         name: "Objeto11 Actualizado",
         description: "Descripción actualizada del objeto 11",
         disciplineName: "Canciones",
       };
-
       const response = await request(app)
         .put(`/api/v1/objects/${object._id}`)
         .set("Authorization", `Bearer ${anotherToken}`)
         .send(updatedData);
-
       expect(response.statusCode).toBe(403);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
@@ -420,12 +371,10 @@ describe("Pruebas de Objetos", () => {
         role: "admin",
       });
       const adminToken = await loginUser(adminUser.email, "adminpass123");
-
       const discipline = await createDiscipline({
         name: "Videojuegos",
         description: "Videojuegos que has jugado",
       });
-
       const object = await ObjectModel.create({
         name: "Objeto12",
         description: "Descripción del objeto 12",
@@ -433,11 +382,9 @@ describe("Pruebas de Objetos", () => {
         createdBy: new mongoose.Types.ObjectId(),
         imageUrl: "/public/images/objects/test-image.jpg",
       });
-
       const response = await request(app)
         .delete(`/api/v1/objects/${object._id}`)
         .set("Authorization", `Bearer ${adminToken}`);
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty(
         "message",
@@ -451,18 +398,15 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const ownerToken = await loginUser(ownerUser.email, "password123");
-
       const anotherUser = await createUser({
         email: "another2@example.com",
         password: "password123",
       });
       const anotherToken = await loginUser(anotherUser.email, "password123");
-
       const discipline = await createDiscipline({
         name: "Libros",
         description: "Libros que has leído",
       });
-
       const object = await ObjectModel.create({
         name: "Objeto13",
         description: "Descripción del objeto 13",
@@ -470,11 +414,9 @@ describe("Pruebas de Objetos", () => {
         createdBy: ownerUser._id,
         imageUrl: "/public/images/objects/test-image.jpg",
       });
-
       const response = await request(app)
         .delete(`/api/v1/objects/${object._id}`)
         .set("Authorization", `Bearer ${anotherToken}`);
-
       expect(response.statusCode).toBe(403);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
@@ -490,12 +432,10 @@ describe("Pruebas de Objetos", () => {
         role: "admin",
       });
       const adminToken = await loginUser(adminUser.email, "adminpass123");
-
       const nonExistentId = new mongoose.Types.ObjectId();
       const response = await request(app)
         .delete(`/api/v1/objects/${nonExistentId}`)
         .set("Authorization", `Bearer ${adminToken}`);
-
       expect(response.statusCode).toBe(404);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty("message", "Object not found");
@@ -508,12 +448,10 @@ describe("Pruebas de Objetos", () => {
         role: "admin",
       });
       const adminToken = await loginUser(adminUser.email, "adminpass123");
-
       const invalidId = "12345";
       const response = await request(app)
         .delete(`/api/v1/objects/${invalidId}`)
         .set("Authorization", `Bearer ${adminToken}`);
-
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
@@ -528,12 +466,10 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const ownerToken = await loginUser(ownerUser.email, "password123");
-
       const discipline = await createDiscipline({
         name: "Canciones",
         description: "Canciones que has escuchado",
       });
-
       const object = await ObjectModel.create({
         name: "Objeto14",
         description: "Descripción del objeto 14",
@@ -541,11 +477,9 @@ describe("Pruebas de Objetos", () => {
         createdBy: ownerUser._id,
         imageUrl: "/public/images/objects/test-image.jpg",
       });
-
       const response = await request(app)
         .delete(`/api/v1/objects/${object._id}`)
         .set("Authorization", `Bearer ${ownerToken}`);
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty(
         "message",
@@ -561,12 +495,10 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const userToken = await loginUser(user.email, "password123");
-
       const discipline = await createDiscipline({
         name: "Libros",
         description: "Libros que has leído",
       });
-
       for (let i = 1; i <= 5; i++) {
         await ObjectModel.create({
           name: `Objeto${i}`,
@@ -576,12 +508,10 @@ describe("Pruebas de Objetos", () => {
           imageUrl: `/public/images/objects/objeto${i}.jpg`,
         });
       }
-
       const response = await request(app)
         .get(`/api/v1/objects/${discipline.name}`)
         .set("Authorization", `Bearer ${userToken}`)
         .query({ page: 1, limit: 3 });
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("discipline");
       expect(response.body.discipline.name).toBe("Libros");
@@ -599,16 +529,13 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const userToken = await loginUser(user.email, "password123");
-
       const discipline = await createDiscipline({
         name: "Canciones",
         description: "Canciones que has escuchado",
       });
-
       const response = await request(app)
         .get(`/api/v1/objects/${discipline.name}`)
         .set("Authorization", `Bearer ${userToken}`);
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("discipline");
       expect(response.body.discipline.name).toBe("Canciones");
@@ -626,13 +553,10 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const userToken = await loginUser(user.email, "password123");
-
       const nonExistentDiscipline = "Cocina";
-
       const response = await request(app)
         .get(`/api/v1/objects/${nonExistentDiscipline}`)
         .set("Authorization", `Bearer ${userToken}`);
-
       expect(response.statusCode).toBe(404);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty("message", "Discipline not found");
@@ -649,12 +573,10 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const userToken = await loginUser(user.email, "password123");
-
       const discipline = await createDiscipline({
         name: "Canciones",
         description: "Canciones que has escuchado",
       });
-
       const object = await ObjectModel.create({
         name: "Objeto15",
         description: "Descripción del objeto 15",
@@ -662,11 +584,9 @@ describe("Pruebas de Objetos", () => {
         createdBy: user._id,
         imageUrl: "/public/images/objects/test-image.jpg",
       });
-
       const response = await request(app)
         .get(`/api/v1/objects/details/${object._id}`)
         .set("Authorization", `Bearer ${userToken}`);
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("object");
       expect(response.body.object.name).toBe("Objeto15");
@@ -684,12 +604,10 @@ describe("Pruebas de Objetos", () => {
         role: "admin",
       });
       const adminToken = await loginUser(adminUser.email, "adminpass123");
-
       const discipline = await createDiscipline({
         name: "Videojuegos",
         description: "Videojuegos que has jugado",
       });
-
       const ownerUser = await createUser({
         username: "owner",
         firstName: "Owner",
@@ -704,11 +622,9 @@ describe("Pruebas de Objetos", () => {
         createdBy: ownerUser._id,
         imageUrl: "/public/images/objects/test-image.jpg",
       });
-
       const response = await request(app)
         .get(`/api/v1/objects/details/${object._id}`)
         .set("Authorization", `Bearer ${adminToken}`);
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("object");
       expect(response.body.object.name).toBe("Objeto16");
@@ -725,18 +641,15 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const ownerToken = await loginUser(ownerUser.email, "password123");
-
       const anotherUser = await createUser({
         email: "another3@example.com",
         password: "password123",
       });
       const anotherToken = await loginUser(anotherUser.email, "password123");
-
       const discipline = await createDiscipline({
         name: "Libros",
         description: "Libros que has leído",
       });
-
       const object = await ObjectModel.create({
         name: "Objeto17",
         description: "Descripción del objeto 17",
@@ -744,11 +657,9 @@ describe("Pruebas de Objetos", () => {
         createdBy: ownerUser._id,
         imageUrl: "/public/images/objects/test-image.jpg",
       });
-
       const response = await request(app)
         .get(`/api/v1/objects/details/${object._id}`)
         .set("Authorization", `Bearer ${anotherToken}`);
-
       expect(response.statusCode).toBe(403);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
@@ -763,12 +674,10 @@ describe("Pruebas de Objetos", () => {
         password: "password123",
       });
       const userToken = await loginUser(user.email, "password123");
-
       const invalidId = "12345";
       const response = await request(app)
         .get(`/api/v1/objects/details/${invalidId}`)
         .set("Authorization", `Bearer ${userToken}`);
-
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty(
@@ -784,12 +693,10 @@ describe("Pruebas de Objetos", () => {
         role: "admin",
       });
       const adminToken = await loginUser(adminUser.email, "adminpass123");
-
       const nonExistentId = new mongoose.Types.ObjectId();
       const response = await request(app)
         .get(`/api/v1/objects/details/${nonExistentId}`)
         .set("Authorization", `Bearer ${adminToken}`);
-
       expect(response.statusCode).toBe(404);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty("message", "Object not found");

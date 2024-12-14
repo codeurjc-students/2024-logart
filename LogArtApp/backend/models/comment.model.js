@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const commentSchema = new Schema({
@@ -9,30 +9,30 @@ const commentSchema = new Schema({
   },
   object: {
     type: Schema.Types.ObjectId,
-    ref: 'Object',
-    required: true
+    ref: "Object",
+    required: true,
   },
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: "User",
+    required: true,
   },
   isEditedByAdmin: {
     type: Boolean,
-    default: false
+    default: false,
   },
   editedBy: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
-    default: null
+    ref: "User",
+    default: null,
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   updatedAt: {
     type: Date,
   },
 });
 
-module.exports = mongoose.model('Comment', commentSchema);
+module.exports = mongoose.model("Comment", commentSchema);

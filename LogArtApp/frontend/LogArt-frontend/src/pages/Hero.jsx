@@ -4,6 +4,7 @@ import Button from "../components/Button.jsx";
 import Faq from "../components/Faq.jsx";
 import Carousel from "../components/Carousel.jsx";
 import SwipeCarousel from "../components/SwipeCarousel.jsx";
+
 const Hero = () => {
   const images = [
     "/images/image1.png",
@@ -32,7 +33,6 @@ const Hero = () => {
               </div>
             </div>
           </div>
-
           <div className="absolute top-40 left-[calc(50%-740px)] w-[1230px] pointer-events-none hero-img_res ">
             <img
               src="/images/spidernobg.png"
@@ -42,11 +42,8 @@ const Hero = () => {
           </div>
         </div>
       </Element>
-
       <Faq />
-
       <Carousel images={images} width="250px" height="250px" />
-
       <Element name="Posibilidades" className="relative">
         <SwipeCarousel />
       </Element>

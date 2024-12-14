@@ -8,27 +8,22 @@ const isValidMongoId = require("../utils/validId");
 
 const createObject = async (data, userId, baseUrl) => {
   const { name, description, disciplineName } = data;
-
   if (!name || !disciplineName || name.trim() === "") {
     const error = new Error("Both name and discipline are required");
     error.statusCode = 400;
     throw error;
   }
-
   const discipline = await disciplineRepository.findByName(disciplineName);
   if (!discipline) {
     const error = new Error("Discipline not found");
     error.statusCode = 404;
     throw error;
   }
-
-
   if (!data.imageUrl) {
     const error = new Error("Image is required");
     error.statusCode = 400;
     throw error;
   }
-
   const newObject = await objectRepository.createObject({
     name,
     description,
@@ -36,32 +31,26 @@ const createObject = async (data, userId, baseUrl) => {
     createdBy: userId,
     imageUrl: data.imageUrl,
   });
-
   return newObject;
 };
-
 const updateObject = async (objectId, data, userId) => {
   const { name, description, disciplineName, imageUrl } = data;
-
   if (!name || !disciplineName || name.trim() === "") {
     const error = new Error("Both name and discipline are required");
     error.statusCode = 400;
     throw error;
   }
-
   if (!isValidMongoId(objectId)) {
     const error = new Error("Invalid object ID format");
     error.statusCode = 400;
     throw error;
   }
-
   const object = await objectRepository.findById(objectId);
   if (!object) {
     const error = new Error("Object not found");
     error.statusCode = 404;
     throw error;
   }
-
   if (object.createdBy.toString() !== userId) {
     const user = await User.findById(userId);
     if (user.role !== "admin") {
@@ -70,14 +59,12 @@ const updateObject = async (objectId, data, userId) => {
       throw error;
     }
   }
-
   const discipline = await disciplineRepository.findByName(disciplineName);
   if (!discipline) {
     const error = new Error("Discipline not found");
     error.statusCode = 404;
     throw error;
   }
-
   if (name !== object.name) {
     const existingObject = await objectRepository.findByName(name);
     if (existingObject) {
@@ -88,18 +75,16 @@ const updateObject = async (objectId, data, userId) => {
       throw error;
     }
   }
-
   const updateData = {
     name,
     description,
     discipline: discipline._id,
     updatedAt: Date.now(),
   };
-
   if (imageUrl) {
     if (
       object.imageUrl &&
-      object.imageUrl !== "public/images/objects/zelda.jpg" && 
+      object.imageUrl !== "public/images/objects/zelda.jpg" &&
       object.imageUrl !== "public/images/objects/bohemian_rhapsody.jpg" &&
       object.imageUrl !== "public/images/objects/cien_años.jpg"
     ) {
@@ -121,25 +106,21 @@ const updateObject = async (objectId, data, userId) => {
     }
     updateData.imageUrl = imageUrl;
   }
-
   const updatedObject = await objectRepository.updateById(objectId, updateData);
   return updatedObject;
 };
-
 const deleteObject = async (objectId, userId) => {
   if (!isValidMongoId(objectId)) {
     const error = new Error("Invalid object ID format");
     error.statusCode = 400;
     throw error;
   }
-
   const object = await objectRepository.findById(objectId);
   if (!object) {
     const error = new Error("Object not found");
     error.statusCode = 404;
     throw error;
   }
-
   if (object.createdBy.toString() !== userId) {
     const user = await User.findById(userId);
     if (user.role !== "admin") {
@@ -148,8 +129,12 @@ const deleteObject = async (objectId, userId) => {
       throw error;
     }
   }
-
-  if (object.imageUrl && object.imageUrl !== "public/images/objects/zelda.jpg" && object.imageUrl !== "public/images/objects/bohemian_rhapsody.jpg" && object.imageUrl !== "public/images/objects/cien_años.jpg") {
+  if (
+    object.imageUrl &&
+    object.imageUrl !== "public/images/objects/zelda.jpg" &&
+    object.imageUrl !== "public/images/objects/bohemian_rhapsody.jpg" &&
+    object.imageUrl !== "public/images/objects/cien_años.jpg"
+  ) {
     const imagePath = path.join(
       __dirname,
       "..",
@@ -166,25 +151,19 @@ const deleteObject = async (objectId, userId) => {
       }
     }
   }
-
   await commentRepository.deleteCommentsByObjectIds([objectId]);
-
   await objectRepository.deleteById(objectId);
-
   return { message: "Object deleted successfully" };
 };
-
 const getGalleryByDiscipline = async (disciplineName, query) => {
   const { userId, page = 1, limit = 3, objectName } = query;
   const skip = (page - 1) * limit;
-
   const discipline = await disciplineRepository.findByName(disciplineName);
   if (!discipline) {
     const error = new Error("Discipline not found");
     error.statusCode = 404;
     throw error;
   }
-
   const filter = { discipline: discipline._id };
   if (userId) {
     filter.createdBy = userId;
@@ -192,11 +171,8 @@ const getGalleryByDiscipline = async (disciplineName, query) => {
   if (objectName) {
     filter.name = { $regex: new RegExp(objectName, "i") };
   }
-
   const totalObjects = await objectRepository.countObjects(filter);
-
   const objects = await objectRepository.findObjects(filter, skip, limit);
-
   return {
     discipline: {
       id: discipline._id,
@@ -208,25 +184,21 @@ const getGalleryByDiscipline = async (disciplineName, query) => {
     totalPages: Math.ceil(totalObjects / limit),
   };
 };
-
 const getObjectById = async (objectId, userId) => {
   if (!isValidMongoId(objectId)) {
     const error = new Error("Invalid object ID format");
     error.statusCode = 400;
     throw error;
   }
-
   const object = await objectRepository
     .findById(objectId)
     .populate("discipline", "name")
     .populate("createdBy", "firstName lastName username");
-
   if (!object) {
     const error = new Error("Object not found");
     error.statusCode = 404;
     throw error;
   }
-
   if (object.createdBy._id.toString() !== userId) {
     const user = await User.findById(userId);
     const userRole = user.role;
@@ -236,7 +208,6 @@ const getObjectById = async (objectId, userId) => {
       throw error;
     }
   }
-
   return object;
 };
 

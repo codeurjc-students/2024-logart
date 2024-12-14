@@ -5,11 +5,9 @@ import { useNavigate, Link } from "react-router-dom";
 const Login = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await login(email, password);
@@ -19,7 +17,6 @@ const Login = () => {
       setError(result.message);
     }
   };
-
   return (
     <section>
       <div className=" min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-950 via-blue-600 to-blue-900 opacity-90">

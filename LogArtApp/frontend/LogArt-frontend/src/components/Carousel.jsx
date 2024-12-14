@@ -1,15 +1,14 @@
-import React from 'react';
+import React from "react";
 
 const Carousel = ({ images, width, height, reverse = false }) => {
   const quantity = images.length;
-
   return (
     <section
       className="relative overflow-hidden w-full mask-gradient group mt-10"
       style={{
-        '--width': width,
-        '--height': height,
-        '--quantity': quantity,
+        "--width": width,
+        "--height": height,
+        "--quantity": quantity,
         height: height,
       }}
     >
@@ -23,7 +22,7 @@ const Carousel = ({ images, width, height, reverse = false }) => {
           <div
             key={index}
             className={`absolute left-full ${
-              reverse ? 'animate-reversePlay' : 'animate-autoRun'
+              reverse ? "animate-reversePlay" : "animate-autoRun"
             } group-hover:animation-play-state-paused filter transition-all duration-500 group-hover:grayscale`}
             style={{
               width: width,

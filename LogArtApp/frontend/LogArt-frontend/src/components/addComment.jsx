@@ -1,35 +1,32 @@
-import React, { useState } from 'react';
-import api from '../utilities/api';
+import React, { useState } from "react";
+import api from "../utilities/api";
 
 const AddComment = ({ objectId, onCommentAdded }) => {
-  const [content, setContent] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [content, setContent] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!content.trim()) {
-      setError('El contenido del comentario no puede estar vacío.');
+      setError("El contenido del comentario no puede estar vacío.");
       return;
     }
-
     try {
       setLoading(true);
-      await api.post('/api/v1/comments', { content, objectId });
-      setContent('');
-      setError('');
-      setSuccess('Comentario añadido exitosamente.');
+      await api.post("/api/v1/comments", { content, objectId });
+      setContent("");
+      setError("");
+      setSuccess("Comentario añadido exitosamente.");
       if (onCommentAdded) onCommentAdded();
     } catch (err) {
-      console.error('Error añadiendo comentario:', err);
-      setError(err.response?.data?.message || 'Error añadiendo comentario.');
-      setSuccess('');
+      console.error("Error añadiendo comentario:", err);
+      setError(err.response?.data?.message || "Error añadiendo comentario.");
+      setSuccess("");
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="mb-6">
       <form onSubmit={handleSubmit} className="space-y-2">
@@ -44,13 +41,15 @@ const AddComment = ({ objectId, onCommentAdded }) => {
         ></textarea>
         {error && <div className="text-red-500">{error}</div>}
         {success && <div className="text-green-500">{success}</div>}
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           data-testid="create-comment-button"
-          className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300 w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300 w-full ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={loading}
         >
-          {loading ? 'Añadiendo...' : 'Añadir Comentario'}
+          {loading ? "Añadiendo..." : "Añadir Comentario"}
         </button>
       </form>
     </div>

@@ -1,5 +1,4 @@
-version: '3.8'
-
+version: "3.8"
 services:
   mongo:
     image: mongo:latest
@@ -8,7 +7,19 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     healthcheck:
-      test: ["CMD", "mongo", "--username", "${MONGO_INITDB_ROOT_USERNAME}", "--password", "${MONGO_INITDB_ROOT_PASSWORD}", "--authenticationDatabase", "admin", "--eval", "db.adminCommand('ping')"]
+      test:
+        [
+          "CMD",
+          "mongo",
+          "--username",
+          "${MONGO_INITDB_ROOT_USERNAME}",
+          "--password",
+          "${MONGO_INITDB_ROOT_PASSWORD}",
+          "--authenticationDatabase",
+          "admin",
+          "--eval",
+          "db.adminCommand('ping')",
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -16,7 +27,6 @@ services:
     ports:
       - "27017:27017"
     restart: unless-stopped
-
   app:
     image: davidmorenoo/logartapp:latest17
     ports:

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ObjectSchema = new Schema({
@@ -8,26 +8,26 @@ const ObjectSchema = new Schema({
   },
   description: {
     type: String,
-    default: ''
+    default: "",
   },
   imageUrl: {
     type: String,
-    default: ''
+    default: "",
   },
   discipline: {
     type: Schema.Types.ObjectId,
-    ref: 'Discipline',
-    required: true
+    ref: "Discipline",
+    required: true,
   },
   createdBy: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: "User",
+    required: true,
   },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model('Object', ObjectSchema);
+module.exports = mongoose.model("Object", ObjectSchema);

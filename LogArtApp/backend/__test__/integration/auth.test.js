@@ -17,11 +17,9 @@ describe("Pruebas de Autenticación", () => {
         email: "juan.perez@example.com",
         password: "SecurePassword123",
       };
-
       const response = await request(app)
         .post("/api/v1/users")
         .send(newUserData);
-
       expect(response.statusCode).toBe(201);
       expect(response.body).toHaveProperty("user");
       expect(response.body.user.email).toBe(newUserData.email);
@@ -30,7 +28,6 @@ describe("Pruebas de Autenticación", () => {
         "User registered, please check your email to verify your account"
       );
       expect(response.headers).toHaveProperty("location");
-
       const userInDb = await User.findOne({ email: newUserData.email });
       expect(userInDb).not.toBeNull();
       expect(userInDb.isVerified).toBe(false);
@@ -44,17 +41,14 @@ describe("Pruebas de Autenticación", () => {
         email: "juan.repetido@example.com",
         password: "SecurePassword123",
       };
-
       await User.create({
         ...existingUserData,
         password: await bcrypt.hash("SecurePassword123", 10),
         isVerified: true,
       });
-
       const response = await request(app)
         .post("/api/v1/users")
         .send(existingUserData);
-
       expect(response.statusCode).toBe(409);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body.message).toBe("User already exists");
@@ -66,11 +60,9 @@ describe("Pruebas de Autenticación", () => {
         email: "falta.campos@example.com",
         password: "SecurePassword123",
       };
-
       const response = await request(app)
         .post("/api/v1/users")
         .send(incompleteUserData);
-
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body.message).toBe("All fields are required");
@@ -90,7 +82,6 @@ describe("Pruebas de Autenticación", () => {
         isVerified: true,
         hastoken: false,
       });
-
       loginData = {
         email: "pepe@gmail.com",
         password: "hola123",
@@ -102,11 +93,9 @@ describe("Pruebas de Autenticación", () => {
         email: "pepe@gmail.com",
         password: "WrongPassword",
       };
-
       const response = await request(app)
         .post("/api/v1/auth/")
         .send(invalidLoginData);
-
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body.message).toBe("Invalid credentials");
@@ -114,12 +103,10 @@ describe("Pruebas de Autenticación", () => {
 
     it("debería iniciar sesión con credenciales válidas", async () => {
       const response = await request(app).post("/api/v1/auth/").send(loginData);
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("accessToken");
       expect(response.body.user).toHaveProperty("email", loginData.email);
       expect(response.body).toHaveProperty("message", "Login successful");
-
       const user = await User.findOne({ email: loginData.email });
       expect(user.hastoken).toBe(true);
     });
@@ -129,11 +116,9 @@ describe("Pruebas de Autenticación", () => {
         email: "nonexistent@example.com",
         password: "SomePassword",
       };
-
       const response = await request(app)
         .post("/api/v1/auth/")
         .send(noUserData);
-
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body.message).toBe("User not found");
@@ -144,7 +129,6 @@ describe("Pruebas de Autenticación", () => {
       const response = await request(app)
         .post("/api/v1/auth/")
         .send(incompleteLoginData);
-
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body.message).toBe("Both fields are required");
@@ -161,16 +145,13 @@ describe("Pruebas de Autenticación", () => {
         isVerified: false,
         hastoken: false,
       });
-
       const unverifiedData = {
         email: "juan.perez2@example.com",
         password: "AnotherPassword123",
       };
-
       const response = await request(app)
         .post("/api/v1/auth/")
         .send(unverifiedData);
-
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body.message).toBe(
@@ -182,7 +163,6 @@ describe("Pruebas de Autenticación", () => {
   describe("POST /api/v1/logout/", () => {
     it("debería cerrar la sesión correctamente", async () => {
       const hashedPassword = await bcrypt.hash("hola123", 10);
-
       const userDB = await User.create({
         username: "pepeuser",
         email: "pepe3@gmail.com",
@@ -192,19 +172,15 @@ describe("Pruebas de Autenticación", () => {
         isVerified: true,
         hastoken: false,
       });
-
       const { accessToken } = await authService.login(
         "pepe3@gmail.com",
         "hola123"
       );
-
       const response = await request(app)
         .post("/api/v1/logout")
         .set("Authorization", `Bearer ${accessToken}`);
-
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("message", "Logout successful");
-
       const userAfterLogout = await User.findOne({ email: "pepe3@gmail.com" });
       expect(userAfterLogout.hastoken).toBe(false);
     });
@@ -224,7 +200,6 @@ describe("Pruebas de Autenticación", () => {
         "pepe2@gmail.com",
         "hola123"
       );
-
       const extendedExpirationDate = new Date(
         Date.now() + 7 * 24 * 60 * 60 * 1000
       );
@@ -232,11 +207,9 @@ describe("Pruebas de Autenticación", () => {
         accessToken,
         extendedExpirationDate
       );
-
       const response = await request(app)
         .post("/api/v1/logout")
         .set("Authorization", `Bearer ${accessToken}`);
-
       expect(response.statusCode).toBe(401);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body.message).toBe(
@@ -248,7 +221,6 @@ describe("Pruebas de Autenticación", () => {
       const response = await request(app)
         .post("/api/v1/logout")
         .set("Authorization", "Bearer invalidToken");
-
       expect(response.statusCode).toBe(403);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body.message).toBe("Invalid token");
