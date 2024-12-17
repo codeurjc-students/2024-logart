@@ -531,6 +531,74 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 
 ![Imagen de clasesSPA](DocFiles/images/phase2/finalspa.svg)
 
+<br><br>
+
+# 🚀 Ejecutar test de la aplicación
+
+## Requisitos previos Backend
+
+- Abrir el terminal y situarnos en la carpeta Backend
+
+```
+\2024-logart\LogArtApp\backend>
+```
+
+- Backend corriendo para inicializar la base de datos
+
+```
+ npm start
+```
+
+## Requisitos previos Frontend
+
+- Abrir el terminal y situarnos en la carpeta Backend
+
+```
+\2024-logart\LogArtApp\backend>
+```
+
+- Backend corriendo para inicializar la base de datos
+
+```
+ npm start
+```
+
+- Situarnos en la carpeta Frontend
+
+```
+\2024-logart\LogArtApp\frontend\LogArt-frontend>
+```
+
+- Servir la aplicación con Vite
+
+```
+npm run dev
+```
+
+## Ejecutar test Backend
+
+- Ejecutar el comando
+
+```
+npm test
+```
+
+## Ejecutar test Frontend
+
+- Con el siguiente comando podemos ejecutar los tests de forma interactiva, mientras vemos en tiempo real en un navegador las pruebas
+
+```
+npx playwright test --ui
+```
+
+- Con el siguiente comando podemos ejecutar los tests de forma automática, hay que tener en cuenta que para que algunos test funcionen se requieren estados específicos, y si no se tiene en cuenta puede que algunos test fallen. Por ejemplo, si el test de crear objeto lo intenta hacer sin estar logueado, el test fallará
+
+```
+npx playwright test  --project=chromium
+```
+
+<br><br>
+
 # 🐋 Construcción de la imagen Docker
 
 ## Requisitos previos
