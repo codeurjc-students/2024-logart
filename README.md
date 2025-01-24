@@ -1,6 +1,6 @@
 # Aplicación: LogArt
 
-# BORRAR TEST CI
+# BORRAR TEST CIi
 
 Alumno: David Moreno Martín
 
