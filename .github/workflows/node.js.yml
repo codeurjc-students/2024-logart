@@ -29,6 +29,10 @@ jobs:
       - name: Build project
         run: npm run build --if-present
         working-directory: LogArtApp/backend
+        
+      - name: Listar archivos de prueba
+  run: ls -la LogArtApp/backend/__test__/integration/imagesTest/
+  working-directory: LogArtApp/backend
 
       - name: Run tests
         env:
