@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test jest --verbose",
     "generate-docs": "node api-docs/swagger.js ",
     "start": "nodemon server.js"
   },
