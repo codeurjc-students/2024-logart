@@ -569,12 +569,6 @@ Aquí podremos obtener más información sobre los propietarios de la web.
 \2024-logart\LogArtApp\frontend\LogArt-frontend>
 ```
 
-- Servir la aplicación con Vite
-
-```
-npm run dev
-```
-
 ## Ejecutar test Backend
 
 - Ejecutar el comando
@@ -591,7 +585,7 @@ npm test
 npx playwright test --ui
 ```
 
-- Con el siguiente comando podemos ejecutar los tests de forma automática, hay que tener en cuenta que para que algunos test funcionen se requieren estados específicos, y si no se tiene en cuenta puede que algunos test fallen. Por ejemplo, si el test de crear objeto lo intenta hacer sin estar logueado, el test fallará
+- Con el siguiente comando podemos ejecutar los tests de forma automática.
 
 ```
 npx playwright test  --project=chromium

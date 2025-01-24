@@ -1,12 +1,14 @@
 // @ts-check
 
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test } from "./fixtures";
 import { fillObjectFormUpdate, fillObjectFormCreate } from "./helpers";
 
 test.describe("Pruebas de Actualización de Objetos", () => {
-  test("Actualizar un objeto exitosamente", async ({ page }) => {
-    await page.goto("/disciplines");
-    await expect(page).toHaveURL("/disciplines");
+  test("Actualizar un objeto exitosamente", async ({ authenticatedPage }) => {
+    await authenticatedPage.waitForTimeout(5000);
+    await authenticatedPage.goto("/disciplines");
+    await expect(authenticatedPage).toHaveURL("/disciplines");
 
     const newObject = {
       name: "Objeto de Prueba5",
@@ -15,15 +17,17 @@ test.describe("Pruebas de Actualización de Objetos", () => {
       imageUrl: "./public/images/er.jpg",
     };
 
-    await page.getByLabel("Crear nuevo objeto").click();
-    await fillObjectFormCreate(page, newObject);
-    await page.getByRole("button", { name: "Crear", exact: true }).click();
+    await authenticatedPage.getByLabel("Crear nuevo objeto").click();
+    await fillObjectFormCreate(authenticatedPage, newObject);
+    await authenticatedPage
+      .getByRole("button", { name: "Crear", exact: true })
+      .click();
 
     await expect(
-      page.getByRole("link", { name: "Objeto de Prueba5" }).first()
+      authenticatedPage.getByRole("link", { name: "Objeto de Prueba5" }).first()
     ).toBeVisible();
 
-    await page.getByTestId("edit-object-button").first().click();
+    await authenticatedPage.getByTestId("edit-object-button").first().click();
 
     const updatedObject = {
       name: "Objeto Actualizado 5",
@@ -32,24 +36,29 @@ test.describe("Pruebas de Actualización de Objetos", () => {
       imageUrl: "./public/images/er.jpg",
     };
 
-    await fillObjectFormUpdate(page, updatedObject);
-    await page.getByTestId("edit-object-submit").click();
-    await page.waitForTimeout(2000);
-    await expect(page).toHaveURL("/disciplines");
-    await expect(page.getByText(updatedObject.name).first()).toBeVisible();
+    await fillObjectFormUpdate(authenticatedPage, updatedObject);
+    await authenticatedPage.getByTestId("edit-object-submit").click();
+    await authenticatedPage.waitForTimeout(7000);
+    await expect(authenticatedPage).toHaveURL("/disciplines");
+    await expect(
+      authenticatedPage.getByText(updatedObject.name).first()
+    ).toBeVisible();
 
-    page.once("dialog", async (dialog) => {
+    authenticatedPage.once("dialog", async (dialog) => {
       expect(dialog.type()).toBe("confirm");
       await dialog.accept();
     });
-    await page.getByTestId("delete-object-button").first().click();
+    await authenticatedPage.getByTestId("delete-object-button").first().click();
 
-    await page.waitForURL("/disciplines");
+    await authenticatedPage.waitForURL("/disciplines");
   });
 
-  test("Actualizar un objeto exitosamente, sin imagen", async ({ page }) => {
-    await page.goto("/disciplines");
-    await expect(page).toHaveURL("/disciplines");
+  test("Actualizar un objeto exitosamente, sin imagen", async ({
+    authenticatedPage,
+  }) => {
+    await authenticatedPage.waitForTimeout(9000);
+    await authenticatedPage.goto("/disciplines");
+    await expect(authenticatedPage).toHaveURL("/disciplines");
 
     const newObject = {
       name: "Objeto de Prueba4",
@@ -58,15 +67,17 @@ test.describe("Pruebas de Actualización de Objetos", () => {
       imageUrl: "./public/images/bat1.png",
     };
 
-    await page.getByLabel("Crear nuevo objeto").click();
-    await fillObjectFormCreate(page, newObject);
-    await page.getByRole("button", { name: "Crear", exact: true }).click();
+    await authenticatedPage.getByLabel("Crear nuevo objeto").click();
+    await fillObjectFormCreate(authenticatedPage, newObject);
+    await authenticatedPage
+      .getByRole("button", { name: "Crear", exact: true })
+      .click();
 
     await expect(
-      page.getByRole("link", { name: "Objeto de Prueba4" }).first()
+      authenticatedPage.getByRole("link", { name: "Objeto de Prueba4" }).first()
     ).toBeVisible();
 
-    await page.getByTestId("edit-object-button").first().click();
+    await authenticatedPage.getByTestId("edit-object-button").first().click();
 
     const updatedObject = {
       name: "Objeto Actualizado 4",
@@ -74,18 +85,20 @@ test.describe("Pruebas de Actualización de Objetos", () => {
       discipline: "Libros",
     };
 
-    await fillObjectFormUpdate(page, updatedObject);
-    await page.getByTestId("edit-object-submit").click();
-    await page.waitForTimeout(2000);
-    await expect(page).toHaveURL("/disciplines");
-    await expect(page.getByText(updatedObject.name).first()).toBeVisible();
+    await fillObjectFormUpdate(authenticatedPage, updatedObject);
+    await authenticatedPage.getByTestId("edit-object-submit").click();
+    await authenticatedPage.waitForTimeout(2000);
+    await expect(authenticatedPage).toHaveURL("/disciplines");
+    await expect(
+      authenticatedPage.getByText(updatedObject.name).first()
+    ).toBeVisible();
 
-    page.once("dialog", async (dialog) => {
+    authenticatedPage.once("dialog", async (dialog) => {
       expect(dialog.type()).toBe("confirm");
       await dialog.accept();
     });
-    await page.getByTestId("delete-object-button").first().click();
+    await authenticatedPage.getByTestId("delete-object-button").first().click();
 
-    await page.waitForURL("/disciplines");
+    await authenticatedPage.waitForURL("/disciplines");
   });
 });

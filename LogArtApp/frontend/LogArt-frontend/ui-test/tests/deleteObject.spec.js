@@ -1,11 +1,13 @@
 // @ts-check
 
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test } from "./fixtures";
 import { fillObjectFormUpdate, fillObjectFormCreate } from "./helpers";
 
 test.describe("Pruebas de Borrado de Objetos", () => {
-  test("Borrar un objeto exitosamente", async ({ page }) => {
-    await page.goto("/disciplines");
+  test("Borrar un objeto exitosamente", async ({ authenticatedPage }) => {
+    await authenticatedPage.waitForTimeout(3000);
+    await authenticatedPage.goto("/disciplines");
 
     const newObject = {
       name: "Objeto de Prueba3",
@@ -14,26 +16,32 @@ test.describe("Pruebas de Borrado de Objetos", () => {
       imageUrl: "./public/images/er.jpg",
     };
 
-    await page.getByLabel("Crear nuevo objeto").click();
-    await fillObjectFormCreate(page, newObject);
-    await page.getByRole("button", { name: "Crear", exact: true }).click();
+    await authenticatedPage.getByLabel("Crear nuevo objeto").click();
+    await fillObjectFormCreate(authenticatedPage, newObject);
+    await authenticatedPage
+      .getByRole("button", { name: "Crear", exact: true })
+      .click();
 
     await expect(
-      page.getByRole("link", { name: "Objeto de Prueba3" }).first()
+      authenticatedPage.getByRole("link", { name: "Objeto de Prueba3" }).first()
     ).toBeVisible();
 
-    page.once("dialog", async (dialog) => {
+    authenticatedPage.once("dialog", async (dialog) => {
       expect(dialog.type()).toBe("confirm");
       await dialog.accept();
     });
-    await page.getByTestId("delete-object-button").first().click();
 
-    await page.waitForURL("/disciplines");
+    await authenticatedPage
+      .getByText("Objeto de Prueba3Descripción")
+      .getByTestId("delete-object-button")
+      .click();
 
-    await expect(page).toHaveURL("/disciplines");
+    await authenticatedPage.waitForURL("/disciplines");
+
+    await expect(authenticatedPage).toHaveURL("/disciplines");
 
     await expect(
-      page.getByRole("link", { name: "Objeto de Prueba3" })
+      authenticatedPage.getByRole("link", { name: "Objeto de Prueba3" })
     ).toHaveCount(0);
   });
 });

@@ -9,7 +9,6 @@ export default defineConfig({
     ignoreHTTPSErrors: true,
     baseURL: "https://localhost:5173",
     trace: "on-first-retry",
-    storageState: "./ui-test/tests/storageState.json",
   },
   globalSetup: "./ui-test/tests/global-setup.js",
 
