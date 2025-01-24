@@ -1,7 +1,5 @@
 # Aplicación: LogArt
 
-# BORRAR TEST CIi
-
 Alumno: David Moreno Martín
 
 Tutor: Micael Gallego Carrillo
