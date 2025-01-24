@@ -31,5 +31,14 @@ jobs:
         working-directory: LogArtApp/backend
 
       - name: Run tests
+        env:
+          PORT: ${{ secrets.PORT }}
+          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+          SSL_KEY_PATH: ${{ secrets.SSL_KEY_PATH }}
+          SSL_CERT_PATH: ${{ secrets.SSL_CERT_PATH }}
         run: npm test
         working-directory: LogArtApp/backend
