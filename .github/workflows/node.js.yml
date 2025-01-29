@@ -33,11 +33,27 @@ jobs:
         run: npm ci --legacy-peer-deps
         working-directory: LogArtApp/frontend/LogArt-frontend
 
+      - name: Create SSL directory
+        run: mkdir -p LogArtApp/backend/config/ssl
+        working-directory: ./
+
+      - name: Write SSL key
+        run: echo "$SSL_KEY" > LogArtApp/backend/config/ssl/server.key
+        env:
+          SSL_KEY: ${{ secrets.SSL_KEY_PATH }}
+        working-directory: ./
+
+      - name: Write SSL cert
+        run: echo "$SSL_CERT" > LogArtApp/backend/config/ssl/server.cert
+        env:
+          SSL_CERT: ${{ secrets.SSL_CERT_PATH }}
+        working-directory: ./
+
       - name: Start backend
         run: npm start &
         env:
-          SSL_KEY_PATH: ${{ secrets.SSL_KEY_PATH }}
-          SSL_CERT_PATH: ${{ secrets.SSL_CERT_PATH }}
+          SSL_KEY_PATH: config/ssl/server.key
+          SSL_CERT_PATH: config/ssl/server.cert
           PORT: ${{ secrets.PORT }}
         working-directory: LogArtApp/backend
 
