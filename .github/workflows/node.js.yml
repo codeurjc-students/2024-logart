@@ -34,18 +34,17 @@ jobs:
         working-directory: LogArtApp/frontend/LogArt-frontend
 
       - name: Create SSL files
-  run: |
-    echo "${{ secrets.SSL_KEY_CONTENT }}" > LogArtApp/backend/ssl/server.key
-    echo "${{ secrets.SSL_CERT_CONTENT }}" > LogArtApp/backend/ssl/server.cert
-  working-directory: LogArtApp/backend
+        run: |
+          echo "${{ secrets.SSL_KEY_CONTENT }}" > LogArtApp/backend/ssl/server.key
+          echo "${{ secrets.SSL_CERT_CONTENT }}" > LogArtApp/backend/ssl/server.cert
+        working-directory: LogArtApp/backend
 
-- name: Start backend
-  run: npm start &
-  working-directory: LogArtApp/backend
-  env:
-    SSL_KEY_PATH: "ssl/server.key"
-    SSL_CERT_PATH: "ssl/server.cert"
-
+      - name: Start backend
+        run: npm start &
+        working-directory: LogArtApp/backend
+        env:
+          SSL_KEY_PATH: "ssl/server.key"
+          SSL_CERT_PATH: "ssl/server.cert"
 
       - name: Start frontend
         run: npm run dev &
