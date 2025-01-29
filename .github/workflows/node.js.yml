@@ -30,7 +30,7 @@ jobs:
         working-directory: LogArtApp/backend
 
       - name: Install frontend dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         working-directory: LogArtApp/frontend/LogArt-frontend
 
       - name: Start backend
