@@ -1,68 +1,62 @@
-// // @ts-check
-// import { expect } from "@playwright/test";
-// import { test } from "./fixtures";
-// import environment from "../../environment";
+import { expect } from "@playwright/test";
+import { test } from "./fixtures";
+import environment from "../../environment";
 
-// test.use({
-//   baseURL: "https://localhost:5173",
-//   ignoreHTTPSErrors: true,
-// });
+test.describe("Pruebas de Registro", () => {
+  test("Registro exitoso debería redirigir al login", async ({
+    unauthenticatedPage,
+  }) => {
+    await unauthenticatedPage.goto("/register");
 
-// test.describe("Pruebas de Registro", () => {
-//   test("Registro exitoso debería redirigir al login", async ({
-//     unAuthenticatedPage,
-//   }) => {
-//     await unAuthenticatedPage.goto("/register");
+    await unauthenticatedPage
+      .getByTestId("register-userName")
+      .fill(environment.userNewUserName);
+    await unauthenticatedPage
+      .getByTestId("register-firstName")
+      .fill(environment.userNewFirstName);
+    await unauthenticatedPage
+      .getByTestId("register-lastName")
+      .fill(environment.userNewLastName);
+    await unauthenticatedPage
+      .getByTestId("register-email")
+      .fill(environment.userNewEmail);
+    await unauthenticatedPage
+      .getByTestId("register-password")
+      .fill(environment.userPassword);
+    await unauthenticatedPage
+      .getByRole("button", { name: "Registrarse" })
+      .click();
 
-//     await unAuthenticatedPage
-//       .getByTestId("register-userName")
-//       .fill(environment.userNewUserName);
-//     await unAuthenticatedPage
-//       .getByTestId("register-firstName")
-//       .fill(environment.userNewFirstName);
-//     await unAuthenticatedPage
-//       .getByTestId("register-lastName")
-//       .fill(environment.userNewLastName);
-//     await unAuthenticatedPage
-//       .getByTestId("register-email")
-//       .fill(environment.userNewEmail);
-//     await unAuthenticatedPage
-//       .getByTestId("register-password")
-//       .fill(environment.userPassword);
-//     await unAuthenticatedPage
-//       .getByRole("button", { name: "Registrarse" })
-//       .click();
+    await expect(unauthenticatedPage).toHaveURL("/login");
+  });
 
-//     await expect(unAuthenticatedPage).toHaveURL("/login");
-//   });
+  test("Registro fallido debería mostrar un mensaje de error y continuar con el registro", async ({
+    unauthenticatedPage,
+  }) => {
+    await unauthenticatedPage.goto("/register");
 
-//   test("Registro fallido debería mostrar un mensaje de error y continuar con el registro", async ({
-//     unAuthenticatedPage,
-//   }) => {
-//     await unAuthenticatedPage.goto("/register");
+    await unauthenticatedPage
+      .getByTestId("register-email")
+      .fill(environment.userUsedEmail);
+    await unauthenticatedPage
+      .getByTestId("register-password")
+      .fill(environment.userPassword);
+    await unauthenticatedPage
+      .getByTestId("register-userName")
+      .fill(environment.userNewUserName);
+    await unauthenticatedPage
+      .getByTestId("register-firstName")
+      .fill(environment.userNewFirstName);
+    await unauthenticatedPage
+      .getByTestId("register-lastName")
+      .fill(environment.userNewLastName);
+    await unauthenticatedPage
+      .getByRole("button", { name: "Registrarse" })
+      .click();
 
-//     await unAuthenticatedPage
-//       .getByTestId("register-email")
-//       .fill(environment.userEmail);
-//     await unAuthenticatedPage
-//       .getByTestId("register-password")
-//       .fill(environment.userPassword);
-//     await unAuthenticatedPage
-//       .getByTestId("register-userName")
-//       .fill(environment.userNewUserName);
-//     await unAuthenticatedPage
-//       .getByTestId("register-firstName")
-//       .fill(environment.userNewFirstName);
-//     await unAuthenticatedPage
-//       .getByTestId("register-lastName")
-//       .fill(environment.userNewLastName);
-//     await unAuthenticatedPage
-//       .getByRole("button", { name: "Registrarse" })
-//       .click();
-
-//     await expect(
-//       unAuthenticatedPage.getByText("User already exists")
-//     ).toBeVisible();
-//     await expect(unAuthenticatedPage).toHaveURL("/register");
-//   });
-// });
+    await expect(
+      unauthenticatedPage.getByText("User already exists")
+    ).toBeVisible();
+    await expect(unauthenticatedPage).toHaveURL("/register");
+  });
+});

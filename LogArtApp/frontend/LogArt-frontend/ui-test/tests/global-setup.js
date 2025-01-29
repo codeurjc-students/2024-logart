@@ -5,7 +5,7 @@ import environment from "../../environment.js";
 export default async function globalSetup(config) {
   const browser = await chromium.launch({
     ignoreHTTPSErrors: true,
-    headless: false,
+    headless: true,
   });
   const context = await browser.newContext({
     ignoreHTTPSErrors: true,
