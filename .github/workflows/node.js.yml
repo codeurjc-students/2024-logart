@@ -35,6 +35,10 @@ jobs:
 
       - name: Start backend
         run: npm start &
+        env:
+          SSL_KEY_PATH: ${{ secrets.SSL_KEY_PATH }}
+          SSL_CERT_PATH: ${{ secrets.SSL_CERT_PATH }}
+          PORT: ${{ secrets.PORT }}
         working-directory: LogArtApp/backend
 
       - name: Start frontend
