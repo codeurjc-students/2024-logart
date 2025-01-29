@@ -31,10 +31,10 @@ test.describe("Pruebas de Login", () => {
 
     await unauthenticatedPage
       .getByTestId("login-email")
-      .fill(environment.userEmail2);
+      .fill(environment.userAdmin2Email);
     await unauthenticatedPage
       .getByTestId("login-password")
-      .fill(environment.userWrongPassword);
+      .fill(environment.userAdmin2Password);
     await unauthenticatedPage
       .getByRole("button", { name: "Iniciar sesión" })
       .click();

@@ -5,9 +5,10 @@ on:
     branches: ["main"]
 
 jobs:
-  backend:
-    name: Backend CI
+  build-and-test:
     runs-on: ubuntu-latest
+
+    services:
 
     strategy:
       matrix:
@@ -22,7 +23,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install dependencies
+      - name: Install backend dependencies
         run: npm ci
         working-directory: LogArtApp/backend
 
@@ -30,7 +31,25 @@ jobs:
         run: npm run build --if-present
         working-directory: LogArtApp/backend
 
-      - name: Run tests
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: LogArtApp/frontend/LogArt-frontend
+
+      - name: Start backend
+        run: npm start &
+        working-directory: LogArtApp/backend
+
+      - name: Start frontend
+        run: npm run dev &
+        working-directory: LogArtApp/frontend/LogArt-frontend
+
+      - name: Wait for backend
+        run: npx wait-on https://localhost:443 --timeout 60000
+
+      - name: Wait for frontend
+        run: npx wait-on https://localhost:5173 --timeout 60000
+
+      - name: Run backend tests
         env:
           PORT: ${{ secrets.PORT }}
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
@@ -42,3 +61,28 @@ jobs:
           SSL_CERT_PATH: ${{ secrets.SSL_CERT_PATH }}
         run: npm test
         working-directory: LogArtApp/backend
+
+      - name: Install Playwright browsers
+        run: npx playwright install
+        working-directory: LogArtApp/frontend/LogArt-frontend
+
+      - name: Run Playwright tests (frontend)
+        working-directory: LogArtApp/frontend
+        run: npx playwright test --project=chromium
+        env:
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_USED_EMAIL: ${{ secrets.TEST_USER_USED_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+          TEST_USER_EMAIL_2: ${{ secrets.TEST_USER_EMAIL_2 }}
+          TEST_USER_PASSWORD_2: ${{ secrets.TEST_USER_PASSWORD_2 }}
+          TEST_ADMIN_EMAIL: ${{ secrets.TEST_ADMIN_EMAIL }}
+          TEST_ADMIN_EMAIL_2: ${{ secrets.TEST_ADMIN_EMAIL_2 }}
+          TEST_ADMIN_WRONG_PASSWORD: ${{ secrets.TEST_ADMIN_WRONG_PASSWORD }}
+          TEST_ADMIN_PASSWORD: ${{ secrets.TEST_ADMIN_PASSWORD }}
+          TEST_USER_WRONG_EMAIL: ${{ secrets.TEST_USER_WRONG_EMAIL }}
+          TEST_USER_WRONG_PASSWORD: ${{ secrets.TEST_USER_WRONG_PASSWORD }}
+          TEST_USER_NOT_VERIFIED: ${{ secrets.TEST_USER_NOT_VERIFIED }}
+          TEST_USER_NEW_EMAIL: ${{ secrets.TEST_USER_NEW_EMAIL }}
+          TEST_USER_NEW_USERNAME: ${{ secrets.TEST_USER_NEW_USERNAME }}
+          TEST_USER_NEW_FIRSTNAME: ${{ secrets.TEST_USER_NEW_FIRSTNAME }}
+          TEST_USER_NEW_LASTNAME: ${{ secrets.TEST_USER_NEW_LASTNAME }}

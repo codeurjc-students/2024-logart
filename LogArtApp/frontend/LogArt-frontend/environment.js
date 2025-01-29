@@ -5,6 +5,8 @@ export default {
   userEmail: process.env.TEST_USER_EMAIL || "",
   userPassword: process.env.TEST_USER_PASSWORD || "",
   userUsedEmail: process.env.TEST_USER_USED_EMAIL || "",
+  userAdmin2Email: process.env.TEST_ADMIN_EMAIL_2 || "",
+  userAdmin2Password: process.env.TEST_ADMIN_WRONG_PASSWORD || "",
   userEmail2: process.env.TEST_USER_EMAIL_2 || "",
   userPassword2: process.env.TEST_USER_PASSWORD_2 || "",
   adminEmail: process.env.TEST_ADMIN_EMAIL || "",
