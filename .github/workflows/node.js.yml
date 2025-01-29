@@ -8,8 +8,6 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    services:
-
     strategy:
       matrix:
         node-version: [20.x, 22.x]
