@@ -54,10 +54,10 @@ jobs:
         env:
           SSL_KEY_PATH: config/ssl/server.key
           SSL_CERT_PATH: config/ssl/server.cert
-          PORT: 
+          PORT:
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
-¡
+
         working-directory: LogArtApp/backend
 
       - name: Start frontend
