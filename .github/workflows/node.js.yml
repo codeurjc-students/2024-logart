@@ -35,8 +35,8 @@ jobs:
 
       - name: Create SSL files
         run: |
-          echo "${{ secrets.SSL_KEY_CONTENT }}" > LogArtApp/backend/ssl/server.key
-          echo "${{ secrets.SSL_CERT_CONTENT }}" > LogArtApp/backend/ssl/server.cert
+          echo "${{ secrets.SSL_KEY_PATH }}" > LogArtApp/backend/ssl/server.key
+          echo "${{ secrets.SSL_CERT_PATH }}" > LogArtApp/backend/ssl/server.cert
         working-directory: LogArtApp/backend
 
       - name: Start backend
