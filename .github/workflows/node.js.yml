@@ -43,13 +43,13 @@ jobs:
       - name: Write SSL key
         run: printf "%s" "$SSL_KEY" > LogArtApp/backend/config/ssl/server.key
         env:
-          SSL_KEY: ${{ secrets.SSL_KEY_PATH }}
+          SSL_KEY: ${{ secrets.SSL_KEY }}
         working-directory: ./
 
       - name: Write SSL cert
         run: printf "%s" "$SSL_CERT" > LogArtApp/backend/config/ssl/server.cert
         env:
-          SSL_CERT: ${{ secrets.SSL_CERT_PATH }}
+          SSL_CERT: ${{ secrets.SSL_CERT }}
         working-directory: ./
 
       - name: Validate SSL files
@@ -88,8 +88,8 @@ jobs:
           EMAIL_USER: ${{ secrets.EMAIL_USER }}
           EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
           BASE_URL: ${{ secrets.BASE_URL }}
-          SSL_KEY_PATH: ${{ secrets.SSL_KEY_PATH }}
-          SSL_CERT_PATH: ${{ secrets.SSL_CERT_PATH }}
+          SSL_KEY: ${{ secrets.SSL_KEY }}
+          SSL_CERT: ${{ secrets.SSL_CERT }}
         run: npm test
         working-directory: LogArtApp/backend
 
