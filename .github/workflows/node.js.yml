@@ -64,9 +64,7 @@ jobs:
 
       - name: Start frontend
         run: npm run dev &
-        env:
-          SSL_KEY_PATH: ../../backend/config/ssl/server.key
-          SSL_CERT_PATH: ../../backend/config/ssl/server.cert
+
         working-directory: LogArtApp/frontend/LogArt-frontend
 
       - name: Wait for backend
