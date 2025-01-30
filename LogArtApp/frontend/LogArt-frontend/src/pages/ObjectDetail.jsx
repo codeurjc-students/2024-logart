@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../utilities/api";
 import { AuthContext } from "../context/AuthContext";
 import CommentList from "../components/CommentList";
-import AddComment from "../components/AddComment";
+import AddComment from "../components/addComment";
 
 const ObjectDetail = () => {
   const { objectId } = useParams();
@@ -58,7 +58,7 @@ const ObjectDetail = () => {
                   src={
                     object.imageUrl.startsWith("http")
                       ? object.imageUrl
-                      : `https://localhost:443/${object.imageUrl}`
+                      : `https://localhost:8443/${object.imageUrl}`
                   }
                   alt={object.name}
                   className="w-full h-auto rounded-lg object-cover shadow-md"

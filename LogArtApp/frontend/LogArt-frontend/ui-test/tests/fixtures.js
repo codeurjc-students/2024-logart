@@ -1,19 +1,33 @@
-import { test as base } from '@playwright/test';
+// ui-test/tests/fixtures.js
+import { test as base } from "@playwright/test";
 
-const test = base.extend({
-  authenticatedPage: async ({ browser }, use) => {
+export const test = base.extend({
+  authenticatedContext: async ({ browser }, use) => {
     const context = await browser.newContext({
-      storageState: './storageState.json',
       ignoreHTTPSErrors: true,
-      baseURL: 'https://localhost:5173'
+      storageState: "./ui-test/tests/storageState.json",
     });
-    const page = await context.newPage();
-    await page.goto('/disciplines');
-    await use(page);
+    await use(context);
     await context.close();
   },
-});
 
-export { test };
-    
-  
+  authenticatedPage: async ({ authenticatedContext }, use) => {
+    const page = await authenticatedContext.newPage();
+    await use(page);
+    await page.close();
+  },
+
+  unauthenticatedContext: async ({ browser }, use) => {
+    const context = await browser.newContext({
+      ignoreHTTPSErrors: true,
+    });
+    await use(context);
+    await context.close();
+  },
+
+  unauthenticatedPage: async ({ unauthenticatedContext }, use) => {
+    const page = await unauthenticatedContext.newPage();
+    await use(page);
+    await page.close();
+  },
+});

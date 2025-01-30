@@ -1,56 +1,89 @@
-// @ts-check
-import { test, expect } from '@playwright/test';
-import environment from '../../environment';
+import { expect } from "@playwright/test";
+import { test } from "./fixtures";
+import environment from "../../environment";
 
-test.use({
-  baseURL: 'https://localhost:5173',
-  ignoreHTTPSErrors: true
-});
+test.describe("Pruebas de Login", () => {
+  test("Inicio de sesión exitoso debería redirigir a la galería", async ({
+    unauthenticatedPage,
+  }) => {
+    await unauthenticatedPage.goto("/login");
 
-test.describe('Pruebas de Login', () => {
+    await unauthenticatedPage
+      .getByTestId("login-email")
+      .fill(environment.userEmail2);
+    await unauthenticatedPage
+      .getByTestId("login-password")
+      .fill(environment.userPassword2);
+    await unauthenticatedPage
+      .getByRole("button", { name: "Iniciar sesión" })
+      .click();
 
-  test('Inicio de sesión exitoso debería redirigir a la galería' , async ({ page }) => {
-    await page.goto('/login');
-
-    await page.getByTestId('login-email').fill(environment.userEmail);
-    await page.getByTestId('login-password').fill(environment.userPassword);
-    await page.getByRole('button', { name: 'Iniciar sesión' }).click();
-
-    await expect(page).toHaveURL('/disciplines');
-    await page.getByRole('button', { name: 'Cerrar sesión' }).click();
+    await expect(unauthenticatedPage).toHaveURL("/disciplines");
+    await unauthenticatedPage
+      .getByRole("button", { name: "Cerrar sesión" })
+      .click();
   });
 
-  test('Inicio de sesión fallido debería mostrar un mensaje de error y continuar con el login' , async ({ page }) => {
-    await page.goto('/login');
+  test("Inicio de sesión fallido debería mostrar un mensaje de error y continuar con el login", async ({
+    unauthenticatedPage,
+  }) => {
+    await unauthenticatedPage.goto("/login");
 
-    await page.getByTestId('login-email').fill(environment.userEmail);
-    await page.getByTestId('login-password').fill(environment.userWrongPassword);
-    await page.getByRole('button', { name: 'Iniciar sesión' }).click();
+    await unauthenticatedPage
+      .getByTestId("login-email")
+      .fill(environment.userAdmin2Email);
+    await unauthenticatedPage
+      .getByTestId("login-password")
+      .fill(environment.userAdmin2Password);
+    await unauthenticatedPage
+      .getByRole("button", { name: "Iniciar sesión" })
+      .click();
 
-    await expect(page.getByText('Invalid credentials')).toBeVisible();
-    await expect(page).toHaveURL('/login');
-  }); 
-
-  test('Inicio de sesión fallido debería mostrar un mensaje de que es necesario validar el email' , async ({ page }) => {
-    await page.goto('/login');
-
-    await page.getByTestId('login-email').fill(environment.userNotVerified);
-    await page.getByTestId('login-password').fill(environment.userPassword);
-    await page.getByRole('button', { name: 'Iniciar sesión' }).click();
-
-    await expect(page.getByText('Please verify your email before logging in')).toBeVisible();
-    await expect(page).toHaveURL('/login');
+    await expect(
+      unauthenticatedPage.getByText("Invalid credentials")
+    ).toBeVisible();
+    await expect(unauthenticatedPage).toHaveURL("/login");
   });
 
-  test('Inicio de sesión fallido debería mostrar un error de usuario no encontrado' , async ({ page }) => {
-    await page.goto('/login');
+  test("Inicio de sesión fallido debería mostrar un mensaje de que es necesario validar el email", async ({
+    unauthenticatedPage,
+  }) => {
+    await unauthenticatedPage.goto("/login");
 
-    await page.getByTestId('login-email').fill(environment.userWrongEmail);
-    await page.getByTestId('login-password').fill(environment.userPassword);
-    await page.getByRole('button', { name: 'Iniciar sesión' }).click();
+    await unauthenticatedPage
+      .getByTestId("login-email")
+      .fill(environment.userNotVerified);
+    await unauthenticatedPage
+      .getByTestId("login-password")
+      .fill(environment.userPassword2);
+    await unauthenticatedPage
+      .getByRole("button", { name: "Iniciar sesión" })
+      .click();
 
-    await expect(page.getByText('User not found')).toBeVisible();
-    await expect(page).toHaveURL('/login');
+    await expect(
+      unauthenticatedPage.getByText(
+        "Please verify your email before logging in"
+      )
+    ).toBeVisible();
+    await expect(unauthenticatedPage).toHaveURL("/login");
   });
-    
+
+  test("Inicio de sesión fallido debería mostrar un error de usuario no encontrado", async ({
+    unauthenticatedPage,
+  }) => {
+    await unauthenticatedPage.goto("/login");
+
+    await unauthenticatedPage
+      .getByTestId("login-email")
+      .fill(environment.userWrongEmail);
+    await unauthenticatedPage
+      .getByTestId("login-password")
+      .fill(environment.userPassword2);
+    await unauthenticatedPage
+      .getByRole("button", { name: "Iniciar sesión" })
+      .click();
+
+    await expect(unauthenticatedPage.getByText("User not found")).toBeVisible();
+    await expect(unauthenticatedPage).toHaveURL("/login");
+  });
 });

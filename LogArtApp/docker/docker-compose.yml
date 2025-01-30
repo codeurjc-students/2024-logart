@@ -30,9 +30,9 @@ services:
   app:
     image: davidmorenoo/logartapp:latest17
     ports:
-      - "443:443"
+      - "8443:8443"
     healthcheck:
-      test: ["CMD", "curl", "-k", "https://localhost:443/health"]
+      test: ["CMD", "curl", "-k", "https://localhost:8443/health"]
       interval: 10s
       timeout: 5s
       retries: 5

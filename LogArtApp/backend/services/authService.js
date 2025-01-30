@@ -47,9 +47,11 @@ const register = async (data) => {
   const { password, email, firstName, lastName, username } = data;
   const loggedUser = await User.findOne({ hastoken: true });
   if (loggedUser) {
-    const error = new Error("You are already logged in");
-    error.statusCode = 401;
-    throw error;
+    if (loggedUser.email === email) {
+      const error = new Error("You are already logged in");
+      error.statusCode = 401;
+      throw error;
+    }
   }
   if (
     !password ||

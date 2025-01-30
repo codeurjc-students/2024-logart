@@ -45,7 +45,7 @@ const ObjectCard = ({
           src={
             object.imageUrl.startsWith("http")
               ? object.imageUrl
-              : `https://localhost:443/${object.imageUrl}`
+              : `https://localhost:8443/${object.imageUrl}`
           }
           alt={object.name}
           className="w-full h-48 object-cover"
