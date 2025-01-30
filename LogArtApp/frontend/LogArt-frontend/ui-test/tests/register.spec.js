@@ -40,12 +40,11 @@ test.describe("Pruebas de Registro", () => {
       .getByRole("button", { name: "Iniciar sesión" })
       .click();
 
-    await expect(unauthenticatedPage).toHaveURL("/disciplines", {
-      timeout: 10000,
-    });
-    await unauthenticatedPage
-      .getByRole("button", { name: "Cerrar sesión" })
-      .click();
+    await expect(
+      unauthenticatedPage.getByText(
+        "Please verify your email before logging in"
+      )
+    ).toBeVisible();
   });
 
   test("Registro fallido debería mostrar un mensaje de error y continuar con el registro", async ({

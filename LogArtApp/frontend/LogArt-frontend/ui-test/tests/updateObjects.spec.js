@@ -9,6 +9,7 @@ test.describe("Pruebas de Actualización de Objetos", () => {
     await authenticatedPage.waitForTimeout(4000);
     await authenticatedPage.goto("/disciplines");
     await expect(authenticatedPage).toHaveURL("/disciplines");
+    await authenticatedPage.waitForTimeout(2000);
 
     const newObject = {
       name: "Objeto de Prueba5",
@@ -59,6 +60,7 @@ test.describe("Pruebas de Actualización de Objetos", () => {
     await authenticatedPage.waitForTimeout(6000);
     await authenticatedPage.goto("/disciplines");
     await expect(authenticatedPage).toHaveURL("/disciplines");
+    await authenticatedPage.waitForTimeout(2000);
 
     const newObject = {
       name: "Objeto de Prueba4",
