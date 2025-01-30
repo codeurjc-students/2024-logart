@@ -8,6 +8,7 @@ export default defineConfig({
   workers: 2,
   retries: 1,
   use: {
+    headless: false,
     ignoreHTTPSErrors: true,
     baseURL: "https://localhost:5173",
     trace: "on-first-retry",
