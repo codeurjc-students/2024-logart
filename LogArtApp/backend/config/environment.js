@@ -2,7 +2,7 @@ require("dotenv").config();
 const path = require("path");
 
 module.exports = {
-  port: process.env.PORT || 443,
+  port: process.env.PORT || 8443,
   dbConnectionString: process.env.DB_CONNECTION_STRING,
   accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
   email: process.env.EMAIL_USER,
