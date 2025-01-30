@@ -59,16 +59,6 @@ jobs:
           echo -e "\n=== CERT FILE ==="
           ls -l LogArtApp/backend/config/ssl/server.cert
 
-      - name: Test backend connection
-        run: |
-          curl --insecure https://localhost:443
-          echo "Código de respuesta: $?"
-
-      - name: Test backend connection
-        run: |
-          curl --insecure https://127.0.0.1:443
-          echo "Código de respuesta: $?"
-
       - name: Start backend
         run: npm start --loglevel verbose
         env:
