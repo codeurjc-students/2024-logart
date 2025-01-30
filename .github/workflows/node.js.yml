@@ -74,6 +74,16 @@ jobs:
 
         working-directory: LogArtApp/frontend/LogArt-frontend
 
+      - name: Test backend connection
+        run: |
+          curl --insecure https://localhost:443
+          echo "Código de respuesta: $?"
+
+      - name: Test backend connection
+        run: |
+          curl --insecure https://127.0.0.1:443
+          echo "Código de respuesta: $?"
+
       - name: Wait for backend
         run: npx wait-on https://localhost:443 --timeout 60000
 
