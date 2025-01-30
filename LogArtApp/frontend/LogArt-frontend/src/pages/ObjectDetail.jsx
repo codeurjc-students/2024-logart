@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../utilities/api";
 import { AuthContext } from "../context/AuthContext";
 import CommentList from "../components/CommentList";
-import AddComment from "../components/AddComment";
+import AddComment from "../components/addComment";
 
 const ObjectDetail = () => {
   const { objectId } = useParams();
