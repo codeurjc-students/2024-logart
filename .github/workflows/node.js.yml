@@ -76,7 +76,7 @@ jobs:
         working-directory: LogArtApp/frontend/LogArt-frontend
 
       - name: Wait for backend
-        run: npx wait-on https://localhost:8443 --timeout 60000 --httpsInsecure
+        run: npx wait-on https://localhost:8443/health --timeout 60000 --httpsInsecure
         env:
           NODE_TLS_REJECT_UNAUTHORIZED: 0
 
