@@ -6,7 +6,7 @@ import { fillObjectFormUpdate, fillObjectFormCreate } from "./helpers";
 
 test.describe("Pruebas de Actualización de Objetos", () => {
   test("Actualizar un objeto exitosamente", async ({ authenticatedPage }) => {
-    await authenticatedPage.waitForTimeout(5000);
+    await authenticatedPage.waitForTimeout(20000);
     await authenticatedPage.goto("/disciplines");
     await expect(authenticatedPage).toHaveURL("/disciplines");
 
@@ -56,7 +56,7 @@ test.describe("Pruebas de Actualización de Objetos", () => {
   test("Actualizar un objeto exitosamente, sin imagen", async ({
     authenticatedPage,
   }) => {
-    await authenticatedPage.waitForTimeout(9000);
+    await authenticatedPage.waitForTimeout(40000);
     await authenticatedPage.goto("/disciplines");
     await expect(authenticatedPage).toHaveURL("/disciplines");
 

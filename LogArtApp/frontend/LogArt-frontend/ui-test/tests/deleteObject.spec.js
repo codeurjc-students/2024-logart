@@ -6,7 +6,7 @@ import { fillObjectFormUpdate, fillObjectFormCreate } from "./helpers";
 
 test.describe("Pruebas de Borrado de Objetos", () => {
   test("Borrar un objeto exitosamente", async ({ authenticatedPage }) => {
-    await authenticatedPage.waitForTimeout(10000);
+    await authenticatedPage.waitForTimeout(100000);
     await authenticatedPage.goto("/disciplines");
 
     const newObject = {
