@@ -41,16 +41,23 @@ jobs:
         working-directory: ./
 
       - name: Write SSL key
-        run: echo "$SSL_KEY" > LogArtApp/backend/config/ssl/server.key
+        run: printf "%s" "$SSL_KEY" > LogArtApp/backend/config/ssl/server.key
         env:
           SSL_KEY: ${{ secrets.SSL_KEY_PATH }}
         working-directory: ./
 
       - name: Write SSL cert
-        run: echo "$SSL_CERT" > LogArtApp/backend/config/ssl/server.cert
+        run: printf "%s" "$SSL_CERT" > LogArtApp/backend/config/ssl/server.cert
         env:
           SSL_CERT: ${{ secrets.SSL_CERT_PATH }}
         working-directory: ./
+
+      - name: Validate SSL files
+        run: |
+        echo "=== KEY CONTENT ==="
+        cat LogArtApp/backend/config/ssl/server.key
+        echo -e "\n=== CERT CONTENT ==="
+        cat LogArtApp/backend/config/ssl/server.cert
 
       - name: Start backend
         run: npm start &
