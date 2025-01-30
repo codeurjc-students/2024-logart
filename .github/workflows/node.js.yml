@@ -59,8 +59,8 @@ jobs:
           echo -e "\n=== CERT FILE ==="
           ls -l LogArtApp/backend/config/ssl/server.cert
 
-      - name: Start backend &
-        run: npm start --loglevel verbose
+      - name: Start backend
+        run: npm start & --loglevel verbose
         env:
           PORT: 8443
           SSL_KEY_PATH: config/ssl/server.key
