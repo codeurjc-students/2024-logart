@@ -54,10 +54,10 @@ jobs:
 
       - name: Validate SSL files
         run: |
-        echo "=== KEY CONTENT ==="
-        cat LogArtApp/backend/config/ssl/server.key
-        echo -e "\n=== CERT CONTENT ==="
-        cat LogArtApp/backend/config/ssl/server.cert
+          echo "=== KEY CONTENT ==="
+          cat LogArtApp/backend/config/ssl/server.key
+          echo -e "\n=== CERT CONTENT ==="
+          cat LogArtApp/backend/config/ssl/server.cert
 
       - name: Start backend
         run: npm start &
