@@ -101,7 +101,7 @@ jobs:
         working-directory: LogArtApp/frontend/LogArt-frontend
 
       - name: Run Playwright tests (frontend)
-        working-directory: LogArtApp/frontend
+        working-directory: LogArtApp/frontend/LogArt-frontend
         run: npx playwright test --project=chromium
         env:
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
