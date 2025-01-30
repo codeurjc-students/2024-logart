@@ -7,7 +7,6 @@ export default defineConfig({
   reporter: "html",
   workers: 2,
   retries: 1,
-  timeout: 120 * 1000,
   use: {
     ignoreHTTPSErrors: true,
     baseURL: "https://localhost:5173",

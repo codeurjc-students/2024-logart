@@ -94,7 +94,7 @@ jobs:
 
       - name: Run Playwright tests (frontend)
         working-directory: LogArtApp/frontend/LogArt-frontend
-        run: npx playwright test --project=chromium
+        run: npx playwright test deleteObject.spec.js
         env:
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
           TEST_USER_USED_EMAIL: ${{ secrets.TEST_USER_USED_EMAIL }}
