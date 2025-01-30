@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -13,23 +13,26 @@ export default defineConfig(({ command, mode }) => {
     plugins: [react()],
     server: {
       port: 5173,
-      host: 'localhost',
+      host: "localhost",
       proxy: {
-        '/api': {
-          target: 'https://localhost:443',
+        "/api": {
+          target: "https://localhost:443",
           changeOrigin: true,
           secure: false, // Permite certificados auto-firmados
-          rewrite: (path) => path.replace(/^\/api/, ''),
+          rewrite: (path) => path.replace(/^\/api/, ""),
         },
       },
     },
   };
 
-  if (command === 'serve') {
-    // Solo aplicar configuración HTTPS durante el desarrollo
+  if (command === "serve") {
     config.server.https = {
-      key: fs.readFileSync(path.resolve(__dirname, '../../backend/ssl/server.key')),
-      cert: fs.readFileSync(path.resolve(__dirname, '../../backend/ssl/server.cert')),
+      key: fs.readFileSync(
+        path.resolve(__dirname, "../../backend/ssl/server.key")
+      ),
+      cert: fs.readFileSync(
+        path.resolve(__dirname, "../../backend/ssl/server.cert")
+      ),
     };
   }
 

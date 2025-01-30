@@ -1,8 +1,11 @@
 name: CI Pipeline
 
+# on:
+#   pull_request:
+#     branches: ["main"]
+
 on:
-  pull_request:
-    branches: ["main"]
+  push:
 
 jobs:
   build-and-test:
@@ -54,7 +57,6 @@ jobs:
         env:
           SSL_KEY_PATH: config/ssl/server.key
           SSL_CERT_PATH: config/ssl/server.cert
-          PORT:
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
 
@@ -62,6 +64,9 @@ jobs:
 
       - name: Start frontend
         run: npm run dev &
+        env:
+          SSL_KEY_PATH: config/ssl/server.key
+          SSL_CERT_PATH: config/ssl/server.cert
         working-directory: LogArtApp/frontend/LogArt-frontend
 
       - name: Wait for backend
