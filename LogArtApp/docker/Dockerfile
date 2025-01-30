@@ -21,8 +21,8 @@ WORKDIR /app/backend
 COPY --from=backend-build /app/backend ./
 COPY --from=frontend-build /app/frontend/dist ./public
 
-EXPOSE 443
+EXPOSE 8443
 ENV NODE_ENV=production
-ENV PORT=443
+ENV PORT=8443
 
 CMD [ "node", "server.js" ]

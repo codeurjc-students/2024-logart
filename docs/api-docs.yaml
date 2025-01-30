@@ -8,7 +8,7 @@ info:
     email: david.moreno.m.w@gmail.com
     url: https://github.com/codeurjc-students/2024-logart
 servers:
-  - url: https://localhost:443/api/v1
+  - url: https://localhost:8443/api/v1
     description: Servidor de desarrollo
 components:
   securitySchemes:
@@ -57,7 +57,7 @@ components:
         createdAt:
           type: string
           format: date-time
-          example: '2022-01-01T12:34:56Z'
+          example: "2022-01-01T12:34:56Z"
     UserRegistered:
       type: object
       properties:
@@ -95,7 +95,7 @@ components:
           type: string
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         user:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
         message:
           type: string
           example: Login successful
@@ -129,7 +129,7 @@ components:
       type: object
       properties:
         user:
-          $ref: '#/components/schemas/UserRegistered'
+          $ref: "#/components/schemas/UserRegistered"
         message:
           type: string
           example: User registered, please check your email to verify your account
@@ -151,7 +151,7 @@ components:
         users:
           type: array
           items:
-            $ref: '#/components/schemas/User'
+            $ref: "#/components/schemas/User"
         totalUsers:
           type: integer
           example: 50
@@ -165,7 +165,7 @@ components:
       type: object
       properties:
         user:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
         message:
           type: string
           example: User found
@@ -179,7 +179,7 @@ components:
       type: object
       properties:
         user:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
         message:
           type: string
           example: User profile retrieved successfully
@@ -206,7 +206,7 @@ components:
       type: object
       properties:
         user:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
         message:
           type: string
           example: User updated successfully
@@ -225,18 +225,18 @@ components:
         createdAt:
           type: string
           format: date-time
-          example: '2022-01-01T12:34:56Z'
+          example: "2022-01-01T12:34:56Z"
         updatedAt:
           type: string
           format: date-time
-          example: '2022-06-01T12:34:56Z'
+          example: "2022-06-01T12:34:56Z"
     GetAllDisciplinesResponse:
       type: object
       properties:
         disciplines:
           type: array
           items:
-            $ref: '#/components/schemas/Discipline'
+            $ref: "#/components/schemas/Discipline"
     Object:
       type: object
       properties:
@@ -261,11 +261,11 @@ components:
         createdAt:
           type: string
           format: date-time
-          example: '2022-01-01T12:34:56Z'
+          example: "2022-01-01T12:34:56Z"
         updatedAt:
           type: string
           format: date-time
-          example: '2022-06-01T12:34:56Z'
+          example: "2022-06-01T12:34:56Z"
     ObjectCreated:
       type: object
       properties:
@@ -290,7 +290,7 @@ components:
         createdAt:
           type: string
           format: date-time
-          example: '2022-01-01T12:34:56Z'
+          example: "2022-01-01T12:34:56Z"
         __v:
           type: integer
           example: 0
@@ -318,7 +318,7 @@ components:
         createdAt:
           type: string
           format: date-time
-          example: '2022-01-01T12:34:56Z'
+          example: "2022-01-01T12:34:56Z"
         __v:
           type: integer
           example: 0
@@ -358,7 +358,7 @@ components:
         createdAt:
           type: string
           format: date-time
-          example: '2022-01-01T12:34:56Z'
+          example: "2022-01-01T12:34:56Z"
         __v:
           type: integer
           example: 0
@@ -384,7 +384,7 @@ components:
       type: object
       properties:
         object:
-          $ref: '#/components/schemas/ObjectCreated'
+          $ref: "#/components/schemas/ObjectCreated"
         message:
           type: string
           example: Object created successfully
@@ -410,7 +410,7 @@ components:
       type: object
       properties:
         object:
-          $ref: '#/components/schemas/ObjectUpdated'
+          $ref: "#/components/schemas/ObjectUpdated"
         message:
           type: string
           example: Object updated successfully
@@ -438,7 +438,7 @@ components:
         objects:
           type: array
           items:
-            $ref: '#/components/schemas/ObjectGetGalleryByDiscipline'
+            $ref: "#/components/schemas/ObjectGetGalleryByDiscipline"
         currentPage:
           type: integer
           example: 1
@@ -449,7 +449,7 @@ components:
       type: object
       properties:
         object:
-          $ref: '#/components/schemas/ObjectGetGalleryByDiscipline'
+          $ref: "#/components/schemas/ObjectGetGalleryByDiscipline"
     Comment:
       type: object
       properties:
@@ -474,11 +474,11 @@ components:
         createdAt:
           type: string
           format: date-time
-          example: '2022-01-01T12:34:56Z'
+          example: "2022-01-01T12:34:56Z"
         updatedAt:
           type: string
           format: date-time
-          example: '2022-01-02T12:34:56Z'
+          example: "2022-01-02T12:34:56Z"
     CommentUpdated:
       type: object
       properties:
@@ -503,11 +503,11 @@ components:
         createdAt:
           type: string
           format: date-time
-          example: '2022-01-01T12:34:56Z'
+          example: "2022-01-01T12:34:56Z"
         updatedAt:
           type: string
           format: date-time
-          example: '2022-01-02T12:34:56Z'
+          example: "2022-01-02T12:34:56Z"
     CreateCommentRequest:
       type: object
       required:
@@ -524,7 +524,7 @@ components:
       type: object
       properties:
         comment:
-          $ref: '#/components/schemas/Comment'
+          $ref: "#/components/schemas/Comment"
         message:
           type: string
           example: Comment created successfully
@@ -540,7 +540,7 @@ components:
       type: object
       properties:
         comment:
-          $ref: '#/components/schemas/CommentUpdated'
+          $ref: "#/components/schemas/CommentUpdated"
         message:
           type: string
           example: Comment updated successfully
@@ -556,7 +556,7 @@ components:
         comments:
           type: array
           items:
-            $ref: '#/components/schemas/Comment'
+            $ref: "#/components/schemas/Comment"
       example:
         comments:
           - _id: 60d0fe4f5311236168a109cd
@@ -565,16 +565,16 @@ components:
             user: 60d0fe4f5311236168a109ca
             isEditedByAdmin: false
             editedBy: null
-            createdAt: '2022-01-01T12:34:56Z'
-            updatedAt: '2022-01-02T12:34:56Z'
+            createdAt: "2022-01-01T12:34:56Z"
+            updatedAt: "2022-01-02T12:34:56Z"
           - _id: 60d0fe4f5311236168a109ce
             content: Este es otro comentario de ejemplo editado por un admin.
             object: 60d0fe4f5311236168a109cc
             user: 60d0fe4f5311236168a109ca
             isEditedByAdmin: true
             editedBy: 60d0fe4f5311236168a109ca
-            createdAt: '2022-01-02T12:34:56Z'
-            updatedAt: '2022-01-03T12:34:56Z'
+            createdAt: "2022-01-02T12:34:56Z"
+            updatedAt: "2022-01-03T12:34:56Z"
 security:
   - BearerAuth: []
 paths:
@@ -588,21 +588,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginRequest'
+              $ref: "#/components/schemas/LoginRequest"
       responses:
-        '200':
+        "200":
           description: Inicio de sesión exitoso
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginResponse'
-        '400':
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
           description: Error, ambos campos son obligatorios
-        '401':
+        "401":
           description: >-
             Errores de autenticación, Credenciales inválidas/usuario no
             encontrado/token inválido, cuenta sin verificación.
-        '500':
+        "500":
           description: Error interno del servidor
   /users:
     post:
@@ -614,9 +614,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterRequest'
+              $ref: "#/components/schemas/RegisterRequest"
       responses:
-        '201':
+        "201":
           description: Usuario registrado exitosamente
           headers:
             Location:
@@ -626,14 +626,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RegisterResponse'
-        '400':
+                $ref: "#/components/schemas/RegisterResponse"
+        "400":
           description: Error, todos los campos son obligatorios
-        '401':
+        "401":
           description: Errores de autenticación, usuario ya logueado
-        '409':
+        "409":
           description: Error, el usuario ya existe
-        '500':
+        "500":
           description: Error interno del servidor
     get:
       summary: Obtener todos los usuarios con paginación
@@ -655,15 +655,15 @@ paths:
             default: 5
           description: Número de usuarios por página
       responses:
-        '200':
+        "200":
           description: Lista de usuarios obtenida exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AllUsersResponse'
-        '401':
+                $ref: "#/components/schemas/AllUsersResponse"
+        "401":
           description: Error, Token de autenticación inválido o ausente
-        '500':
+        "500":
           description: Error interno del servidor
   /logout:
     post:
@@ -673,17 +673,17 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        '200':
+        "200":
           description: Cierre de sesión exitoso
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LogoutResponse'
-        '401':
+                $ref: "#/components/schemas/LogoutResponse"
+        "401":
           description: Errores de autenticación, token vacio, token en la lista negra
-        '403':
+        "403":
           description: Error, token inválido
-        '500':
+        "500":
           description: Error interno del servidor
   /comments:
     post:
@@ -697,9 +697,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateCommentRequest'
+              $ref: "#/components/schemas/CreateCommentRequest"
       responses:
-        '201':
+        "201":
           description: Comentario creado exitosamente
           headers:
             Location:
@@ -709,14 +709,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateCommentResponse'
-        '400':
+                $ref: "#/components/schemas/CreateCommentResponse"
+        "400":
           description: Error, solicitud incorrecta o datos faltantes
-        '403':
+        "403":
           description: Error, no autorizado para comentar en este objeto
-        '404':
+        "404":
           description: Error, objeto o usuario no encontrado
-        '500':
+        "500":
           description: Error interno del servidor
   /comments/{commentId}:
     put:
@@ -737,21 +737,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateCommentRequest'
+              $ref: "#/components/schemas/UpdateCommentRequest"
       responses:
-        '200':
+        "200":
           description: Comentario actualizado exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UpdateCommentResponse'
-        '400':
+                $ref: "#/components/schemas/UpdateCommentResponse"
+        "400":
           description: Error, solicitud incorrecta o formato de ID inválido
-        '403':
+        "403":
           description: Error, no autorizado para actualizar este comentario
-        '404':
+        "404":
           description: Error, comentario o usuario no encontrado
-        '500':
+        "500":
           description: Error interno del servidor
     delete:
       summary: Eliminar un comentario por su ID
@@ -767,19 +767,19 @@ paths:
             type: string
           description: ID del comentario a eliminar
       responses:
-        '200':
+        "200":
           description: Comentario eliminado exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeleteCommentResponse'
-        '400':
+                $ref: "#/components/schemas/DeleteCommentResponse"
+        "400":
           description: Error, formato de ID de comentario inválido
-        '403':
+        "403":
           description: Error, no autorizado para eliminar este comentario
-        '404':
+        "404":
           description: Error, comentario o usuario no encontrado
-        '500':
+        "500":
           description: Error interno del servidor
   /comments/{objectId}:
     get:
@@ -813,19 +813,19 @@ paths:
             type: string
           description: ID específico de un comentario para obtener detalles
       responses:
-        '200':
+        "200":
           description: Lista de comentarios obtenida exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetCommentsByObjectIdResponse'
-        '400':
+                $ref: "#/components/schemas/GetCommentsByObjectIdResponse"
+        "400":
           description: Error, formato de ID de objeto o comentario inválido
-        '403':
+        "403":
           description: Error, no autorizado para ver comentarios de este objeto
-        '404':
+        "404":
           description: Error, objeto o comentario no encontrado
-        '500':
+        "500":
           description: Error interno del servidor
   /disciplines:
     get:
@@ -833,13 +833,13 @@ paths:
       tags:
         - Disciplinas
       responses:
-        '200':
+        "200":
           description: Lista de disciplinas obtenida exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetAllDisciplinesResponse'
-        '500':
+                $ref: "#/components/schemas/GetAllDisciplinesResponse"
+        "500":
           description: Error interno del servidor al obtener disciplinas
   /objects:
     post:
@@ -869,7 +869,7 @@ paths:
                   format: binary
                   description: Imagen del objeto
       responses:
-        '201':
+        "201":
           description: Objeto creado exitosamente
           headers:
             Location:
@@ -879,12 +879,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateObjectResponse'
-        '400':
+                $ref: "#/components/schemas/CreateObjectResponse"
+        "400":
           description: Error, solicitud incorrecta o datos faltantes
-        '404':
+        "404":
           description: Error, disciplina no encontrada
-        '500':
+        "500":
           description: Error interno del servidor
   /objects/{objectId}:
     put:
@@ -921,21 +921,21 @@ paths:
                   format: binary
                   description: Nueva imagen del objeto
       responses:
-        '200':
+        "200":
           description: Objeto actualizado exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UpdateObjectResponse'
-        '400':
+                $ref: "#/components/schemas/UpdateObjectResponse"
+        "400":
           description: >-
             Error, solicitud incorrecta, datos faltantes o formato de ID
             inválido
-        '403':
+        "403":
           description: Error, no autorizado para actualizar este objeto
-        '404':
+        "404":
           description: Error, objeto o disciplina no encontrada
-        '500':
+        "500":
           description: Error interno del servidor
     delete:
       summary: Eliminar un objeto por su ID
@@ -951,19 +951,19 @@ paths:
             type: string
           description: ID del objeto a eliminar
       responses:
-        '200':
+        "200":
           description: Objeto eliminado exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeleteObjectResponse'
-        '400':
+                $ref: "#/components/schemas/DeleteObjectResponse"
+        "400":
           description: Error, formato de ID de objeto inválido
-        '403':
+        "403":
           description: Error, no autorizado para eliminar este objeto
-        '404':
+        "404":
           description: Error, objeto no encontrado
-        '500':
+        "500":
           description: Error interno del servidor
   /objects/{disciplineName}:
     get:
@@ -1002,15 +1002,15 @@ paths:
             type: string
           description: Filtrar objetos por nombre
       responses:
-        '200':
+        "200":
           description: Galería de objetos obtenida exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetGalleryByDisciplineResponse'
-        '404':
+                $ref: "#/components/schemas/GetGalleryByDisciplineResponse"
+        "404":
           description: Error, disciplina no encontrada
-        '500':
+        "500":
           description: Error interno del servidor
   /objects/details/{objectId}:
     get:
@@ -1027,19 +1027,19 @@ paths:
             type: string
           description: ID del objeto a buscar
       responses:
-        '200':
+        "200":
           description: Detalles del objeto obtenidos exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetObjectByIdResponse'
-        '400':
+                $ref: "#/components/schemas/GetObjectByIdResponse"
+        "400":
           description: Error, formato de ID de objeto inválido
-        '403':
+        "403":
           description: Error, no autorizado para ver este objeto
-        '404':
+        "404":
           description: Error, objeto no encontrado
-        '500':
+        "500":
           description: Error interno del servidor
   /users/{userId}:
     get:
@@ -1056,21 +1056,21 @@ paths:
             type: string
           description: ID del usuario a buscar
       responses:
-        '200':
+        "200":
           description: Usuario encontrado exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FindUserByIdResponse'
-        '400':
+                $ref: "#/components/schemas/FindUserByIdResponse"
+        "400":
           description: Error, formato de ID de usuario inválido
-        '401':
+        "401":
           description: Error, no autorizado para acceder a este usuario
-        '403':
+        "403":
           description: Error, Solo admin puede buscar usuarios
-        '404':
+        "404":
           description: Usuario no encontrado
-        '500':
+        "500":
           description: Error interno del servidor
     delete:
       summary: Eliminar un usuario por su ID
@@ -1086,23 +1086,23 @@ paths:
             type: string
           description: ID del usuario a eliminar
       responses:
-        '200':
+        "200":
           description: Usuario y datos eliminados exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeleteUserResponse'
-        '400':
+                $ref: "#/components/schemas/DeleteUserResponse"
+        "400":
           description: Error, formato de ID de usuario inválido
-        '401':
+        "401":
           description: >-
             Error, no autorizado para eliminar este usuario o eliminar cuenta
             propia
-        '403':
+        "403":
           description: Error, token de autenticación inválido o ausente
-        '404':
+        "404":
           description: Error, usuario no encontrado
-        '500':
+        "500":
           description: Error interno del servidor
   /users/profile:
     get:
@@ -1112,17 +1112,17 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        '200':
+        "200":
           description: Perfil del usuario obtenido exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserProfileResponse'
-        '400':
+                $ref: "#/components/schemas/UserProfileResponse"
+        "400":
           description: Error, formato de ID de usuario inválido
-        '404':
+        "404":
           description: Error, usuario no encontrado
-        '500':
+        "500":
           description: Error interno del servidor
     put:
       summary: Actualizar el perfil del usuario autenticado
@@ -1158,17 +1158,17 @@ paths:
                   format: binary
                   description: Imagen de perfil del usuario
       responses:
-        '200':
+        "200":
           description: Perfil del usuario actualizado exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UpdateUserProfileResponse'
-        '400':
+                $ref: "#/components/schemas/UpdateUserProfileResponse"
+        "400":
           description: Formato de ID de usuario inválido
-        '404':
+        "404":
           description: Usuario no encontrado
-        '500':
+        "500":
           description: Error interno del servidor
 tags:
   - name: Autenticación
