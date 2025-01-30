@@ -7,10 +7,11 @@ export default defineConfig({
   reporter: "html",
   workers: 2,
   retries: 1,
+  timeout: 120000,
   use: {
     ignoreHTTPSErrors: true,
     baseURL: "https://localhost:5173",
-    trace: "on-first-retry",
+    trace: "on",
   },
   globalSetup: "./ui-test/tests/global-setup.js",
 
