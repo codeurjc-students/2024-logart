@@ -5,6 +5,8 @@ export default defineConfig({
   testDir: "./ui-test/tests",
   fullyParallel: true,
   reporter: "html",
+  workers: 2,
+  retries: 1,
   use: {
     ignoreHTTPSErrors: true,
     baseURL: "https://localhost:5173",

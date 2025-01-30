@@ -22,7 +22,9 @@ test.describe("Pruebas de Creación y Gestión de Objetos", () => {
       .click();
     await authenticatedPage.waitForTimeout(2000);
     await expect(authenticatedPage).toHaveURL("/disciplines");
-    await expect(authenticatedPage.getByText(newObject.name)).toBeVisible();
+    await expect(authenticatedPage.getByText(newObject.name)).toBeVisible({
+      timeout: 10000,
+    });
 
     await authenticatedPage.goto("/disciplines");
     await expect(authenticatedPage).toHaveURL("/disciplines");

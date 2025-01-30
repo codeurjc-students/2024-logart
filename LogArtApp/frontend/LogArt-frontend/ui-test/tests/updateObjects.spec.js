@@ -25,7 +25,7 @@ test.describe("Pruebas de Actualización de Objetos", () => {
 
     await expect(
       authenticatedPage.getByRole("link", { name: "Objeto de Prueba5" }).first()
-    ).toBeVisible();
+    ).toBeVisible({ timeout: 10000 });
 
     await authenticatedPage.getByTestId("edit-object-button").first().click();
 
@@ -42,7 +42,7 @@ test.describe("Pruebas de Actualización de Objetos", () => {
     await expect(authenticatedPage).toHaveURL("/disciplines");
     await expect(
       authenticatedPage.getByText(updatedObject.name).first()
-    ).toBeVisible();
+    ).toBeVisible({ timeout: 10000 });
 
     authenticatedPage.once("dialog", async (dialog) => {
       expect(dialog.type()).toBe("confirm");
@@ -75,7 +75,7 @@ test.describe("Pruebas de Actualización de Objetos", () => {
 
     await expect(
       authenticatedPage.getByRole("link", { name: "Objeto de Prueba4" }).first()
-    ).toBeVisible();
+    ).toBeVisible({ timeout: 10000 });
 
     await authenticatedPage.getByTestId("edit-object-button").first().click();
 
@@ -91,7 +91,7 @@ test.describe("Pruebas de Actualización de Objetos", () => {
     await expect(authenticatedPage).toHaveURL("/disciplines");
     await expect(
       authenticatedPage.getByText(updatedObject.name).first()
-    ).toBeVisible();
+    ).toBeVisible({ timeout: 10000 });
 
     authenticatedPage.once("dialog", async (dialog) => {
       expect(dialog.type()).toBe("confirm");

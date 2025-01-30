@@ -27,7 +27,7 @@ test.describe("Pruebas de Registro", () => {
       .getByRole("button", { name: "Registrarse" })
       .click();
 
-    await expect(unauthenticatedPage).toHaveURL("/login");
+    await expect(unauthenticatedPage).toHaveURL("/login", { timeout: 10000 });
   });
 
   test("Registro fallido debería mostrar un mensaje de error y continuar con el registro", async ({

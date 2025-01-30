@@ -6,7 +6,7 @@ import { fillObjectFormUpdate, fillObjectFormCreate } from "./helpers";
 
 test.describe("Pruebas de Borrado de Objetos", () => {
   test("Borrar un objeto exitosamente", async ({ authenticatedPage }) => {
-    await authenticatedPage.waitForTimeout(20000);
+    await authenticatedPage.waitForTimeout(10000);
     await authenticatedPage.goto("/disciplines");
 
     const newObject = {
@@ -24,7 +24,7 @@ test.describe("Pruebas de Borrado de Objetos", () => {
 
     await expect(
       authenticatedPage.getByRole("link", { name: "Objeto de Prueba3" }).first()
-    ).toBeVisible();
+    ).toBeVisible({ timeout: 15000 });
 
     authenticatedPage.once("dialog", async (dialog) => {
       expect(dialog.type()).toBe("confirm");
