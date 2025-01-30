@@ -14,7 +14,7 @@ test.describe("Pruebas de Creación y Gestión de Objetos", () => {
     await authenticatedPage.waitForTimeout(2000);
     await authenticatedPage.goto("/disciplines");
     await expect(authenticatedPage).toHaveURL("/disciplines");
-
+    await authenticatedPage.waitForTimeout(1000);
     await authenticatedPage.getByLabel("Crear nuevo objeto").click();
     await fillObjectFormCreate(authenticatedPage, newObject);
     await authenticatedPage

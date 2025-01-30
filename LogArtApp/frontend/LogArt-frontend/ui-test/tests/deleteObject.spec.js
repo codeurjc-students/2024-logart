@@ -8,6 +8,7 @@ test.describe("Pruebas de Borrado de Objetos", () => {
   test("Borrar un objeto exitosamente", async ({ authenticatedPage }) => {
     await authenticatedPage.waitForTimeout(9000);
     await authenticatedPage.goto("/disciplines");
+    await authenticatedPage.waitForTimeout(1000);
 
     const newObject = {
       name: "Objeto de Prueba3",

@@ -27,7 +27,25 @@ test.describe("Pruebas de Registro", () => {
       .getByRole("button", { name: "Registrarse" })
       .click();
 
+    await unauthenticatedPage.goto("/login");
     await expect(unauthenticatedPage).toHaveURL("/login", { timeout: 10000 });
+
+    await unauthenticatedPage
+      .getByTestId("login-email")
+      .fill(environment.userNewEmail);
+    await unauthenticatedPage
+      .getByTestId("login-password")
+      .fill(environment.userPassword);
+    await unauthenticatedPage
+      .getByRole("button", { name: "Iniciar sesión" })
+      .click();
+
+    await expect(unauthenticatedPage).toHaveURL("/disciplines", {
+      timeout: 10000,
+    });
+    await unauthenticatedPage
+      .getByRole("button", { name: "Cerrar sesión" })
+      .click();
   });
 
   test("Registro fallido debería mostrar un mensaje de error y continuar con el registro", async ({
