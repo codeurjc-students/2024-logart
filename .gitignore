@@ -38,3 +38,4 @@ LogArtApp/frontend/LogArt-frontend/ui-test/playwright/.cache/
 /LogArtApp/frontend/LogArt-frontend/playwright-report
 /LogArtApp/backend/public
 LogArtApp/frontend/LogArt-frontend/storageState.json
+/LogArtApp/backend/config/ssl

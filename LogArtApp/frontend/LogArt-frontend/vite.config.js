@@ -28,10 +28,10 @@ export default defineConfig(({ command, mode }) => {
   if (command === "serve") {
     config.server.https = {
       key: fs.readFileSync(
-        path.resolve(__dirname, "../../backend/ssl/server.key")
+        path.resolve(__dirname, "../../backend/config/ssl/server.key")
       ),
       cert: fs.readFileSync(
-        path.resolve(__dirname, "../../backend/ssl/server.cert")
+        path.resolve(__dirname, "../../backend/config/ssl/server.cert")
       ),
     };
   }
