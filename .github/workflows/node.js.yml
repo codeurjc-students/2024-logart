@@ -74,8 +74,23 @@ jobs:
 
         working-directory: LogArtApp/frontend/LogArt-frontend
 
+      - name: Install wait-on globally
+        run: npm install -g wait-on@8.0.2
+
       - name: Wait for backend
-        run: npx wait-on https://localhost:443 --timeout 60000
+        run: npx wait-on https://127.0.0.1:443 --timeout 60000 --httpsInsecure
+        env:
+          NODE_TLS_REJECT_UNAUTHORIZED: "0"
+
+      - name: Test backend connection
+        run: |
+          curl --insecure https://localhost:443
+          echo "Código de respuesta: $?"
+
+      - name: Test backend connection
+        run: |
+          curl --insecure https://127.0.0.1:443
+          echo "Código de respuesta: $?"
 
       - name: Wait for frontend
         run: npx wait-on https://localhost:5173 --timeout 60000
