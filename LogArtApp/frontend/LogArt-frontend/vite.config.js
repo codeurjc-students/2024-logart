@@ -16,7 +16,7 @@ export default defineConfig(({ command, mode }) => {
       host: "localhost",
       proxy: {
         "/api": {
-          target: "https://localhost:443",
+          target: "https://localhost:8443",
           changeOrigin: true,
           secure: false, // Permite certificados auto-firmados
           rewrite: (path) => path.replace(/^\/api/, ""),
