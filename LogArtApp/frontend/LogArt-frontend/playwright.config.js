@@ -11,7 +11,7 @@ export default defineConfig({
   use: {
     ignoreHTTPSErrors: true,
     baseURL: "https://localhost:5173",
-    trace: "on",
+    trace: "on-first-retry",
   },
   globalSetup: "./ui-test/tests/global-setup.js",
 
