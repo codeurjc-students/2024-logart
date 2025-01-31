@@ -711,3 +711,5 @@ docker compose down
 # ▶️ Video de demostración
 
 [LogArt Demo ](https://youtu.be/jGPRqOFaC10)
+
+# **Fase 2**
