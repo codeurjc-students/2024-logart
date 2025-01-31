@@ -16,8 +16,10 @@ Tutor: Micael Gallego Carrillo
 - [Blog LogArt: Construyendo una Aplicación Full-Stack MERN: Frontend.](https://medium.com/@davidmorenom17/construyendo-una-aplicación-full-stack-mern-frontend-de824052cd30)
 - [Blog LogArt: Testeo e2e en LogArt: Asegurando la Calidad con Jest, Supertest y Playwright.](https://medium.com/@davidmorenom17/testeo-e2e-en-logart-asegurando-la-calidad-con-jest-supertest-y-playwright-cde6b2ff2d59)
 - [Blog LogArt: Docker y Docker Compose en LogArt: Simplificando el Desarrollo y Despliegue](https://medium.com/@davidmorenom17/docker-y-docker-compose-en-logart-simplificando-el-desarrollo-y-despliegue-577e25f77956)
+- [Blog LogArt: Integración continua con Github Actions:](https://medium.com/@davidmorenom17/integración-continua-con-github-actions-a81b5bc91b1d)
+- [Blog LogArt: Entrega Continua con GitHub Actions: Simplificando el Despliegue de Docker](https://medium.com/@davidmorenom17/entrega-continua-con-github-actions-simplificando-el-despliegue-de-docker-08b4043787e8)
 
-  <br><br>
+<br><br>
 
 # **Fase 0**
 
@@ -712,4 +714,56 @@ docker compose down
 
 [LogArt Demo ](https://youtu.be/jGPRqOFaC10)
 
+<br><br><br><br>
+
 # **Fase 2**
+
+## CI/CD Pipeline 🔁
+
+### Integración Continua (CI)
+
+**Tareas automatizadas:**
+
+- ✅ Ejecución de tests e2e automáticos al hacer un pull request
+- ✅ Generación de reportes de cobertura de tests frontend: en caso de fallo, se genera una traza de depuración para descargar si así se desea
+- ✅ Verificación de credenciales y configuración SSL
+
+  <br>
+
+**Detalles técnicos:**
+| Característica | Configuración |
+|----------------|----------------|
+| Trigger | Al crear un pull-request a `main` |
+| Entorno | Ubuntu Latest + Node.js 20.x |
+| Pruebas Backend | jest y supertest |
+| Pruebas Frontend | Playwright con reporte HTML |
+| Artefactos generados | [Playwright Report](https://playwright.dev/docs/running-tests#debugging-tests) |
+
+<br>
+
+### Entrega Continua (CD)
+
+**Flujo automatizado:**
+
+1. 🐳 Construcción de imagen Docker
+2. 📦 Publicación en Docker Hub
+3. #️⃣ Tagging automático con versión de release y commit
+
+<br>
+
+**Especificaciones:**
+| Git Tag | Docker Tags Generados |
+|----------------|----------------|
+| v2.0.0 | 2.0.0, a158d1c, latest |
+| v3.0.0-rc1 | 3.0.0-rc1, a158d1c |
+| tags generados en el repositorio de logartapp | [dockerhub](https://hub.docker.com/repository/docker/davidmorenoo/logartapp/) |
+
+<br>
+
+```
+docker_image: "davidmorenoo/logartapp"
+tags:
+  - "{{version}}"   # Versión del release (ej: 2.0.0)
+  - "latest"        # Última versión estable
+  - "{{sha}}"       # Commit SHA (ej: a158d1c)
+```
