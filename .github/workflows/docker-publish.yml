@@ -19,7 +19,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ vars.DOCKER_USERNAME }}/${{ env.BRANCH_NAME }}-test
+          images: ${{ vars.DOCKER_USERNAME }}/logartapp/cd-test
           tags: |
             type=raw,value=latest-test
             type=sha,prefix=,suffix=,format=short
