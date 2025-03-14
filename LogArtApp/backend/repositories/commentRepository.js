@@ -33,6 +33,9 @@ const deleteCommentById = (commentId) => {
 const deleteCommentsByObjectIds = (objectIds) => {
   return Comment.deleteMany({ object: { $in: objectIds } });
 };
+const countComments = () => {
+  return Comment.countDocuments();
+};
 
 module.exports = {
   createComment,
@@ -42,4 +45,5 @@ module.exports = {
   updateCommentById,
   deleteCommentById,
   deleteCommentsByObjectIds,
+  countComments,
 };

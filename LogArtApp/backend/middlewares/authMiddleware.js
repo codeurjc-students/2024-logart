@@ -6,24 +6,20 @@ async function verifyToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) {
-    return res
-      .status(401)
-      .json({
-        error: true,
-        message:
-          "Necesitas estar logueado y un token válido para realizar esta acción",
-      });
+    return res.status(401).json({
+      error: true,
+      message:
+        "Necesitas estar logueado y un token válido para realizar esta acción",
+    });
   }
   try {
     const blacklistedToken = await BlacklistedToken.findOne({ token });
     if (blacklistedToken) {
-      return res
-        .status(401)
-        .json({
-          error: true,
-          message:
-            "Su token ha está en la lista negra, por favor inicie sesión nuevamente",
-        });
+      return res.status(401).json({
+        error: true,
+        message:
+          "Su token ha está en la lista negra, por favor inicie sesión nuevamente",
+      });
     }
     jwt.verify(token, accessTokenSecret, (err, user) => {
       if (err) {
@@ -40,4 +36,15 @@ async function verifyToken(req, res, next) {
   }
 }
 
-module.exports = { verifyToken };
+const isAdmin = (req, res, next) => {
+  if (req.user && req.user.role === "admin") {
+    next();
+  } else {
+    return res.status(403).json({
+      error: true,
+      message: "Access denied. Admin role required.",
+    });
+  }
+};
+
+module.exports = { verifyToken, isAdmin };

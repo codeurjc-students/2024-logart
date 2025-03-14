@@ -5,6 +5,7 @@ const userRoutes = require("./routes/userRoutes");
 const objectRoutes = require("./routes/objectRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const disciplineRoutes = require("./routes/disciplineRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 const connectDB = require("./config/db");
 const cors = require("cors");
 const seedDB = require("./Seeders/seedDB");
@@ -29,6 +30,7 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/objects", objectRoutes);
 app.use("/api/v1/comments", commentRoutes);
 app.use("/api/v1/disciplines", disciplineRoutes);
+app.use("/api/v1/dashboard", dashboardRoutes);
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
 });
