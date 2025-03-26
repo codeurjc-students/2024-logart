@@ -147,6 +147,14 @@ const Header = () => {
                       title="Galerías"
                       onClick={closeMenu}
                     />
+                    {user && user.role === "admin" && (
+                      <NavItem
+                        type="router"
+                        to="/admin/dashboard"
+                        title="Dashboard"
+                        onClick={closeMenu}
+                      />
+                    )}
                     <button
                       onClick={() => {
                         handleLogout();
