@@ -6,8 +6,8 @@ const findAllUsers = (page, limit) => {
   const skip = (page - 1) * limit;
   return User.find().skip(skip).limit(limit);
 };
-const countUsers = () => {
-  return User.countDocuments();
+const countUsers = (filter = {}) => {
+  return User.countDocuments(filter);
 };
 const findById = (userId) => {
   return User.findById(userId);

@@ -16,6 +16,7 @@ import Header from "./components/Header";
 import Hero from "./pages/Hero";
 import { ModalProvider } from "./context/ModalContext";
 import ErrorPage from "./components/ErrorPage";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const App = () => {
   return (
@@ -40,6 +41,14 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <ObjectsByDiscipline />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/dashboard/*"
+              element={
+                <ProtectedRoute roles={["admin"]}>
+                  <AdminDashboard />
                 </ProtectedRoute>
               }
             />
