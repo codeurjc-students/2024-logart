@@ -22,9 +22,13 @@ const Register = () => {
       lastName
     );
     if (result.success) {
-      setMessage(result.message);
+      setMessage(
+        "Registro Exitoso. Se le redirigirá a la página de inicio de sesión en 3 segundos."
+      );
       setError("");
-      navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 6000);
     } else {
       setError(result.message);
       setMessage("");

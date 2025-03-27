@@ -576,7 +576,9 @@ const ObjectsTab = ({ data }) => {
                     </Link>
                   </td>
                   <td className="py-3">{object.discipline.name}</td>
-                  <td className="py-3">{object.createdBy.username}</td>
+                  <td className="py-3">
+                    {object.createdBy?.username || "Usuario desconocido"}
+                  </td>
                   <td className="py-3 text-center">
                     <Link
                       to={`/objects/${object._id}`}

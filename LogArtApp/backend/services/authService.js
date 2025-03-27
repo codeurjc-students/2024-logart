@@ -2,7 +2,10 @@ const authRepository = require("../repositories/authRepository");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const sendVerificationEmail = require("../utils/emailService");
+const {
+  sendVerificationEmail,
+  sendPasswordResetEmail,
+} = require("../utils/emailService");
 const { accessTokenSecret, url } = require("../config/environment");
 const isValidMongoId = require("../utils/validId");
 const User = require("../models/user.model");
@@ -85,7 +88,7 @@ const register = async (data) => {
     username,
     verificationToken,
   });
-  const verificationLink = `${url}/api/v1/verify/${verificationToken}`;
+  const verificationLink = `https://localhost:5173/verify-email/${verificationToken}`;
   await sendVerificationEmail(email, verificationLink);
   return {
     user: {
@@ -105,9 +108,19 @@ const verifyUser = async (token) => {
   }
   const user = await User.findOne({ verificationToken: token });
   if (!user) {
+    const verifiedUser = await User.findOne({
+      isVerified: true,
+      verificationToken: null,
+    });
+    if (verifiedUser) {
+      return { message: "Email already verified. Please login." };
+    }
     const error = new Error("Invalid or expired token");
     error.statusCode = 404;
     throw error;
+  }
+  if (user.isVerified) {
+    return { message: "Email already verified. Please login." };
   }
   user.isVerified = true;
   user.verificationToken = null;
@@ -142,9 +155,67 @@ const logout = async (token, userId) => {
   }
 };
 
+const requestPasswordReset = async (email) => {
+  if (!email || email.trim() === "") {
+    const error = new Error("El email es obligatorio");
+    error.statusCode = 400;
+    throw error;
+  }
+  const user = await authRepository.findUserByEmail(email);
+  if (!user) {
+    return {
+      message:
+        "Si tu correo electrónico existe, recibirás un enlace para restablecer tu contraseña",
+    };
+  }
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  const resetExpires = new Date(Date.now() + 3600000);
+
+  await authRepository.updateResetPasswordToken(
+    user._id,
+    resetToken,
+    resetExpires
+  );
+
+  const resetLink = `https://localhost:5173/reset-password/${resetToken}`;
+  await sendPasswordResetEmail(email, resetLink);
+
+  return {
+    message:
+      "Si tu correo electrónico existe, recibirás un enlace para restablecer tu contraseña",
+  };
+};
+
+const resetPassword = async (token, newPassword) => {
+  if (
+    !token ||
+    !newPassword ||
+    token.trim() === "" ||
+    newPassword.trim() === ""
+  ) {
+    const error = new Error("El Token y la nueva contraseña son obligatorios");
+    error.statusCode = 400;
+    throw error;
+  }
+  const user = await authRepository.findUserByResetToken(token);
+  if (!user) {
+    const error = new Error("Token inválido o expirado");
+    error.statusCode = 400;
+    throw error;
+  }
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  user.password = hashedPassword;
+  user.resetPasswordToken = null;
+  user.resetPasswordExpires = null;
+  await user.save();
+  return { message: "Contraseña restablecida con éxito" };
+};
+
 module.exports = {
   login,
   register,
   verifyUser,
   logout,
+  requestPasswordReset,
+  resetPassword,
 };

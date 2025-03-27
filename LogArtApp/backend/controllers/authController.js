@@ -167,9 +167,125 @@ const logout = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /auth/forgot-password:
+ *   post:
+ *     summary: Solicitar restablecimiento de contraseña
+ *     tags: [Autenticación]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: Correo del usuario para el restablecimiento de contraseña
+ *     responses:
+ *       200:
+ *         description: Se ha enviado el correo de restablecimiento de contraseña
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *       400:
+ *         description: Error en los datos enviados
+ *       500:
+ *         description: Error interno del servidor
+ */
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const result = await authService.requestPasswordReset(email);
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error en forgotPassword:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Error interno del servidor" });
+  }
+};
+
+/**
+ * @swagger
+ * /auth/reset-password/{token}:
+ *   post:
+ *     summary: Restablecer la contraseña del usuario
+ *     tags: [Autenticación]
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Token recibido para el restablecimiento de contraseña
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - password
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 description: Nueva contraseña del usuario
+ *     responses:
+ *       200:
+ *         description: Contraseña restablecida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *       400:
+ *         description: Datos inválidos o token caducado
+ *       500:
+ *         description: Error interno del servidor
+ */
+const resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+    const result = await authService.resetPassword(token, password);
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error en resetPassword:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Error interno del servidor" });
+  }
+};
+
 module.exports = {
   login,
   register,
   verifyUser,
   logout,
+  forgotPassword,
+  resetPassword,
 };

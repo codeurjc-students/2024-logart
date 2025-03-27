@@ -17,6 +17,9 @@ import Hero from "./pages/Hero";
 import { ModalProvider } from "./context/ModalContext";
 import ErrorPage from "./components/ErrorPage";
 import AdminDashboard from "./pages/AdminDashboard";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import VerifyEmail from "./pages/VerifyMail";
 
 const App = () => {
   return (
@@ -53,6 +56,9 @@ const App = () => {
               }
             />
             <Route path="/objects/:objectId" element={<ObjectDetails />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/verify-email/:token" element={<VerifyEmail />} />
             <Route path="/404-error" element={<ErrorPage />} />
             <Route path="*" element={<Navigate to="/404-error" replace />} />
           </Routes>

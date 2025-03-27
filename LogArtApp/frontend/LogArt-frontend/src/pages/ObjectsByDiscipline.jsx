@@ -134,7 +134,7 @@ const ObjectsByDiscipline = () => {
   };
   return (
     <section>
-      <div className="w-full max-w-6xl bg-transparent bg-gradient-to-r from-blue-950 via-blue-600 to-blue-900 opacity-90 p-8 rounded-lg shadow-lg border border-gray-400 shadow-black">
+      <div className="w-full max-w-10xl bg-transparent bg-gradient-to-r from-blue-950 via-blue-600 to-blue-900 opacity-90 p-8 rounded-lg shadow-lg border border-gray-400 shadow-black">
         <div className="pt-24">
           {" "}
           <div className="pt-10"></div>
