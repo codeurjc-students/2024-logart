@@ -8,7 +8,7 @@ const dropDatabase = require("./dropDatabase");
 
 const seedDB = async () => {
   try {
-    //await dropDatabase();
+    await dropDatabase();
     await seedDisciplines();
     await seedUsers();
     await seedAdmins();
