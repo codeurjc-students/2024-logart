@@ -73,6 +73,15 @@ const Login = () => {
               Registrarse
             </Link>
           </p>
+          <p className="mt-4 text-center text-white">
+            ¿Olvidaste la contraseña?{" "}
+            <Link
+              to="/forgot-password"
+              className="text-purple-300 hover:text-white transition"
+            >
+              Recuperar contraseña
+            </Link>
+          </p>
         </div>
       </div>
     </section>

@@ -22,6 +22,23 @@ const isTokenBlacklisted = async (token) => {
   const blacklisted = await BlacklistedToken.findOne({ token });
   return !!blacklisted;
 };
+const findUserByResetToken = (token) => {
+  return User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+};
+
+const updateResetPasswordToken = (userId, token, expires) => {
+  return User.findByIdAndUpdate(
+    userId,
+    {
+      resetPasswordToken: token,
+      resetPasswordExpires: expires,
+    },
+    { new: true }
+  );
+};
 
 module.exports = {
   findUserByEmail,
@@ -30,4 +47,6 @@ module.exports = {
   updateUserById,
   addTokenToBlacklist,
   isTokenBlacklisted,
+  findUserByResetToken,
+  updateResetPasswordToken,
 };
