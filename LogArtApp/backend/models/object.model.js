@@ -28,6 +28,18 @@ const ObjectSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  isPubliclyShared: {
+    type: Boolean,
+    default: false,
+  },
+  publicShareId: {
+    type: String,
+    unique: true,
+    sparse: true,
+  },
+  publicShareCreatedAt: {
+    type: Date,
+  },
 });
 
 module.exports = mongoose.model("Object", ObjectSchema);

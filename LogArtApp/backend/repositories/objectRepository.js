@@ -29,6 +29,12 @@ const countObjects = (filter) => {
 const findObjectsByUserId = (userId) => {
   return ObjectModel.find({ createdBy: userId });
 };
+const findByPublicShareId = (shareId) => {
+  return ObjectModel.findOne({
+    publicShareId: shareId,
+    isPubliclyShared: true,
+  });
+};
 
 module.exports = {
   createObject,
@@ -39,4 +45,5 @@ module.exports = {
   findObjects,
   countObjects,
   findObjectsByUserId,
+  findByPublicShareId,
 };

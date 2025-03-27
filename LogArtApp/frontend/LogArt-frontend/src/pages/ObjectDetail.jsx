@@ -13,11 +13,15 @@ const ObjectDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [refreshComments, setRefreshComments] = useState(false);
+  const [isShared, setIsShared] = useState(false);
+  const [copied, setCopied] = useState(false);
+
   useEffect(() => {
     const fetchObject = async () => {
       try {
         const response = await api.get(`/api/v1/objects/details/${objectId}`);
         setObject(response.data.object);
+        setIsShared(!!response.data.object.isPubliclyShared);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching object details:", err);
@@ -30,6 +34,42 @@ const ObjectDetail = () => {
     };
     fetchObject();
   }, [objectId]);
+  const handleToggleShare = async () => {
+    try {
+      const response = await api.post(`/api/v1/objects/${objectId}/share`);
+      setObject({
+        ...object,
+        isPubliclyShared: response.data.isPubliclyShared,
+        publicShareId: response.data.publicShareId,
+      });
+      setIsShared(response.data.isPubliclyShared);
+      if (response.data.isPubliclyShared) {
+        alert("Objeto compartido públicamente");
+      } else {
+        alert("Objeto dejado de compartir públicamente");
+      }
+    } catch (err) {
+      console.error("Error al comparitir el objeto:", err);
+      alert(err.response?.data?.message || "Error al compartir el objeto");
+    }
+  };
+
+  const handleCopyLink = () => {
+    const shareLink = `${window.location.origin}/object/${object.publicShareId}`;
+    navigator.clipboard
+      .writeText(shareLink)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => {
+          setCopied(false);
+        }, 2000);
+      })
+      .catch((err) => {
+        console.error("Error al copiar el enlace:", err);
+        alert("Error al copiar el enlace");
+      });
+  };
+
   const handleCommentAdded = () => {
     setRefreshComments((prev) => !prev);
   };
@@ -43,6 +83,10 @@ const ObjectDetail = () => {
         Objeto no encontrado
       </div>
     );
+
+  const canShare =
+    isAuthenticated && object.createdBy && object.createdBy._id === user?._id;
+
   return (
     <section className="min-h-screen bg-gradient-to-r from-blue-950 via-blue-600 to-blue-900 opacity-90 py-10">
       <div className="pt-14">
@@ -64,6 +108,39 @@ const ObjectDetail = () => {
                   className="w-full h-auto rounded-lg object-cover shadow-md"
                 />
               </div>
+              {canShare && (
+                <div className="mt-4">
+                  <button
+                    onClick={handleToggleShare}
+                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                    aria-label={`Compartir ${object.name}`}
+                  >
+                    {isShared ? "Dejar de compartir" : "Compartir públicamente"}
+                  </button>
+                </div>
+              )}
+              {isShared && object.publicShareId && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-md">
+                  <p className="font-semibold text-blue-700">Enlace público:</p>
+                  <div className="flex items-center mt-2">
+                    <input
+                      type="text"
+                      value={`${window.location.origin}/object/${object.publicShareId}`}
+                      className="flex-grow p-2 border rounded-l"
+                      readOnly
+                    />
+                    <button
+                      onClick={handleCopyLink}
+                      className="bg-blue-500 text-white px-3 py-2 rounded-r hover:bg-blue-600"
+                    >
+                      {copied ? "¡Copiado!" : "Copiar"}
+                    </button>
+                  </div>
+                  <p className="text-sm text-gray-600 mt-2">
+                    Cualquier persona con este enlace podrá ver este objeto.
+                  </p>
+                </div>
+              )}
               <div className="mt-4">
                 <h1 className="text-3xl font-bold text-gray-800 mb-4">
                   {object.name}

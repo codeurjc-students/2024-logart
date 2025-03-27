@@ -339,10 +339,110 @@ const getObjectById = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /objects/{objectId}/toggle-public-share:
+ *   patch:
+ *     summary: Alternar la opción de compartir públicamente un objeto
+ *     tags: [Objetos]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: objectId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID del objeto al que se alternará la opción de compartir públicamente
+ *     responses:
+ *       200:
+ *         description: Alternado exitosamente la opción de compartir públicamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *       400:
+ *         description: Solicitud incorrecta o datos faltantes
+ *       500:
+ *         description: Error interno del servidor
+ */
+const togglePublicShare = async (req, res) => {
+  try {
+    const { objectId } = req.params;
+    const userId = req.user.userId;
+    const result = await objectService.togglePublicShare(objectId, userId);
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error en togglePublicShare:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
+  }
+};
+
+/**
+ * @swagger
+ * /objects/public/{shareId}:
+ *   get:
+ *     summary: Obtener un objeto público a partir de su ID compartido
+ *     tags: [Objetos]
+ *     parameters:
+ *       - in: path
+ *         name: shareId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID compatida pública del objeto
+ *     responses:
+ *       200:
+ *         description: Objeto público obtenido exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 object:
+ *                   type: object
+ *       404:
+ *         description: Objeto no encontrado
+ *       500:
+ *         description: Error interno del servidor
+ */
+const getPublicObject = async (req, res) => {
+  try {
+    const { shareId } = req.params;
+    const object = await objectService.getObjectByPublicShareId(shareId);
+    return res.status(200).json({ object });
+  } catch (error) {
+    console.error("Error en getPublicObject:", error);
+    if (error.statusCode) {
+      return res
+        .status(error.statusCode)
+        .json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   createObject,
   updateObject,
   deleteObject,
   getGalleryByDiscipline,
   getObjectById,
+  togglePublicShare,
+  getPublicObject,
 };
