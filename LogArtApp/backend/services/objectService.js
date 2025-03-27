@@ -5,6 +5,7 @@ const User = require("../models/user.model");
 const fs = require("fs");
 const path = require("path");
 const isValidMongoId = require("../utils/validId");
+const crypto = require("crypto");
 
 const createObject = async (data, userId, baseUrl) => {
   const { name, description, disciplineName } = data;
@@ -211,10 +212,67 @@ const getObjectById = async (objectId, userId) => {
   return object;
 };
 
+const togglePublicShare = async (objectId, userId) => {
+  if (!isValidMongoId(objectId)) {
+    const error = new Error("ID de objeto inválida");
+    error.statusCode = 400;
+    throw error;
+  }
+  const object = await objectRepository.findById(objectId);
+  if (!object) {
+    const error = new Error("Objeto no encontrado");
+    error.statusCode = 404;
+    throw error;
+  }
+  if (object.createdBy.toString() !== userId) {
+    const error = new Error("No estás autorizado para compartir este objeto");
+    error.statusCode = 403;
+    throw error;
+  }
+  if (object.isPubliclyShared) {
+    object.isPubliclyShared = false;
+    object.publicShareCreatedAt = null;
+  } else {
+    object.isPubliclyShared = true;
+    if (!object.publicShareId) {
+      object.publicShareId = crypto.randomBytes(16).toString("hex");
+    }
+    object.publicShareCreatedAt = new Date();
+  }
+  await object.save();
+  return {
+    isPubliclyShared: object.isPubliclyShared,
+    publicShareId: object.publicShareId,
+    message: object.isPubliclyShared
+      ? "El objeto ahora es público"
+      : "El objeto ya no está siendo compartido",
+  };
+};
+
+const getObjectByPublicShareId = async (shareId) => {
+  if (!shareId || typeof shareId !== "string") {
+    const error = new Error("Link not valid");
+    error.statusCode = 400;
+    throw error;
+  }
+  const object = await objectRepository
+    .findByPublicShareId(shareId)
+    .populate("discipline", "name")
+    .populate("createdBy", "firstName lastName username");
+  if (!object || !object.isPubliclyShared) {
+    const error = new Error("El objeto ya no está compartido o no existe");
+    error.statusCode = 404;
+    throw error;
+  }
+  return object;
+};
+
 module.exports = {
   createObject,
   updateObject,
   deleteObject,
   getGalleryByDiscipline,
   getObjectById,
+  togglePublicShare,
+  getObjectByPublicShareId,
 };

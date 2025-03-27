@@ -5,6 +5,8 @@ const {
   deleteObject,
   getGalleryByDiscipline,
   getObjectById,
+  togglePublicShare,
+  getPublicObject,
 } = require("../controllers/objectController");
 const { verifyToken } = require("../middlewares/authMiddleware");
 const {
@@ -24,5 +26,7 @@ router.delete("/:objectId", verifyToken, deleteObject);
 router.get("/details/:objectId", verifyToken, getObjectById);
 router.get("/:disciplineName", verifyToken, getGalleryByDiscipline);
 router.get("/details/:objectId", verifyToken, getObjectById);
+router.post("/:objectId/share", verifyToken, togglePublicShare);
+router.get("/shared/:shareId", getPublicObject);
 
 module.exports = router;
