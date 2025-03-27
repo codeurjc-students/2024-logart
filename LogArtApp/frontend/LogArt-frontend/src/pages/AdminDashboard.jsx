@@ -32,6 +32,22 @@ const AdminDashboard = () => {
         let endpoint = `/api/v1/dashboard/${activeTab}`;
         if (activeTab === "objects") {
           endpoint = `/api/v1/dashboard/all-objects`;
+        } else if (activeTab === "users") {
+          const [dashboardResponse, usersResponse] = await Promise.all([
+            axios.get(endpoint),
+            axios.get(`/api/v1/users?page=1&limit=10`),
+          ]);
+          setDashboardData({
+            ...dashboardData,
+            [activeTab]: {
+              ...dashboardResponse.data,
+              usersList: usersResponse.data.users,
+              totalPages: usersResponse.data.totalPages,
+            },
+          });
+          setError(null);
+          setLoading(false);
+          return;
         } else if (activeTab === "activity" || activeTab === "growth") {
           endpoint += `?period=${period}`;
         }
@@ -58,7 +74,12 @@ const AdminDashboard = () => {
       case "overview":
         return <OverviewTab data={dashboardData.overview} />;
       case "users":
-        return <UsersTab data={dashboardData.users} />;
+        return (
+          <UsersTab
+            data={dashboardData.users}
+            setDashboardData={setDashboardData}
+          />
+        );
       case "content":
         return <ContentTab data={dashboardData.content} />;
       case "activity":
@@ -218,22 +239,88 @@ const OverviewTab = ({ data }) => {
   );
 };
 
-const UsersTab = ({ data }) => {
-  if (!data) return null;
-
+const UsersTab = ({ data, setDashboardData }) => {
+  const [users, setUsers] = useState(data?.usersList || []);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  useEffect(() => {
+    if (data?.usersList) {
+      setUsers(data.usersList);
+    } else {
+      fetchUsers();
+    }
+  }, [data, page]);
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `/api/v1/users?page=${page}&limit=${limit}`
+      );
+      setUsers(response.data.users || []);
+    } catch (err) {
+      console.error("Error fetching users:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleDeleteUser = async (userId, username, userRole) => {
+    if (!userId) return;
+    const confirmDelete = window.confirm(
+      `¿Estás seguro de que deseas eliminar al usuario "${username}"? Esta acción eliminará todos sus objetos y comentarios y no se puede deshacer.`
+    );
+    if (!confirmDelete) return;
+    try {
+      setLoading(true);
+      await axios.delete(`/api/v1/users/${userId}`);
+      setUsers(users.filter((user) => user._id !== userId));
+      if (data) {
+        const updatedTotalUsers = data.totalUsers - 1;
+        const updatedUsersByRole = data.usersByRole.map((roleData) => {
+          if (roleData.role === userRole) {
+            return { ...roleData, count: roleData.count - 1 };
+          }
+          return roleData;
+        });
+        const updateUsersByObjectCount = data.usersByObjectCount
+          ? data.usersByObjectCount.filter((user) => user.userName !== username)
+          : [];
+        setDashboardData((prevData) => ({
+          ...prevData,
+          users: {
+            ...prevData.users,
+            totalUsers: updatedTotalUsers,
+            usersByRole: updatedUsersByRole,
+            usersList: users.filter((user) => user._id !== userId),
+            usersByObjectCount: updateUsersByObjectCount,
+          },
+        }));
+      }
+    } catch (error) {
+      console.error("Error al eliminar el usuario:", error);
+      if (error.response?.data?.message) {
+        alert(error.response.data.message);
+      } else {
+        alert("Error al eliminar el usuario. Inténtalo de nuevo.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  if (!data && users.length === 0)
+    return <div className="text-white">Cargando usuarios...</div>;
   return (
     <div>
       <h2 className="text-2xl font-bold text-white mb-6">
         Estadísticas de Usuarios
       </h2>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-white/5 p-6 rounded-lg">
           <h3 className="text-xl font-semibold text-white mb-4">
             Usuarios por Rol
           </h3>
           <div className="space-y-4">
-            {data.usersByRole?.map((item, index) => (
+            {data?.usersByRole?.map((item, index) => (
               <div key={index} className="flex justify-between items-center">
                 <div className="text-lg text-white capitalize">{item.role}</div>
                 <div className="text-xl font-bold text-blue-300">
@@ -243,16 +330,77 @@ const UsersTab = ({ data }) => {
             ))}
           </div>
         </div>
-
         <div className="bg-white/5 p-6 rounded-lg">
           <h3 className="text-xl font-semibold text-white mb-4">
             Total de Usuarios
           </h3>
-          <div className="text-4xl font-bold text-white">{data.totalUsers}</div>
+          <div className="text-4xl font-bold text-white">
+            {data?.totalUsers}
+          </div>
         </div>
       </div>
-
       <div className="bg-white/5 p-6 rounded-lg">
+        <h3 className="text-xl font-semibold text-white mb-4">
+          Gestión de Usuarios
+        </h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-white">
+            <thead>
+              <tr className="border-b border-gray-600">
+                <th className="text-left py-3">Usuario</th>
+                <th className="text-left py-3">Email</th>
+                <th className="text-left py-3">Rol</th>
+                <th className="text-left py-3">Nombre</th>
+                <th className="text-center py-3">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user._id} className="border-b border-gray-700">
+                  <td className="py-3">{user.username}</td>
+                  <td className="py-3">{user.email}</td>
+                  <td className="py-3 capitalize">{user.role}</td>
+                  <td className="py-3">
+                    {user.firstName} {user.lastName}
+                  </td>
+                  <td className="py-3 text-center">
+                    <button
+                      className="text-red-400 hover:text-red-300 disabled:opacity-50"
+                      onClick={() =>
+                        handleDeleteUser(user._id, user.username, user.role)
+                      }
+                      disabled={loading || user.role === "admin"}
+                      title={
+                        user.role === "admin"
+                          ? "No se pueden eliminar administradores"
+                          : ""
+                      }
+                    >
+                      {loading ? "Eliminando..." : "Eliminar"}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {data?.totalPages > 1 && (
+          <div className="flex justify-center mt-6 space-x-2">
+            {[...Array(data.totalPages)].map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setPage(i + 1)}
+                className={`w-8 h-8 rounded-full ${
+                  page === i + 1 ? "bg-blue-600" : "bg-blue-900"
+                } text-white`}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="bg-white/5 p-6 rounded-lg mt-8">
         <h3 className="text-xl font-semibold text-white mb-4">
           Usuarios más Activos
         </h3>
@@ -265,7 +413,7 @@ const UsersTab = ({ data }) => {
               </tr>
             </thead>
             <tbody>
-              {data.usersByObjectCount?.map((user, index) => (
+              {data?.usersByObjectCount?.map((user, index) => (
                 <tr key={index} className="border-b border-gray-700">
                   <td className="py-3">{user.userName}</td>
                   <td className="text-right py-3 font-medium text-blue-300">
