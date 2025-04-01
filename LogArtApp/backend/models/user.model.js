@@ -60,6 +60,12 @@ const userSchema = new Schema({
     type: Date,
     default: null,
   },
+  favorites: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Object",
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", userSchema);

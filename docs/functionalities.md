@@ -80,7 +80,8 @@ De forma similar, también podrá eliminar los comentarios que existan dentro de
 3. Dashboard de administrador:
 
    - Creación de un panel de control donde el administrador puede visualizar diferentes gráficos y datos sobre el desempeño de la aplicación.
-   - Moderación de objetos por parte de administradores, en el dashboard, dispondrán de una pestaña para ver todos los objetos de la aplicación.
+   - Moderación de objetos por parte de administradores, en el dashboard, dispondrán de una pestaña para ver todos los objetos de la aplicación y moderar según consideren oportuno.
+   - Moderación de usuarios por parte de administradores, en el dashboard, dispondrán de una pestaña para ver todos los usuarios de la aplicación y moderar según consideren oportuno.
 
 4. Gestión de datos:
 

@@ -7,6 +7,7 @@ const {
   getObjectById,
   togglePublicShare,
   getPublicObject,
+  toggleFavorite,
 } = require("../controllers/objectController");
 const { verifyToken } = require("../middlewares/authMiddleware");
 const {
@@ -28,5 +29,6 @@ router.get("/:disciplineName", verifyToken, getGalleryByDiscipline);
 router.get("/details/:objectId", verifyToken, getObjectById);
 router.post("/:objectId/share", verifyToken, togglePublicShare);
 router.get("/shared/:shareId", getPublicObject);
+router.post("/:objectId/favorite", verifyToken, toggleFavorite);
 
 module.exports = router;

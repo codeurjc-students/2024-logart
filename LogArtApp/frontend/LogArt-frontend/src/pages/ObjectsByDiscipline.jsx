@@ -23,6 +23,29 @@ const ObjectsByDiscipline = () => {
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const debounceTimeoutRef = useRef(null);
   const userId = isAuthenticated && user ? user._id : null;
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      if (isAuthenticated && user) {
+        try {
+          const response = await api.get("/api/v1/users/favorites");
+          const favoritesMap = {};
+          response.data.favorites.forEach((id) => {
+            favoritesMap[id] = true;
+          });
+          setFavorites(favoritesMap);
+          setShowFavoritesOnly(false);
+        } catch (error) {
+          console.error("Error al obtener favoritos:", error);
+        }
+      }
+    };
+    if (isAuthenticated && user) {
+      fetchFavorites();
+    }
+  }, [isAuthenticated, user]);
   useEffect(() => {
     const fetchDisciplines = async () => {
       try {
@@ -66,11 +89,25 @@ const ObjectsByDiscipline = () => {
         debouncedSearchQuery
       );
     }
-  }, [selectedDisciplineName, userId, currentPage, debouncedSearchQuery]);
-  const fetchObjects = async (disciplineName, userId, page, query) => {
+  }, [
+    selectedDisciplineName,
+    userId,
+    currentPage,
+    debouncedSearchQuery,
+    showFavoritesOnly,
+  ]);
+  const fetchObjects = async (
+    disciplineName,
+    userId,
+    page,
+    query,
+    favoriteOverride = null
+  ) => {
     setLoadingObjects(true);
     setErrorObjects("");
     try {
+      const favoriteValue =
+        favoriteOverride !== null ? favoriteOverride : showFavoritesOnly;
       const response = await api.get(
         `api/v1/objects/${encodeURIComponent(disciplineName)}`,
         {
@@ -79,19 +116,87 @@ const ObjectsByDiscipline = () => {
             page,
             limit,
             objectName: query,
+            favoritesOnly: favoriteValue.toString(),
           },
         }
       );
       setObjects(response.data.objects);
+      if (favoriteValue) {
+        const newFavorites = { ...favorites };
+        response.data.objects.forEach((obj) => {
+          newFavorites[obj._id] = true;
+        });
+        setFavorites(newFavorites);
+      } else if (favoriteOverride === false) {
+        try {
+          const favResponse = await api.get("/api/v1/users/favorites");
+          const favoritesMap = {};
+          favResponse.data.favorites.forEach((id) => {
+            favoritesMap[id] = true;
+          });
+          setFavorites(favoritesMap);
+        } catch (error) {
+          console.error("Error al refrescar favoritos:", error);
+        }
+      }
       setTotalPages(response.data.totalPages);
-      setLoadingObjects(false);
     } catch (error) {
       console.error("Error al obtener objetos:", error);
       setErrorObjects(
         error.response?.data?.message || "Error al obtener objetos"
       );
+    } finally {
       setLoadingObjects(false);
     }
+  };
+  const handleToggleFavorite = (objectId, isFavorite) => {
+    setFavorites((prev) => {
+      const updated = { ...prev };
+      if (isFavorite) {
+        updated[objectId] = true;
+      } else {
+        delete updated[objectId];
+      }
+      return updated;
+    });
+    if (showFavoritesOnly && !isFavorite) {
+      setTimeout(() => {
+        fetchObjects(
+          selectedDisciplineName,
+          userId,
+          currentPage,
+          debouncedSearchQuery
+        );
+      }, 100);
+    }
+  };
+  const handleToggleFavoritesFilter = () => {
+    const newValue = !showFavoritesOnly;
+    setShowFavoritesOnly(newValue);
+    setCurrentPage(1);
+    if (!newValue) {
+      api
+        .get("/api/v1/users/favorites")
+        .then((response) => {
+          const favoritesMap = {};
+          response.data.favorites.forEach((id) => {
+            favoritesMap[id] = true;
+          });
+          setFavorites(favoritesMap);
+        })
+        .catch((error) => {
+          console.error("Error al obtener favoritos:", error);
+        });
+    }
+    setTimeout(() => {
+      fetchObjects(
+        selectedDisciplineName,
+        userId,
+        1,
+        debouncedSearchQuery,
+        newValue
+      );
+    }, 100);
   };
   const handleDisciplineChange = (disciplineName) => {
     setSelectedDisciplineName(disciplineName);
@@ -143,17 +248,37 @@ const ObjectsByDiscipline = () => {
           <h2 className="text-3xl font-bold pr-4 text-white mb-4 lg:mb-0">
             Bienvenido a la galería de
           </h2>
-          <div className="w-full lg:w-1/3">
+          <div className="w-full lg:w-1/3 flex items-center">
+            {" "}
             {loadingDisciplines ? (
               <div className="text-white">Cargando disciplinas...</div>
             ) : errorDisciplines ? (
               <div className="text-red-500">{errorDisciplines}</div>
             ) : (
-              <DisciplineSelector
-                disciplines={disciplines}
-                selectedDisciplineName={selectedDisciplineName}
-                onDisciplineChange={handleDisciplineChange}
-              />
+              <div className="flex items-center w-full">
+                {" "}
+                <div className="flex-grow">
+                  {" "}
+                  <DisciplineSelector
+                    disciplines={disciplines}
+                    selectedDisciplineName={selectedDisciplineName}
+                    onDisciplineChange={handleDisciplineChange}
+                  />
+                </div>
+                <button
+                  onClick={handleToggleFavoritesFilter}
+                  className={`ml-3 px-3 py-2 rounded-full flex items-center ${
+                    showFavoritesOnly
+                      ? "bg-red-500 text-white"
+                      : "bg-gray-300 text-gray-800"
+                  }`}
+                  aria-label={
+                    showFavoritesOnly ? "Mostrar todos" : "Mostrar favoritos"
+                  }
+                >
+                  {showFavoritesOnly ? "❤️" : "🤍"}
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -194,6 +319,8 @@ const ObjectsByDiscipline = () => {
                   disciplines={disciplines}
                   onObjectUpdated={handleObjectUpdated}
                   onObjectDeleted={handleObjectDeleted}
+                  isFavorite={favorites[object._id] || false}
+                  onToggleFavorite={handleToggleFavorite}
                 />
               ))}
             </div>
