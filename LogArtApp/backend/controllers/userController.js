@@ -311,10 +311,57 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /users/favorites:
+ *   get:
+ *     summary: Obtener los favoritos del usuario autenticado
+ *     tags: [Usuarios]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de favoritos obtenida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 favorites:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   example: ["613b1f1a5c1b2c001a5f1e2d", "613b1f1a5c1b2c001a5f1e2e"]
+ *       500:
+ *         description: Error interno del servidor
+ */
+const getUserFavorites = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const favorites = await userService.getUserFavorites(userId);
+
+    return res.status(200).json({
+      favorites: favorites,
+    });
+  } catch (error) {
+    console.error("Error al obtener favoritos:", error);
+    if (
+      error.message === "Invalid user ID format" ||
+      error.message === "User not found"
+    ) {
+      return res.status(404).json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Error interno del servidor" });
+  }
+};
+
 module.exports = {
   allUsers,
   findUserById,
   deleteUser,
   getUserProfile,
   updateUserProfile,
+  getUserFavorites,
 };

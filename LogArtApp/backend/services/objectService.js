@@ -1,5 +1,6 @@
 const objectRepository = require("../repositories/objectRepository");
 const disciplineRepository = require("../repositories/disciplineRepository");
+const userRepository = require("../repositories/userRepository");
 const commentRepository = require("../repositories/commentRepository");
 const User = require("../models/user.model");
 const fs = require("fs");
@@ -34,6 +35,7 @@ const createObject = async (data, userId, baseUrl) => {
   });
   return newObject;
 };
+
 const updateObject = async (objectId, data, userId) => {
   const { name, description, disciplineName, imageUrl } = data;
   if (!name || !disciplineName || name.trim() === "") {
@@ -110,6 +112,7 @@ const updateObject = async (objectId, data, userId) => {
   const updatedObject = await objectRepository.updateById(objectId, updateData);
   return updatedObject;
 };
+
 const deleteObject = async (objectId, userId) => {
   if (!isValidMongoId(objectId)) {
     const error = new Error("Invalid object ID format");
@@ -153,11 +156,19 @@ const deleteObject = async (objectId, userId) => {
     }
   }
   await commentRepository.deleteCommentsByObjectIds([objectId]);
+  await userRepository.removeFromFavorites(userId, objectId);
   await objectRepository.deleteById(objectId);
   return { message: "Object deleted successfully" };
 };
+
 const getGalleryByDiscipline = async (disciplineName, query) => {
-  const { userId, page = 1, limit = 3, objectName } = query;
+  const {
+    userId,
+    page = 1,
+    limit = 3,
+    objectName,
+    favoritesOnly = false,
+  } = query;
   const skip = (page - 1) * limit;
   const discipline = await disciplineRepository.findByName(disciplineName);
   if (!discipline) {
@@ -168,6 +179,23 @@ const getGalleryByDiscipline = async (disciplineName, query) => {
   const filter = { discipline: discipline._id };
   if (userId) {
     filter.createdBy = userId;
+  }
+  if (favoritesOnly === "true" && userId) {
+    const user = await User.findById(userId);
+    if (user && user.favorites && user.favorites.length > 0) {
+      filter._id = { $in: user.favorites };
+    } else {
+      return {
+        discipline: {
+          id: discipline._id,
+          name: discipline.name,
+        },
+        totalObjects: 0,
+        objects: [],
+        currentPage: parseInt(page),
+        totalPages: 0,
+      };
+    }
   }
   if (objectName) {
     filter.name = { $regex: new RegExp(objectName, "i") };
@@ -185,6 +213,7 @@ const getGalleryByDiscipline = async (disciplineName, query) => {
     totalPages: Math.ceil(totalObjects / limit),
   };
 };
+
 const getObjectById = async (objectId, userId) => {
   if (!isValidMongoId(objectId)) {
     const error = new Error("Invalid object ID format");

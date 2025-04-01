@@ -21,6 +21,23 @@ const deleteManyObjectsByUserId = (userId) => {
 const deleteById = (userId) => {
   return User.findByIdAndDelete(userId);
 };
+const addToFavorites = (userId, objectId) => {
+  return User.findByIdAndUpdate(
+    userId,
+    { $addToSet: { favorites: objectId } },
+    { new: true }
+  );
+};
+const removeFromFavorites = (userId, objectId) => {
+  return User.findByIdAndUpdate(
+    userId,
+    { $pull: { favorites: objectId } },
+    { new: true }
+  );
+};
+const getUserFavorites = (userId) => {
+  return User.findById(userId).select("favorites");
+};
 
 module.exports = {
   findAllUsers,
@@ -29,4 +46,7 @@ module.exports = {
   deleteManyCommentsByUserId,
   deleteManyObjectsByUserId,
   deleteById,
+  addToFavorites,
+  removeFromFavorites,
+  getUserFavorites,
 };

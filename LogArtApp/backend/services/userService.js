@@ -152,10 +152,54 @@ const updateUserProfile = async (userId, updateData, file) => {
   return { user, message: "User updated successfully" };
 };
 
+const getUserFavorites = async (userId) => {
+  if (!isValidMongoId(userId)) {
+    throw new Error("Invalid user ID format");
+  }
+  const user = await userRepository.findById(userId);
+  if (!user) {
+    throw new Error("User not found");
+  }
+  if (!user.favorites) {
+    user.favorites = [];
+    await user.save();
+  }
+  return user.favorites;
+};
+
+const toggleObjectFavorite = async (userId, objectId) => {
+  if (!isValidMongoId(userId)) {
+    throw new Error("Invalid user ID format");
+  }
+  if (!isValidMongoId(objectId)) {
+    throw new Error("Invalid object ID format");
+  }
+  const user = await userRepository.findById(userId);
+  if (!user) {
+    throw new Error("User not found");
+  }
+  const object = await objectRepository.findById(objectId);
+  if (!object) {
+    throw new Error("Object not found");
+  }
+  if (!user.favorites) {
+    user.favorites = [];
+  }
+  const isFavorite = user.favorites.includes(objectId);
+  if (isFavorite) {
+    await userRepository.removeFromFavorites(userId, objectId);
+  } else {
+    await userRepository.addToFavorites(userId, objectId);
+  }
+  return { isFavorite: !isFavorite };
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
   deleteUser,
   getUserProfile,
   updateUserProfile,
+  getUserFavorites,
+  toggleObjectFavorite,
 };

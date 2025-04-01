@@ -1,17 +1,28 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import EditObject from "./EditObject";
 import api from "../utilities/api";
 import { ModalContext } from "../context/ModalContext";
+import { AuthContext } from "../context/AuthContext";
 
 const ObjectCard = ({
   object,
   disciplines,
   onObjectUpdated,
   onObjectDeleted,
+  isFavorite = false,
+  onToggleFavorite,
 }) => {
   const { openModal } = useContext(ModalContext);
+  const { user } = useContext(AuthContext);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [favorite, setFavorite] = useState(isFavorite);
+  const [isTogglingFavorite, setIsTogglingFavorite] = useState(false);
+
+  useEffect(() => {
+    setFavorite(isFavorite);
+  }, [isFavorite]);
+
   const handleDelete = async () => {
     const confirmDelete = window.confirm(
       `¿Estás seguro de que deseas eliminar "${object.name}"?`
@@ -38,8 +49,27 @@ const ObjectCard = ({
       />
     );
   };
+  const handleToggleFavorite = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      setIsTogglingFavorite(true);
+      const response = await api.post(`/api/v1/objects/${object._id}/favorite`);
+      const newFavoriteState = response.data.isFavorite;
+      setFavorite(newFavoriteState);
+      if (onToggleFavorite) {
+        onToggleFavorite(object._id, newFavoriteState);
+      }
+    } catch (error) {
+      console.error("Error al marcar favorito:", error);
+      alert("Error al marcar favorito");
+    } finally {
+      setIsTogglingFavorite(false);
+    }
+  };
+
   return (
-    <div className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-300">
+    <div className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-300 relative">
       <Link to={`/objects/${object._id}`}>
         <img
           src={
@@ -51,6 +81,14 @@ const ObjectCard = ({
           className="w-full h-48 object-cover"
         />
       </Link>
+      <button
+        onClick={handleToggleFavorite}
+        disabled={isTogglingFavorite}
+        className="absolute top-2 right-2 text-2xl focus:outline-none transition-transform hover:scale-110"
+        aria-label={favorite ? "Quitar de favoritos" : "Añadir a favoritos"}
+      >
+        {favorite ? "❤️" : "🤍"}
+      </button>
       <div className="p-4">
         <Link to={`/objects/${object._id}`}>
           <h2
@@ -69,27 +107,31 @@ const ObjectCard = ({
           Creado por: {object.createdBy.firstName} {object.createdBy.lastName}
         </p>
         <div className="mt-4 flex space-x-2">
-          <button
-            onClick={handleEdit}
-            data-testid="edit-object-button"
-            className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-            aria-label={`Editar ${object.name}`}
-          >
-            Editar
-          </button>
-          <button
-            onClick={handleDelete}
-            data-testid="delete-object-button"
-            disabled={isDeleting}
-            className={`px-3 py-1 rounded ${
-              isDeleting
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-red-500 text-white hover:bg-red-600"
-            }`}
-            aria-label={`Eliminar ${object.name}`}
-          >
-            {isDeleting ? "Eliminando..." : "Eliminar"}
-          </button>
+          {user && object.createdBy && user._id === object.createdBy._id && (
+            <>
+              <button
+                onClick={handleEdit}
+                data-testid="edit-object-button"
+                className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                aria-label={`Editar ${object.name}`}
+              >
+                Editar
+              </button>
+              <button
+                onClick={handleDelete}
+                data-testid="delete-object-button"
+                disabled={isDeleting}
+                className={`px-3 py-1 rounded ${
+                  isDeleting
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-red-500 text-white hover:bg-red-600"
+                }`}
+                aria-label={`Eliminar ${object.name}`}
+              >
+                {isDeleting ? "Eliminando..." : "Eliminar"}
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

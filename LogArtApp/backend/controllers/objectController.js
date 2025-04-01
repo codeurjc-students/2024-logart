@@ -1,4 +1,5 @@
 const objectService = require("../services/objectService");
+const userService = require("../services/userService");
 
 /**
  * @swagger
@@ -437,6 +438,63 @@ const getPublicObject = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /objects/{objectId}/favorite:
+ *   post:
+ *     summary: Alternar el estado de favorito de un objeto
+ *     tags: [Objetos]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: objectId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID del objeto al que se alternará el estado de favorito
+ *     responses:
+ *       200:
+ *         description: Estado de favorito actualizado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 isFavorite:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Objeto añadido a favoritos"
+ *       500:
+ *         description: Error interno del servidor
+ */
+const toggleFavorite = async (req, res) => {
+  try {
+    const { objectId } = req.params;
+    const userId = req.user.userId;
+    const result = await userService.toggleObjectFavorite(userId, objectId);
+    return res.status(200).json({
+      isFavorite: result.isFavorite,
+      message: result.isFavorite
+        ? "Objeto añadido a favoritos"
+        : "Objeto eliminado de favoritos",
+    });
+  } catch (error) {
+    console.error("Error al cambiar estado de favorito:", error);
+    if (
+      error.message.includes("format") ||
+      error.message.includes("not found")
+    ) {
+      return res.status(404).json({ error: true, message: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: true, message: "Error interno del servidor" });
+  }
+};
+
 module.exports = {
   createObject,
   updateObject,
@@ -445,4 +503,5 @@ module.exports = {
   getObjectById,
   togglePublicShare,
   getPublicObject,
+  toggleFavorite,
 };
