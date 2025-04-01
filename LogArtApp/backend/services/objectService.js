@@ -176,10 +176,10 @@ const getGalleryByDiscipline = async (disciplineName, query) => {
     error.statusCode = 404;
     throw error;
   }
-  const filter = {
-    discipline: discipline._id,
-    createdBy: userId,
-  };
+  const filter = { discipline: discipline._id };
+  if (userId) {
+    filter.createdBy = userId;
+  }
   if (favoritesOnly === "true" && userId) {
     const user = await User.findById(userId);
     if (user && user.favorites && user.favorites.length > 0) {
@@ -200,10 +200,8 @@ const getGalleryByDiscipline = async (disciplineName, query) => {
   if (objectName) {
     filter.name = { $regex: new RegExp(objectName, "i") };
   }
-
   const totalObjects = await objectRepository.countObjects(filter);
   const objects = await objectRepository.findObjects(filter, skip, limit);
-
   return {
     discipline: {
       id: discipline._id,
