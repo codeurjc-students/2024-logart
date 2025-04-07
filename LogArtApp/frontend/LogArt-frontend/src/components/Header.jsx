@@ -5,6 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import { ModalContext } from "../context/ModalContext";
 import clsx from "clsx";
 import NavItem from "./NavItem";
+import AdminNotifications from "./AdminNotifications";
 
 const Header = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
@@ -155,6 +156,9 @@ const Header = () => {
                         title="Dashboard"
                         onClick={closeMenu}
                       />
+                    )}
+                    {isAuthenticated && user?.role === "admin" && (
+                      <AdminNotifications />
                     )}
                     <button
                       onClick={() => {
