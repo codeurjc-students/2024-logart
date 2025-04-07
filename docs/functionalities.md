@@ -89,7 +89,8 @@ De forma similar, también podrá eliminar los comentarios que existan dentro de
 
 5. Partes optativas:
 
-   - Diseño responsive en móvil (probado en SG-S20Ultra y iPhone 14Pro Max )
+   - Diseño responsive en móvil (probado en SG-S20Ultra y iPhone 14Pro Max).
+   - Utilizar tecnologías de comunicación complementarias a REST, concretamente, WebSockets (Socket.IO) para implementar un sistema de notificaciones en tiempo real que alerte a los administradores cuando un usuario comparte un objeto.
 
 ## 🔐 Permisos de usuario
 

@@ -1,5 +1,6 @@
 const objectService = require("../services/objectService");
 const userService = require("../services/userService");
+const socketUtils = require("../utils/socketUtils");
 
 /**
  * @swagger
@@ -378,6 +379,23 @@ const togglePublicShare = async (req, res) => {
     const { objectId } = req.params;
     const userId = req.user.userId;
     const result = await objectService.togglePublicShare(objectId, userId);
+    if (result.isPubliclyShared) {
+      try {
+        const user = await userService.getUserById(userId);
+        const object = await objectService.getObjectById(objectId, userId);
+        const notification = {
+          type: "object_shared",
+          objectId: objectId,
+          objectName: object.name,
+          userId: userId,
+          userName: `${user.firstName} ${user.lastName}`,
+          timestamp: new Date(),
+        };
+        socketUtils.notifyAdmins(req, notification);
+      } catch (notifyError) {
+        console.error("Error al notificar a los administradores:", notifyError);
+      }
+    }
     return res.status(200).json(result);
   } catch (error) {
     console.error("Error en togglePublicShare:", error);
