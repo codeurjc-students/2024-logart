@@ -85,7 +85,11 @@ De forma similar, también podrá eliminar los comentarios que existan dentro de
 
 4. Gestión de datos:
 
-   - Algoritmo de análisis de crecimiento, que muestre el aumento o disminución porcentual en un periodo de tiempo.
+   - Algoritmo de análisis de crecimiento, que muestre el aumento o disminución porcentual de usuarios/objetos en un periodo de tiempo.
+
+5. Partes optativas:
+
+   - Diseño responsive en móvil (probado en SG-S20Ultra y iPhone 14Pro Max )
 
 ## 🔐 Permisos de usuario
 
