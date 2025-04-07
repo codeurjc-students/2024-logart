@@ -245,12 +245,13 @@ const UsersTab = ({ data, setDashboardData }) => {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   useEffect(() => {
+    fetchUsers();
+  }, [page]);
+  useEffect(() => {
     if (data?.usersList) {
       setUsers(data.usersList);
-    } else {
-      fetchUsers();
     }
-  }, [data, page]);
+  }, [data]);
   const fetchUsers = async () => {
     try {
       setLoading(true);
