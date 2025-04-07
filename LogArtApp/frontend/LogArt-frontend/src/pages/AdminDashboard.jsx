@@ -494,6 +494,12 @@ const ActivityTab = ({ data, period, setPeriod }) => {
   console.log("Activity data:", data);
   if (!data) return null;
 
+  const maxCount =
+    data.objectsActivity && data.objectsActivity.length > 0
+      ? Math.max(...data.objectsActivity.map((a) => a.count))
+      : 1;
+  const maxHeightPx = 200;
+
   return (
     <div>
       <h2 className="text-2xl font-bold text-white mb-6">
@@ -509,22 +515,29 @@ const ActivityTab = ({ data, period, setPeriod }) => {
           Creación de Objetos
         </h3>
         {data.objectsActivity?.length > 0 ? (
-          <div className="h-80 relative">
-            <div className="flex h-full items-end space-x-2">
+          <div className="h-80">
+            <div className="flex items-end h-64 space-x-2">
               {data.objectsActivity.map((item, index) => {
-                const maxCount = Math.max(
-                  ...data.objectsActivity.map((a) => a.count)
+                const heightPx = Math.max(
+                  20,
+                  (item.count / maxCount) * maxHeightPx
                 );
-                const height = maxCount > 0 ? (item.count / maxCount) * 100 : 0;
+                console.log("Item:", item, "HeightPx:", heightPx);
 
                 return (
                   <div
                     key={index}
                     className="flex-1 flex flex-col items-center"
                   >
+                    <div className="text-center mb-2 text-blue-300 font-bold">
+                      {item.count}
+                    </div>
                     <div
-                      className="w-full bg-blue-500 rounded-t"
-                      style={{ height: `${height}%` }}
+                      className="w-full bg-emerald-500 rounded-t transition-all duration-500 hover:bg-emerald-400 border border-white"
+                      style={{
+                        height: `${heightPx}px`,
+                        boxShadow: "0 0 8px rgba(59, 130, 246, 0.8)",
+                      }}
                     ></div>
                     <div className="mt-2 text-xs text-gray-300 truncate w-full text-center">
                       {item.period}
