@@ -11,26 +11,40 @@ const createUser = async (overrides = {}) => {
   const defaultData = {
     firstName: "Usuario",
     lastName: "Prueba",
-    username: `usuario${Date.now()}`,
-    email: `usuario${Date.now()}@example.com`,
+    username: `usuario${Date.now()}${Math.random()}`,
+    email: `usuario${Date.now()}${Math.random()}@example.com`,
     password: "Password123",
     isVerified: true,
     hastoken: false,
     role: "user",
   };
   const userData = { ...defaultData, ...overrides };
-  const hashedPassword = await bcrypt.hash(userData.password, 10);
-  const user = await User.create({
-    ...userData,
-    password: hashedPassword,
-  });
+  if (!userData.password.startsWith("$2b$")) {
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    userData.password = hashedPassword;
+  }
+  const user = await User.create(userData);
+  console.log("Created User: ", user._id, user.email);
   return user;
 };
 
-const loginUser = async (email, password) => {
+const loginUser = async (email, password = "Password123") => {
   const response = await request(app)
-    .post("/api/v1/auth/")
+    .post("/api/v1/auth")
     .send({ email, password });
+  if (!response.body.accessToken) {
+    console.error("Login failed for:", email, response.body);
+    throw new Error(
+      `Login failed for ${email}: ${
+        response.body.message || "No token received"
+      }`
+    );
+  }
+  console.log(
+    "Login Success:",
+    email,
+    response.body.accessToken.substring(0, 10) + "..."
+  );
   return response.body.accessToken;
 };
 const createDiscipline = async (overrides = {}) => {
@@ -44,11 +58,11 @@ const createDiscipline = async (overrides = {}) => {
 };
 
 describe("Pruebas de Objetos", () => {
-  beforeEach(async () => {
+  /* beforeEach(async () => {
     await User.deleteMany({});
     await Discipline.deleteMany({});
     await ObjectModel.deleteMany({});
-  });
+  }); */
 
   describe("POST /api/v1/objects/", () => {
     it("debería crear un objeto exitosamente", async () => {
@@ -700,6 +714,249 @@ describe("Pruebas de Objetos", () => {
       expect(response.statusCode).toBe(404);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty("message", "Object not found");
+    });
+  });
+
+  describe("Pruebas de Objectos - Funcionalidades Avanzadas", () => {
+    let userToken, userId;
+    let user2Token, user2Id;
+    let adminToken, adminId;
+    let testDiscipline;
+    let userObject, user2Object;
+
+    beforeAll(async () => {
+      const userData = await createUser({
+        email: "sharetest@example.com",
+      });
+      userId = userData._id.toString();
+      userToken = await loginUser("sharetest@example.com");
+
+      const user2Data = await createUser({
+        email: "sharetest2@example.com",
+      });
+      user2Id = user2Data._id.toString();
+      user2Token = await loginUser("sharetest2@example.com");
+
+      const adminData = await createUser({
+        email: "shareadmin@example.com",
+        role: "admin",
+      });
+      adminId = adminData._id.toString();
+      adminToken = await loginUser("shareadmin@example.com");
+
+      testDiscipline = await createDiscipline({
+        name: "Libros",
+        description: "Libros que has leído",
+      });
+    });
+
+    beforeEach(async () => {
+      userObject = await ObjectModel.create({
+        name: `User Share Object ${Date.now()}`,
+        description: "Test Object Description",
+        discipline: testDiscipline._id,
+        createdBy: userId,
+        imageUrl: "/public/images/objects/test-image.jpg",
+      });
+      user2Object = await ObjectModel.create({
+        name: `User2 Share Object ${Date.now()}`,
+        description: "Test Object Description",
+        discipline: testDiscipline._id,
+        createdBy: user2Id,
+        imageUrl: "/public/images/objects/test-image.jpg",
+      });
+      await User.updateMany({}, { $set: { favorites: [] } });
+    });
+
+    describe("POST /api/v1/objects/:objectId/share (togglePublicShare)", () => {
+      it("debería permitir al propietario compartir su objeto", async () => {
+        const response = await request(app)
+          .post(`/api/v1/objects/${userObject._id}/share`)
+          .set("Authorization", `Bearer ${userToken}`);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.isPubliclyShared).toBe(true);
+        expect(response.body.publicShareId).toBeDefined();
+
+        const dbObject = await ObjectModel.findById(userObject._id);
+        expect(dbObject.isPubliclyShared).toBe(true);
+        expect(dbObject.publicShareId).toBe(response.body.publicShareId);
+      });
+
+      it("debería permitir al propietario dejar de compartir su objeto", async () => {
+        await request(app)
+          .post(`/api/v1/objects/${userObject._id}/share`)
+          .set("Authorization", `Bearer ${userToken}`);
+        const response = await request(app)
+          .post(`/api/v1/objects/${userObject._id}/share`)
+          .set("Authorization", `Bearer ${userToken}`);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.isPubliclyShared).toBe(false);
+        const dbObject = await ObjectModel.findById(userObject._id);
+        expect(dbObject.isPubliclyShared).toBe(false);
+      });
+
+      it("NO debería permitir otro usuario compartir un objeto que no es suyo", async () => {
+        const response = await request(app)
+          .post(`/api/v1/objects/${userObject._id}/share`)
+          .set("Authorization", `Bearer ${user2Token}`);
+        expect(response.statusCode).toBe(403);
+        expect(response.body.error).toBe(true);
+        expect(response.body.message).toBe(
+          "No estás autorizado para compartir este objeto"
+        );
+      });
+      it("NO debería permitir a un admin compartir un objeto que no es suyo", async () => {
+        const response = await request(app)
+          .post(`/api/v1/objects/${userObject._id}/share`)
+          .set("Authorization", `Bearer ${adminToken}`);
+        expect(response.statusCode).toBe(403);
+        expect(response.body.error).toBe(true);
+        expect(response.body.message).toBe(
+          "No estás autorizado para compartir este objeto"
+        );
+      });
+      it("Debería devolver 401 si no está autenticado", async () => {
+        const response = await request(app).post(
+          `/api/v1/objects/${userObject._id}/share`
+        );
+        expect(response.statusCode).toBe(401);
+        expect(response.body.error).toBe(true);
+        expect(response.body.message).toBe(
+          "Necesitas estar logueado y un token válido para realizar esta acción"
+        );
+      });
+      it("Debería devolver 400 si el ID del objeto no es válido", async () => {
+        const response = await request(app)
+          .post(`/api/v1/objects/invalidId/share`)
+          .set("Authorization", `Bearer ${userToken}`);
+        expect(response.statusCode).toBe(400);
+        expect(response.body.error).toBe(true);
+        expect(response.body.message).toBe("ID de objeto inválida");
+      });
+    });
+
+    describe("GET /api/v1/objects/shared/:shareId (getPublicObject)", () => {
+      let sharedObjectId, shareId;
+      beforeEach(async () => {
+        const shareResponse = await request(app)
+          .post(`/api/v1/objects/${userObject._id}/share`)
+          .set("Authorization", `Bearer ${userToken}`);
+        if (shareResponse.statusCode !== 200) {
+          console.error(
+            "Failed to share object in beforeEach:",
+            shareResponse.body
+          );
+        }
+        shareId = shareResponse.body.publicShareId;
+        sharedObjectId = userObject._id.toString();
+        expect(shareId).toBeDefined();
+      });
+
+      it("Debería obtener un objeto compartido públicamente por su shareId", async () => {
+        const response = await request(app).get(
+          `/api/v1/objects/shared/${shareId}`
+        );
+        expect(response.statusCode).toBe(200);
+        expect(response.body.object).toBeDefined();
+        expect(response.body.object._id).toBe(sharedObjectId);
+        expect(response.body.object.createdBy).toBeDefined();
+      });
+
+      it("Debería devolver 404 si el shareId no existe", async () => {
+        const response = await request(app).get(
+          `/api/v1/objects/shared/nonExistentShareId`
+        );
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toBe(
+          "El objeto ya no está compartido o no existe"
+        );
+      });
+
+      it("Debería devolver 404 si el objeto ya no está compartido", async () => {
+        await request(app)
+          .post(`/api/v1/objects/${userObject._id}/share`)
+          .set("Authorization", `Bearer ${userToken}`);
+        const response = await request(app).get(
+          `/api/v1/objects/shared/${shareId}`
+        );
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toBe(
+          "El objeto ya no está compartido o no existe"
+        );
+      });
+    });
+
+    describe("POST /api/v1/objects/:objectId/favorite (toggleFavorite)", () => {
+      beforeEach(async () => {
+        const userCheck = await User.findById(userId);
+        if (!userCheck) {
+          console.log("Usuario no encontrado en la BD, recreando...");
+          const newUser = await createUser({
+            _id: userId,
+            email: "sharetest@example.com",
+          });
+          userId = newUser._id.toString();
+          userToken = await loginUser("sharetest@example.com");
+        }
+        userObject = await ObjectModel.create({
+          name: `User Share Object ${Date.now()}`,
+          description: "Test Object Description",
+          discipline: testDiscipline._id,
+          createdBy: userId,
+          imageUrl: "/public/images/objects/test-image.jpg",
+        });
+        user2Object = await ObjectModel.create({
+          name: `User2 Share Object ${Date.now()}`,
+          description: "Test Object Description 2",
+          discipline: testDiscipline._id,
+          createdBy: user2Id,
+          imageUrl: "/public/images/objects/test-image2.jpg",
+        });
+        await User.updateMany({}, { $set: { favorites: [] } });
+      });
+      it("Debería permitir al usuario agregar un objeto a favoritos", async () => {
+        const response = await request(app)
+          .post(`/api/v1/objects/${userObject._id}/favorite`)
+          .set("Authorization", `Bearer ${userToken}`);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.isFavorite).toBe(true);
+        const userDb = await User.findById(userId);
+        expect(userDb.favorites.map((id) => id.toString())).toContain(
+          userObject._id.toString()
+        );
+      });
+
+      it("Debería permitir al usuario quitar un objeto de favoritos", async () => {
+        await request(app)
+          .post(`/api/v1/objects/${userObject._id}/favorite`)
+          .set("Authorization", `Bearer ${userToken}`);
+        const response = await request(app)
+          .post(`/api/v1/objects/${userObject._id}/favorite`)
+          .set("Authorization", `Bearer ${userToken}`);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.isFavorite).toBe(false);
+        const userDb = await User.findById(userId);
+        expect(userDb.favorites.map((id) => id.toString())).not.toContain(
+          userObject._id.toString()
+        );
+      });
+
+      it("Debería devolver 401 si no está autenticado", async () => {
+        const response = await request(app).post(
+          `/api/v1/objects/${userObject._id}/favorite`
+        );
+        expect(response.statusCode).toBe(401);
+        expect(response.body.error).toBe(true);
+      });
+
+      it("Debería devolver 404 si el objeto no existe", async () => {
+        const response = await request(app)
+          .post(`/api/v1/objects/605c72ef1d8b9f001f5f4d23/favorite`)
+          .set("Authorization", `Bearer ${userToken}`);
+        expect(response.statusCode).toBe(404);
+        expect(response.body.error).toBe(true);
+        expect(response.body.message).toBe("Object not found");
+      });
     });
   });
 });
