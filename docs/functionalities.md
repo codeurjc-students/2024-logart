@@ -92,6 +92,12 @@ De forma similar, también podrá eliminar los comentarios que existan dentro de
    - Diseño responsive en móvil (probado en SG-S20Ultra y iPhone 14Pro Max).
    - Utilizar tecnologías de comunicación complementarias a REST, concretamente, WebSockets (Socket.IO) para implementar un sistema de notificaciones en tiempo real que alerte a los administradores cuando un usuario comparte un objeto.
 
+   -Testing UX con usuarios reales, de diferentes edades [25, 34 y 17], y con diferente background [Ingeniero informático, Ingeniero Forestal y Estudiante de Ciencias Sociales]. Los detalles y el plan de acción se incluyen en [TestingUX](./testingUX.md):
+
+   - [Video test 1](https://youtu.be/B9CY7glR-g0)
+   - [Video test 2](https://youtu.be/Z8PAVuUZ_U0)
+   - [Video test 3](https://youtu.be/L5bwg_cBIrQ)
+
 ## 🔐 Permisos de usuario
 
 <div style="text-align: justify">
