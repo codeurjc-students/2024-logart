@@ -1,11 +1,61 @@
 const request = require("supertest");
 const app = require("../../app");
 const User = require("../../models/user.model");
+const Discipline = require("../../models/discipline.model");
+const ObjectModel = require("../../models/object.model");
 const authService = require("../../services/authService");
 const mongoose = require("mongoose");
 const path = require("path");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
+
+const createUser = async (overrides = {}) => {
+  const defaultData = {
+    firstName: "Test",
+    lastName: "User",
+    username: `testuser${Date.now()}${Math.random()}`,
+    email: `testuser${Date.now()}${Math.random()}@example.com`,
+    password: "password123",
+    isVerified: true,
+    role: "user",
+    favorites: [],
+  };
+  const userData = { ...defaultData, ...overrides };
+  if (!userData.password.startsWith("$2b$")) {
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    userData.password = hashedPassword;
+  }
+  return await User.create(userData);
+};
+
+const loginUser = async (email, password = "password123") => {
+  const result = await authService.login(email, password);
+  if (!result || !result.accessToken) {
+    throw new Error(`Login failed for ${email}`);
+  }
+  return result.accessToken;
+};
+
+const createDiscipline = async (overrides = {}) => {
+  const defaultData = {
+    name: "Libros",
+    description: "Libros que has leído",
+  };
+  const disciplineData = { ...defaultData, ...overrides };
+  const discipline = await Discipline.create(disciplineData);
+  return discipline;
+};
+
+const createObject = async (userId, disciplineId, overrides = {}) => {
+  const defaultData = {
+    name: `Test Obj ${Date.now()}`,
+    description: "Test Obj Desc",
+    imageUrl: "/public/images/objects/test-image.jpg",
+    discipline: disciplineId,
+    createdBy: userId,
+  };
+  return await ObjectModel.create({ ...defaultData, ...overrides });
+};
 
 describe("Pruebas de Usuarios", () => {
   let userToken;
@@ -484,6 +534,83 @@ describe("Pruebas de Usuarios", () => {
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty("error", true);
       expect(response.body).toHaveProperty("message", "Invalid user ID format");
+    });
+  });
+
+  describe("GET /api/v1/users/favorites (getUserFavorites)", () => {
+    let userToken, userId;
+    let favObject1, favObject2, nonFavObject;
+    beforeEach(async () => {
+      const user = await createUser({ email: "favusertest@example.com" });
+      userId = user._id.toString();
+      userToken = await loginUser("favusertest@example.com");
+      const discipline = await createDiscipline({
+        name: "Libros",
+        description: "Libros que has leído",
+      });
+      favObject1 = await createObject(userId, discipline._id, {
+        name: "User Fav Obj 1",
+      });
+      favObject2 = await createObject(userId, discipline._id, {
+        name: "User Fav Obj 2",
+      });
+      nonFavObject = await createObject(userId, discipline._id, {
+        name: "User Non Fav Obj",
+      });
+      await User.findByIdAndUpdate(userId, {
+        $addToSet: { favorites: [favObject1._id, favObject2._id] },
+      });
+    });
+
+    it("debería obtener la lista de IDs de objetos favoritos del usuario", async () => {
+      const response = await request(app)
+        .get("/api/v1/users/favorites")
+        .set("Authorization", `Bearer ${userToken}`);
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty("favorites");
+      expect(Array.isArray(response.body.favorites)).toBe(true);
+      expect(response.body.favorites).toHaveLength(2);
+      expect(response.body.favorites).toContain(favObject1._id.toString());
+      expect(response.body.favorites).toContain(favObject2._id.toString());
+      expect(response.body.favorites).not.toContain(
+        nonFavObject._id.toString()
+      );
+    });
+
+    it("debería devolver un array vacío si el usuario no tiene favoritos", async () => {
+      const noFavUser = await createUser({ email: "nofavuser@example.com" });
+      const noFavToken = await loginUser("nofavuser@example.com");
+      const response = await request(app)
+        .get("/api/v1/users/favorites")
+        .set("Authorization", `Bearer ${noFavToken}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty("favorites");
+      expect(Array.isArray(response.body.favorites)).toBe(true);
+      expect(response.body.favorites).toHaveLength(0);
+    });
+
+    it("debería devolver 401 si no está autenticado", async () => {
+      const response = await request(app).get("/api/v1/users/favorites");
+      expect(response.statusCode).toBe(401);
+    });
+
+    it("debería manejar el caso donde el campo favorites no existe en el documento (y crearlo)", async () => {
+      const edgeUser = await createUser({ email: "edgefav@example.com" });
+      await User.findByIdAndUpdate(edgeUser._id, { $unset: { favorites: "" } });
+      const edgeToken = await loginUser("edgefav@example.com");
+
+      const response = await request(app)
+        .get("/api/v1/users/favorites")
+        .set("Authorization", `Bearer ${edgeToken}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty("favorites", []);
+
+      const userDb = await User.findById(edgeUser._id);
+      expect(userDb.favorites).toBeDefined();
+      expect(Array.isArray(userDb.favorites)).toBe(true);
+      expect(userDb.favorites).toHaveLength(0);
     });
   });
 });
