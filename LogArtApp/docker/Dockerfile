@@ -1,16 +1,16 @@
 FROM node:20-alpine AS frontend-build
 WORKDIR /app/frontend
-COPY LogArtApp/frontend/LogArt-frontend/package*.json ./
+COPY frontend/LogArt-frontend/package*.json ./
 RUN npm install --legacy-peer-deps
-COPY LogArtApp/frontend/LogArt-frontend/ ./
+COPY frontend/LogArt-frontend/ ./
 RUN npm run build
 
 FROM node:20-alpine AS backend-build
 WORKDIR /app/backend
 RUN apk add --no-cache make gcc g++ python3
-COPY LogArtApp/backend/package*.json ./
+COPY backend/package*.json ./
 RUN npm install --legacy-peer-deps
-COPY LogArtApp/backend/ ./
+COPY backend/ ./
 RUN npm rebuild bcrypt --build-from-source
 RUN npm prune --production
 RUN npm cache clean --force

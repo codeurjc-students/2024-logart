@@ -179,16 +179,13 @@ Situarse en la carpeta raíz del proyecto
 cd 2024-logart/LogArtApp
 ```
 
-Construir la imagen con tag "dev"
+Construir la imagen con tag "latestManual" o cualquier otro
 
 ```
-docker build -t
-
-davidmorenoo/logartapp:dev -f
-docker/Dockerfile .
+docker build -t davidmorenoo/logartapp:latestManual -f docker/Dockerfile .
 ```
 
-### Ejecución con docker-compose-dev.yml
+### Ejecución con docker-compose.yml
 
 Navegar a la carpeta docker
 
@@ -196,13 +193,13 @@ Navegar a la carpeta docker
 cd docker
 ```
 
-Ejecutar con docker-compose-dev.yml
+Ejecutar con docker-compose.yml
 
 ```
-docker compose -f docker-compose-dev.yml up
+docker compose up
 ```
 
-La aplicación estará disponible en https://localhost
+La aplicación estará disponible en https://localhost:8443
 
 ## Publicar una Release
 
