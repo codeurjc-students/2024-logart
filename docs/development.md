@@ -17,7 +17,7 @@ La aplicación LogArt se desarrolla usando un stack de tecnologías MERN, para m
 
 - [Blog LogArt: Un giro radical hacia el MERN Stack](https://medium.com/@davidmorenom17/logart-un-giro-radical-hacia-el-mern-stack-060ebde31bc5)
 
-Nota: Las versiones pueden no ser exactas
+Nota: Las versiones pueden no ser exactas debido al continuo desarrollo/actualización de las mismas
 
 ### Entorno de Desarrollo Backend
 
@@ -92,13 +92,13 @@ La aplicación React se inicia en modo desarrollo en http://localhost:5173
 
 Este diagrama muestra las clases de la aplicación y las relaciones entre ellas. (se han excluido clases como seeders o configuración de base de datos, .env, server, etc.)
 
-![Imagen de clasesBackend](/DocFiles/images/phase2/final.svg)
+![Imagen de clasesBackend](/DocFiles/images/phase3/final.drawio.svg)
 
 ## 📝 Diagrama de clases del frontend
 
 Este diagrama muestra las páginas y componentes de la aplicación, junto con archivos de contexto y utilidades. Tambien muestra las relaciones entre todos estos. (se han excluido cosas como tailwind, configuración de base de datos, .env, server, etc.)
 
-![Imagen de clasesSPA](/DocFiles/images/phase2/finalspa.svg)
+![Imagen de clasesSPA](/DocFiles/images/phase3/finalspa.drawio.png)
 
 ## Uso de la API REST en Desarrollo
 
@@ -179,16 +179,13 @@ Situarse en la carpeta raíz del proyecto
 cd 2024-logart/LogArtApp
 ```
 
-Construir la imagen con tag "dev"
+Construir la imagen con tag "latestManual" o cualquier otro
 
 ```
-docker build -t
-
-davidmorenoo/logartapp:dev -f
-docker/Dockerfile .
+docker build -t davidmorenoo/logartapp:latestManual -f docker/Dockerfile .
 ```
 
-### Ejecución con docker-compose-dev.yml
+### Ejecución con docker-compose.yml
 
 Navegar a la carpeta docker
 
@@ -196,13 +193,13 @@ Navegar a la carpeta docker
 cd docker
 ```
 
-Ejecutar con docker-compose-dev.yml
+Ejecutar con docker-compose.yml
 
 ```
-docker compose -f docker-compose-dev.yml up
+docker compose up
 ```
 
-La aplicación estará disponible en https://localhost
+La aplicación estará disponible en https://localhost:8443
 
 ## Publicar una Release
 

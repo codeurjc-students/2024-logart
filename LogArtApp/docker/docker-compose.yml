@@ -28,7 +28,7 @@ services:
       - "27017:27017"
     restart: unless-stopped
   app:
-    image: davidmorenoo/logartapp:latest17
+    image: davidmorenoo/logartapp:latestManual
     ports:
       - "8443:8443"
     healthcheck:

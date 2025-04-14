@@ -36,7 +36,7 @@ Mode                 LastWriteTime         Length Name
 docker compose up
 ```
 
-- Ahora, tenemos acceso a la aplicación desde el navegador dirigiendonos a https://localhost
+- Ahora, tenemos acceso a la aplicación desde el navegador dirigiendonos a https://localhost:8443
 
 -Notas, al usar certificados SSL autofirmados, el navegador puede mostrar una advertencia de seguridad. Deberás clicar en "configuración avanzada" y en "Acceder a localhost (sitio no seguro)".
 
