@@ -58,12 +58,6 @@ const createDiscipline = async (overrides = {}) => {
 };
 
 describe("Pruebas de Objetos", () => {
-  /* beforeEach(async () => {
-    await User.deleteMany({});
-    await Discipline.deleteMany({});
-    await ObjectModel.deleteMany({});
-  }); */
-
   describe("POST /api/v1/objects/", () => {
     it("debería crear un objeto exitosamente", async () => {
       const user = await createUser({
