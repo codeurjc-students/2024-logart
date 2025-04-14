@@ -171,7 +171,7 @@ npx playwright test --project=chromium
 
 ## Construcción Docker y Ejecución
 
-### Construcción Local con Tag "dev"
+### Construcción Local con Tag
 
 Situarse en la carpeta raíz del proyecto
 
