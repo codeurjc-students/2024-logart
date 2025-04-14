@@ -30,7 +30,7 @@ La aplicación implementa un sistema completo de autenticación y autorización 
 
 - Diagrama completo: Entidades, junto con sus atributos y relaciones.
 
-![Diagrama completo](/DocFiles/images/phase2/databaseSquema.png)
+![Diagrama completo](/DocFiles/images/phase3/dbdiagram.png)
 
 ## 👦 Tipos de usuarios
 
@@ -223,8 +223,134 @@ Si en cualquier momento introducimos una url no válida, llegaremos a la pantall
 
 ![Imagen de error](/DocFiles/images/phase2/404error.png)
 
+## Pantalla de Recuperación de contraseña 1
+
+Ahora podemos dar a la opción de recuperar contraseña en la pestaña de login
+
+![Imagen de recuperacion1](/DocFiles/images/phase3/pass1.png)
+
+## Pantalla de Recuperación de contraseña 2
+
+Donde deberemos introducir un correo de la aplicación
+
+![Imagen de recuperacion2](/DocFiles/images/phase3/pass2.png)
+
+## Pantalla de Recuperación de contraseña 3
+
+Y obtendremos un mensaje de éxito, independientemente de si el gmail existe o no, para evitar que se puedan hacer acciones maliciosas y sacar correos de usuarios por fuerza bruta
+
+![Imagen de recuperacion3](/DocFiles/images/phase3/pass3.png)
+
+## Pantalla de Recuperación de contraseña 4
+
+Entonces recibiremos en nuestro correo un mensaje como el siguiente
+
+![Imagen de recuperacion4](/DocFiles/images/phase3/pass4.png)
+
+## Pantalla de Recuperación de contraseña 5
+
+Y si aceptamos, nos dará la opción de cambiar la contraseña
+
+![Imagen de recuperacion5](/DocFiles/images/phase3/pass5.png)
+
+## Pantalla de verificación de registro
+
+De manera similar, debemos verificar nuestra cuenta por gmail después de registrarnos, donde al hacerlo iremos a la siguiente pestaña
+
+![Imagen de verificacion mail](/DocFiles/images/phase3/verificacion1.png)
+
+## Pantalla de compartir objeto 1
+
+Ahora, podemos compartir nuestros objetos con cualquier persona, incluso si no tienen cuenta en la aplicación, lo haremos desde dentro del objeto a compartir, y clicando en el botón
+
+![Imagen de share1](/DocFiles/images/phase3/share1.png)
+
+## Pantalla de compartir objeto 2
+
+Ahora veremos el link
+
+![Imagen de share2](/DocFiles/images/phase3/share2.png)
+
+## Pantalla de compartir objeto 3
+
+Este link podrá ser usado por cualquier persona, y si lo usa mientras el dueño sigue compartiendo el objeto, verá la siguiente página
+
+![Imagen de share3](/DocFiles/images/phase3/share3.png)
+
+## Pantalla de compartir objeto 4
+
+Pero si lo usa cuando el dueño ha dejado de compartir el objeto, verá lo siguiente
+
+![Imagen de share4](/DocFiles/images/phase3/share4.png)
+
+## Pantalla de favoritos 1
+
+Se ha añadido la opción de marcar objetos como favoritos para tenerlos siempre a mano en caso de tener muchos objetos, para agregar un objeto a favoritos, lo haremos desde la propia card del objeto, clicando en el corazón
+
+![Imagen de fav1](/DocFiles/images/phase3/fav1.png)
+
+## Pantalla de favoritos 2
+
+Una vez que el objeto está en favoritos, para mostrarlo simplemente debemos clicar en el filtro de favoritos, justo al lado del selector de disciplina
+
+![Imagen de fav2](/DocFiles/images/phase3/fav2.png)
+
+## Pantalla de dashboard de administrador 1
+
+También se ha añadido el dashboard de administrador, que será accesible desde su header
+
+![Imagen de dashboard1](/DocFiles/images/phase3/dashboard1.png)
+
+## Pantalla de dashboard de administrador 2
+
+Una vez aquí, tenemos varias pestañas, la de overview, donde se muestra un resumen general de la aplicación
+
+![Imagen de dashboard2](/DocFiles/images/phase3/dashboard2.png)
+
+## Pantalla de dashboard de administrador 3
+
+La de Usuarios, donde podemos ver unas estadísticas de usuarios, y la gestión de los usuarios por parte de los administradores
+
+![Imagen de dashboard3](/DocFiles/images/phase3/dashboard3.png)
+
+## Pantalla de dashboard de administrador 4
+
+La de Contenido, donde veremos unas estadísticas sobre el contenido de la aplicación y la creación de objetos y comentarios
+
+![Imagen de dashboard4](/DocFiles/images/phase3/dashboard4.png)
+
+## Pantalla de dashboard de administrador 5
+
+La de Actividad, donde veremos las estadísticas de creación de objetos en forma de gráfico de barras, con diferentes pestañas para "Semanal", "Mensual", y "Trimestral"
+
+![Imagen de dashboard5](/DocFiles/images/phase3/dashboard5.png)
+
+## Pantalla de dashboard de administrador 6
+
+La de Crecimiento, donde veremos el análisis de crecimiento para Usuarios, Objetos y Comentarios, comparando diferentes periodos de tiempo, con su respectivo periodo anterior
+
+![Imagen de dashboard6](/DocFiles/images/phase3/dashboard6.png)
+
+## Pantalla de dashboard de administrador 7
+
+La de Objetos, donde podemos ver los objetos de la aplicación, y la gestión de los objetos por parte de los administradores
+
+![Imagen de dashboard7](/DocFiles/images/phase3/dashboard7.png)
+
+## Pantalla de notificación de webSocket 1
+
+Si un usuario comparte un objeto, los administradores recibirán una notificación y el link al objeto, para poder ver y moderar que están compartiendo los usuarios
+
+![Imagen de websocket1](/DocFiles/images/phase3/websocket1.png)
+
+## Pantalla de notificación de webSocket 2
+
+Si clicamos, iremos al objeto
+
+![Imagen de websocket2](/DocFiles/images/phase3/websocket2.png)
+
 ## 🗺️ Diagrama de Navegación
 
 Este diagrama muestra cómo se navega entre las diferentes páginas de la aplicación.
 
-![Imagen de wireframe](/DocFiles/images/phase2/wireframe.png)
+![Imagen de wireframe](/DocFiles/images/phase3/wireframe.png)
