@@ -169,7 +169,7 @@ const logout = async (req, res) => {
 
 /**
  * @swagger
- * /auth/forgot-password:
+ * /forgot-password:
  *   post:
  *     summary: Solicitar restablecimiento de contraseña
  *     tags: [Autenticación]
@@ -222,7 +222,7 @@ const forgotPassword = async (req, res) => {
 
 /**
  * @swagger
- * /auth/reset-password/{token}:
+ * /reset-password/{token}:
  *   post:
  *     summary: Restablecer la contraseña del usuario
  *     tags: [Autenticación]
