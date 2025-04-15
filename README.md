@@ -21,6 +21,7 @@ Alumno: David Moreno Martín
 
 Tutor: Micael Gallego Carrillo
 
-### ▶️ Video de demostración
+### ▶️ Videos de demostración
 
 [LogArt Demo ](https://youtu.be/jGPRqOFaC10)
+[LogArt Demo en detalle ](https://youtu.be/c7ZoG5zqCQk)
