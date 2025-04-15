@@ -23,5 +23,6 @@ Tutor: Micael Gallego Carrillo
 
 ### ▶️ Videos de demostración
 
-[LogArt Demo ](https://youtu.be/jGPRqOFaC10)
-[LogArt Demo en detalle ](https://youtu.be/c7ZoG5zqCQk)
+- [LogArt Demo ](https://youtu.be/jGPRqOFaC10)
+
+- [LogArt Demo en detalle ](https://youtu.be/c7ZoG5zqCQk)
