@@ -30,8 +30,9 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v6
+        working-directory: ./LogArtApp
         with:
-          context: ./LogArtApp
+          context: .
           file: ./docker/Dockerfile
           push: ${{ github.event_name == 'release' }}
           tags: ${{ steps.meta.outputs.tags }}
