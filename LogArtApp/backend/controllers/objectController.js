@@ -344,7 +344,7 @@ const getObjectById = async (req, res) => {
 /**
  * @swagger
  * /objects/{objectId}/toggle-public-share:
- *   patch:
+ *   post:
  *     summary: Alternar la opción de compartir públicamente un objeto
  *     tags: [Objetos]
  *     security:

@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: LogArt API
-  version: 1.0.0
+  version: 2.0.0
   description: Documentación API REST para la aplicación LogArt
   contact:
     name: David Moreno Martín
@@ -575,6 +575,390 @@ components:
             editedBy: 60d0fe4f5311236168a109ca
             createdAt: "2022-01-02T12:34:56Z"
             updatedAt: "2022-01-03T12:34:56Z"
+    DisciplineReference:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID único de la disciplina.
+          example: "67fe71e524da18e8123d1caa"
+        name:
+          type: string
+          description: Nombre de la disciplina.
+          example: "Canciones"
+      required:
+        - _id
+        - name
+
+    UserReference:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID único del usuario.
+          example: "67fe71e524da18e8123d1cb3"
+        username:
+          type: string
+          description: Nombre de usuario.
+          example: "jane_smith"
+        firstName:
+          type: string
+          description: Nombre del usuario.
+          example: "Jane"
+        lastName:
+          type: string
+          description: Apellido del usuario.
+          example: "Smith"
+      required:
+        - _id
+        - username
+        - firstName
+        - lastName
+
+    ObjectDetails:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID único del objeto.
+          example: "67fe71e724da18e8123d1ce6"
+        name:
+          type: string
+          description: Nombre del objeto.
+          example: "The Legend of Zelda 3"
+        description:
+          type: string
+          description: Descripción del objeto.
+          example: "Un famoso videojuego de aventura."
+        imageUrl:
+          type: string
+          description: URL de la imagen del objeto.
+          example: "public/images/objects/zelda.jpg"
+        discipline:
+          $ref: "#/components/schemas/DisciplineReference"
+        createdBy:
+          $ref: "#/components/schemas/UserReference"
+        isPubliclyShared:
+          type: boolean
+          description: Indica si el objeto está compartido públicamente.
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+          description: Fecha de creación del objeto.
+          example: "2025-04-15T14:49:11.434Z"
+        __v:
+          type: integer
+          description: Versión del documento (Mongoose).
+          example: 0
+        publicShareCreatedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: Fecha en que se compartió públicamente.
+          example: null
+        publicShareId:
+          type: string
+          nullable: true
+          description: ID único de la compartición pública.
+          example: "1d3573ac78b36277a6da75bacfec578e"
+      required:
+        - _id
+        - name
+        - description
+        - imageUrl
+        - discipline
+        - createdBy
+        - isPubliclyShared
+        - createdAt
+        - __v
+
+    PaginationInfo:
+      type: object
+      properties:
+        totalObjects:
+          type: integer
+          description: Número total de objetos que coinciden con los filtros.
+          example: 12
+        currentPage:
+          type: integer
+          description: Página actual devuelta.
+          example: 1
+        totalPages:
+          type: integer
+          description: Número total de páginas disponibles.
+          example: 2
+      required:
+        - totalObjects
+        - currentPage
+        - totalPages
+
+    FilterDisciplineReference:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID único de la disciplina disponible para filtrar.
+          example: "67fe71e524da18e8123d1ca7"
+        name:
+          type: string
+          description: Nombre de la disciplina disponible para filtrar.
+          example: "Libros"
+      required:
+        - id
+        - name
+
+    DashboardOverview:
+      type: object
+      properties:
+        totalUsers:
+          type: integer
+          description: Número total de usuarios registrados.
+          example: 13
+        totalObjects:
+          type: integer
+          description: Número total de objetos creados.
+          example: 12
+        totalComments:
+          type: integer
+          description: Número total de comentarios realizados.
+          example: 9
+        objectsByDiscipline:
+          type: array
+          description: Distribución de objetos por disciplina.
+          items:
+            type: object
+            properties:
+              count:
+                type: integer
+                description: Número de objetos en esta disciplina.
+                example: 8
+              discipline:
+                type: string
+                description: Nombre de la disciplina.
+                example: "Canciones"
+            required:
+              - count
+              - discipline
+        recentObjects:
+          type: integer
+          description: Número de objetos creados recientemente
+          example: 5
+        objectsGrowth:
+          type: number
+          description: Tasa de crecimiento de objetos
+          example: 100
+      required:
+        - totalUsers
+        - totalObjects
+        - totalComments
+        - objectsByDiscipline
+        - recentObjects
+        - objectsGrowth
+
+    DashboardUserStats:
+      type: object
+      properties:
+        totalUsers:
+          type: integer
+          description: Número total de usuarios.
+          example: 13
+        usersByRole:
+          type: array
+          description: Distribución de usuarios por rol.
+          items:
+            type: object
+            properties:
+              count:
+                type: integer
+                description: Número de usuarios con este rol.
+                example: 11
+              role:
+                type: string
+                description: Nombre del rol.
+                example: "user"
+            required:
+              - count
+              - role
+        usersByObjectCount:
+          type: array
+          description: Ranking de usuarios por número de objetos creados.
+          items:
+            type: object
+            properties:
+              objectCount:
+                type: integer
+                description: Número de objetos creados por el usuario.
+                example: 6
+              userId:
+                type: string
+                description: ID del usuario.
+                example: "67fe71e524da18e8123d1cb3"
+              userName:
+                type: string
+                description: Nombre de usuario.
+                example: "jane_smith"
+            required:
+              - objectCount
+              - userId
+              - userName
+      required:
+        - totalUsers
+        - usersByRole
+        - usersByObjectCount
+
+    DashboardContentStats:
+      type: object
+      properties:
+        objectsByDiscipline:
+          type: array
+          description: Distribución de objetos por disciplina.
+          items:
+            type: object
+            properties:
+              count:
+                type: integer
+                description: Número de objetos en esta disciplina.
+                example: 8
+              discipline:
+                type: string
+                description: Nombre de la disciplina.
+                example: "Canciones"
+            required:
+              - count
+              - discipline
+        mostCommentedObjects:
+          type: array
+          description: Objetos con más comentarios.
+          items:
+            type: object
+            properties:
+              commentCount:
+                type: integer
+                description: Número de comentarios en el objeto.
+                example: 3
+              objectId:
+                type: string
+                description: ID del objeto.
+                example: "67fe71e724da18e8123d1ce0"
+              name:
+                type: string
+                description: Nombre del objeto.
+                example: "The Legend of Zelda"
+            required:
+              - commentCount
+              - objectId
+              - name
+      required:
+        - objectsByDiscipline
+        - mostCommentedObjects
+
+    DashboardActivityStats:
+      type: object
+      properties:
+        period:
+          type: string
+          description: Periodo utilizado para la agregación (coincide con el parámetro de consulta).
+          example: "weekly"
+          enum:
+            - daily
+            - weekly
+            - monthly
+        objectsActivity:
+          type: array
+          description: Número de objetos creados por periodo.
+          items:
+            type: object
+            properties:
+              period:
+                type: string
+                description: Etiqueta del periodo (formato depende de la agregación, ej. YYYY-WW o YYYY-MM).
+                example: "2025-08"
+              count:
+                type: integer
+                description: Número de objetos creados en ese periodo.
+                example: 2
+            required:
+              - period
+              - count
+      required:
+        - period
+        - objectsActivity
+
+    DashboardGrowthAnalysis:
+      type: object
+      properties:
+        period:
+          type: string
+          description: Periodo utilizado para el análisis (coincide con el parámetro de consulta).
+          example: "monthly"
+          enum:
+            - weekly
+            - monthly
+            - quarterly
+        metrics:
+          type: object
+          description: Métricas de crecimiento para diferentes entidades.
+          properties:
+            users:
+              $ref: "#/components/schemas/GrowthMetric"
+            objects:
+              $ref: "#/components/schemas/GrowthMetric"
+            comments:
+              $ref: "#/components/schemas/GrowthMetric"
+          required:
+            - users
+            - objects
+            - comments
+      required:
+        - period
+        - metrics
+
+    GrowthMetric:
+      type: object
+      properties:
+        current:
+          type: integer
+          description: Valor actual en el periodo.
+          example: 11
+        previous:
+          type: integer
+          description: Valor en el periodo anterior.
+          example: 2
+        growth:
+          type: number
+          description: Tasa de crecimiento (%).
+          example: 450
+      required:
+        - current
+        - previous
+        - growth
+
+    DashboardObjectList:
+      type: object
+      properties:
+        objects:
+          type: array
+          description: Lista de objetos en la página actual.
+          items:
+            $ref: "#/components/schemas/ObjectDetails"
+        pagination:
+          $ref: "#/components/schemas/PaginationInfo"
+        filters:
+          type: object
+          description: Información sobre los filtros disponibles o aplicados.
+          properties:
+            disciplines:
+              type: array
+              description: Lista de disciplinas disponibles para filtrar.
+              items:
+                $ref: "#/components/schemas/FilterDisciplineReference"
+          required:
+            - disciplines
+      required:
+        - objects
+        - pagination
+        - filters
 security:
   - BearerAuth: []
 paths:
@@ -683,6 +1067,82 @@ paths:
           description: Errores de autenticación, token vacio, token en la lista negra
         "403":
           description: Error, token inválido
+        "500":
+          description: Error interno del servidor
+  /forgot-password:
+    post:
+      summary: Solicitar restablecimiento de contraseña
+      tags:
+        - Autenticación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  example: pepe@gmail.com
+                  description: Correo del usuario para el restablecimiento de contraseña
+      responses:
+        "200":
+          description: Se ha enviado el correo de restablecimiento de contraseña
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Si tu correo electrónico existe, recibirás un enlace para restablecer tu contraseña
+
+        "400":
+          description: Error en los datos enviados
+        "500":
+          description: Error interno del servidor
+  /reset-password/{token}:
+    post:
+      summary: Restablecer la contraseña del usuario
+      tags:
+        - Autenticación
+      parameters:
+        - in: path
+          name: token
+          required: true
+          schema:
+            type: string
+            example: 1d3573ac78b36277a6da75bacfec578e
+          description: Token recibido para el restablecimiento de contraseña
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+              properties:
+                password:
+                  type: string
+                  example: "NuevaContraseñaSegura"
+                  description: Nueva contraseña del usuario
+      responses:
+        "200":
+          description: Contraseña restablecida exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Contraseña restablecida con éxito
+
+        "400":
+          description: Datos inválidos o token caducado
         "500":
           description: Error interno del servidor
   /comments:
@@ -825,6 +1285,172 @@ paths:
           description: Error, no autorizado para ver comentarios de este objeto
         "404":
           description: Error, objeto o comentario no encontrado
+        "500":
+          description: Error interno del servidor
+  /dashboard/overview:
+    get:
+      summary: Obtener estadísticas generales
+      tags:
+        - Dashboard
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Estadísticas obtenidas exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardOverview"
+        "401":
+          description: No autorizado (Token inválido o ausente)
+        "500":
+          description: Error interno del servidor
+
+  /dashboard/users:
+    get:
+      summary: Obtener estadísticas de usuarios
+      tags:
+        - Dashboard
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Estadísticas de usuarios obtenidas exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardUserStats"
+        "401":
+          description: No autorizado
+        "500":
+          description: Error interno del servidor
+
+  /dashboard/content:
+    get:
+      summary: Obtener estadísticas de contenido
+      tags:
+        - Dashboard
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Estadísticas de contenido obtenidas exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardContentStats"
+        "401":
+          description: No autorizado
+        "500":
+          description: Error interno del servidor
+
+  /dashboard/activity:
+    get:
+      summary: Obtener estadísticas de actividad
+      tags:
+        - Dashboard
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: period
+          description: Periodo para agregar la actividad.
+          schema:
+            type: string
+            enum:
+              - daily
+              - weekly
+              - monthly
+            default: weekly
+      responses:
+        "200":
+          description: Estadísticas de actividad obtenidas exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardActivityStats"
+        "400":
+          description: Parámetro 'period' inválido
+        "401":
+          description: No autorizado
+        "500":
+          description: Error interno del servidor
+
+  /dashboard/growth:
+    get:
+      summary: Obtener análisis de crecimiento
+      tags:
+        - Dashboard
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: period
+          description: Periodo para el análisis de crecimiento.
+          schema:
+            type: string
+            enum:
+              - weekly
+              - monthly
+              - quarterly
+            default: monthly
+      responses:
+        "200":
+          description: Análisis de crecimiento obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardGrowthAnalysis"
+        "400":
+          description: Parámetro 'period' inválido
+        "401":
+          description: No autorizado
+        "500":
+          description: Error interno del servidor
+
+  /dashboard/objects:
+    get:
+      summary: Obtener todos los objetos para moderación (paginado y filtrado)
+      tags:
+        - Dashboard
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          description: Número de página a recuperar.
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+        - in: query
+          name: limit
+          description: Número de objetos por página.
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+        - in: query
+          name: disciplineName
+          description: Filtrar objetos por nombre de disciplina
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: searchTerm
+          description: Término de búsqueda en nombre o descripción
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista de objetos obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardObjectList"
+        "401":
+          description: No autorizado
         "500":
           description: Error interno del servidor
   /disciplines:
@@ -1041,6 +1667,190 @@ paths:
           description: Error, objeto no encontrado
         "500":
           description: Error interno del servidor
+  /objects/{objectId}/toggle-public-share:
+    post:
+      summary: Alternar la opción de compartir públicamente un objeto
+      tags:
+        - Objetos
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: objectId
+          required: true
+          schema:
+            type: string
+            example: 613b1f1a5c1b2c001a5f1e2e
+          description: >-
+            ID del objeto al que se alternará la opción de compartir
+            públicamente
+      responses:
+        "200":
+          description: Alternado exitosamente la opción de compartir públicamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isPubliclyShared:
+                    type: boolean
+                    example: true
+                  publicShareId:
+                    type: string
+                    example: 1d3573ac78b36277a6da75bacfec578e
+                  message:
+                    type: string
+                    example: El objeto ahora es público
+
+        "400":
+          description: Solicitud incorrecta o datos faltantes
+        "500":
+          description: Error interno del servidor
+  /objects/public/{shareId}:
+    get:
+      summary: Obtener un objeto público a partir de su ID compartido
+      tags:
+        - Objetos
+      parameters:
+        - in: path
+          name: shareId
+          required: true
+          schema:
+            type: string
+            example: 1d3573ac78b36277a6da75bacfec578e
+          description: ID compatida pública del objeto
+      responses:
+        "200":
+          description: Objeto público obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    description: Identificador único del objeto (formato ObjectId).
+                    example: "67fe71e724da18e8123d1cda"
+                  name:
+                    type: string
+                    description: Nombre del objeto.
+                    example: "Cien Años de Soledad"
+                  description:
+                    type: string
+                    description: Descripción detallada del objeto.
+                    example: "Una novela clásica de Gabriel García Márquez."
+                  imageUrl:
+                    type: string
+                    description: URL o ruta de la imagen asociada al objeto.
+                    example: "public/images/objects/cien_años.jpg"
+                  discipline:
+                    type: object
+                    description: Disciplina o categoría a la que pertenece el objeto.
+                    properties:
+                      _id:
+                        type: string
+                        description: Identificador único de la disciplina.
+                        example: "67fe71e524da18e8123d1ca7"
+                      name:
+                        type: string
+                        description: Nombre de la disciplina.
+                        example: "Libros"
+                    required:
+                      - _id
+                      - name
+                  createdBy:
+                    type: object
+                    description: Información del usuario que creó el objeto.
+                    properties:
+                      _id:
+                        type: string
+                        description: Identificador único del usuario creador.
+                        example: "67fe71e524da18e8123d1cb0"
+                      username:
+                        type: string
+                        description: Nombre de usuario del creador.
+                        example: "john_doe"
+                      firstName:
+                        type: string
+                        description: Nombre del creador.
+                        example: "John"
+                      lastName:
+                        type: string
+                        description: Apellido del creador.
+                        example: "Doe"
+                    required:
+                      - _id
+                      - username
+                      - firstName
+                      - lastName
+                  isPubliclyShared:
+                    type: boolean
+                    description: Indica si el objeto está compartido públicamente.
+                    example: true
+                  createdAt:
+                    type: string
+                    format: date-time
+                    description: Fecha y hora de creación del objeto.
+                    example: "2025-04-15T14:49:11.195Z"
+                  __v:
+                    type: integer
+                    description: Versión del documento
+                    example: 0
+                  publicShareCreatedAt:
+                    type: string
+                    format: date-time
+                    description: Fecha y hora en que el objeto se compartió públicamente
+                    example: "2025-04-15T14:53:12.341Z"
+                    nullable: true
+                  publicShareId:
+                    type: string
+                    description: Identificador único para el recurso compartido públicamente.
+                    example: "1d3573ac78b36277a6da75bacfec578e"
+                    nullable: true
+                required:
+                  - _id
+                  - name
+                  - imageUrl
+                  - discipline
+                  - createdBy
+                  - isPubliclyShared
+                  - createdAt
+                  - __v
+        "404":
+          description: Objeto no encontrado
+        "500":
+          description: Error interno del servidor
+  /objects/{objectId}/favorite:
+    post:
+      summary: Alternar el estado de favorito de un objeto
+      tags:
+        - Objetos
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: objectId
+          required: true
+          schema:
+            type: string
+            example: 67fe71e724da18e8123d1cda
+          description: ID del objeto al que se alternará el estado de favorito
+      responses:
+        "200":
+          description: Estado de favorito actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isFavorite:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Objeto añadido a favoritos
+        "500":
+          description: Error interno del servidor
   /users/{userId}:
     get:
       summary: Obtener un usuario por su ID
@@ -1170,14 +1980,40 @@ paths:
           description: Usuario no encontrado
         "500":
           description: Error interno del servidor
+  /users/favorites:
+    get:
+      summary: Obtener los favoritos del usuario autenticado
+      tags:
+        - Usuarios
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Lista de favoritos obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  favorites:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - 613b1f1a5c1b2c001a5f1e2d
+                      - 67fe71e724da18e8123d1cda
+        "500":
+          description: Error interno del servidor
 tags:
   - name: Autenticación
     description: Operaciones relacionadas con la autenticación de usuarios
+  - name: Comentarios
+    description: Operaciones relacionadas con la gestión de comentarios
+  - name: Dashboard
+    description: Operaciones del dashboard de administrador
   - name: Disciplinas
     description: Operaciones relacionadas con las disciplinas
   - name: Objetos
     description: Operaciones relacionadas con la gestión de objetos
-  - name: Comentarios
-    description: Operaciones relacionadas con la gestión de comentarios
   - name: Usuarios
     description: Operaciones relacionadas con la gestión de usuarios
