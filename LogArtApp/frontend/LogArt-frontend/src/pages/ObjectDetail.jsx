@@ -16,6 +16,8 @@ const ObjectDetail = () => {
   const [isShared, setIsShared] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  const isProduction = import.meta.env.PROD;
+  const BASE_URL = isProduction ? "" : "https://localhost:8443";
   useEffect(() => {
     const fetchObject = async () => {
       try {
@@ -27,7 +29,7 @@ const ObjectDetail = () => {
         console.error("Error fetching object details:", err);
         setError(
           err.response?.data?.message ||
-            "Error al obtener los detalles del objeto"
+            "Error al obtener los detalles del objeto",
         );
         setLoading(false);
       }
@@ -102,7 +104,7 @@ const ObjectDetail = () => {
                   src={
                     object.imageUrl.startsWith("http")
                       ? object.imageUrl
-                      : `https://localhost:8443/${object.imageUrl}`
+                      : `${BASE_URL}/${object.imageUrl}`
                   }
                   alt={object.name}
                   className="w-full h-auto rounded-lg object-cover shadow-md"

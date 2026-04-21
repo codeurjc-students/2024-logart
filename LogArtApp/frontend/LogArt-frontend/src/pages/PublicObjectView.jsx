@@ -7,6 +7,8 @@ const PublicObjectView = () => {
   const [object, setObject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const isProduction = import.meta.env.PROD;
+  const BASE_URL = isProduction ? "" : "https://localhost:8443";
   useEffect(() => {
     const fetchObject = async () => {
       try {
@@ -71,7 +73,7 @@ const PublicObjectView = () => {
               src={
                 object.imageUrl.startsWith("http")
                   ? object.imageUrl
-                  : `https://localhost:8443/${object.imageUrl}`
+                  : `${BASE_URL}/${object.imageUrl}`
               }
               alt={object.name}
               className="w-full max-h-96 object-contain rounded"

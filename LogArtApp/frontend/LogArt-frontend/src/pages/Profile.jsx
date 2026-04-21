@@ -3,6 +3,8 @@ import { AuthContext } from "../context/AuthContext";
 import axios from "../utilities/api";
 
 const Profile = () => {
+  const isProduction = import.meta.env.PROD;
+  const BASE_URL = isProduction ? "" : "https://localhost:8443";
   const { user, setUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     username: "",
@@ -90,7 +92,7 @@ const Profile = () => {
                 {user.profileImage ? (
                   <img
                     data-testid="profile-image-src"
-                    src={`https://localhost:8443${user.profileImage}`}
+                    src={`${BASE_URL}${user.profileImage}`}
                     alt="Profile"
                     className="w-24 h-24 object-cover rounded-full border-2 border-gray-300"
                   />

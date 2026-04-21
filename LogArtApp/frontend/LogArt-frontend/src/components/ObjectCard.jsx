@@ -19,13 +19,15 @@ const ObjectCard = ({
   const [favorite, setFavorite] = useState(isFavorite);
   const [isTogglingFavorite, setIsTogglingFavorite] = useState(false);
 
+  const isProduction = import.meta.env.PROD;
+  const BASE_URL = isProduction ? "" : "https://localhost:8443";
   useEffect(() => {
     setFavorite(isFavorite);
   }, [isFavorite]);
 
   const handleDelete = async () => {
     const confirmDelete = window.confirm(
-      `¿Estás seguro de que deseas eliminar "${object.name}"?`
+      `¿Estás seguro de que deseas eliminar "${object.name}"?`,
     );
     if (!confirmDelete) return;
     try {
@@ -46,7 +48,7 @@ const ObjectCard = ({
         object={object}
         disciplines={disciplines}
         onObjectUpdated={onObjectUpdated}
-      />
+      />,
     );
   };
   const handleToggleFavorite = async (e) => {
@@ -75,7 +77,7 @@ const ObjectCard = ({
           src={
             object.imageUrl.startsWith("http")
               ? object.imageUrl
-              : `https://localhost:8443/${object.imageUrl}`
+              : `${BASE_URL}/${object.imageUrl}`
           }
           alt={object.name}
           className="w-full h-48 object-cover"

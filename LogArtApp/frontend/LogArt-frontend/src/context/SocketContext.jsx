@@ -8,11 +8,13 @@ export const SocketProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
   const [connected, setConnected] = useState(false);
   const { isAuthenticated, user } = useContext(AuthContext);
+  const isProduction = import.meta.env.PROD;
+  const SOCKET_URL = isProduction ? "" : "https://localhost:8443";
   useEffect(() => {
     let newSocket = null;
     if (isAuthenticated && user) {
       console.log("Inicializando Socket.IO...");
-      newSocket = io("https://localhost:8443", {
+      newSocket = io(SOCKET_URL, {
         rejectUnauthorized: false,
         withCredentials: true,
       });
