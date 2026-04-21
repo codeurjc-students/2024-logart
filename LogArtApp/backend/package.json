@@ -5,7 +5,8 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --verbose",
     "generate-docs": "node api-docs/swagger.js ",
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",

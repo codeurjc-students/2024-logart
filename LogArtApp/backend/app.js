@@ -11,17 +11,23 @@ const cors = require("cors");
 const seedDB = require("./Seeders/seedDB");
 
 const app = express();
+
+const allowedOrigins = [
+  "https://localhost:5173",
+  "https://editor.swagger.io",
+  "https://codeurjc-students.github.io",
+];
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 app.use(
   cors({
-    origin: [
-      "https://localhost:5173",
-      "https://editor.swagger.io",
-      "https://codeurjc-students.github.io",
-    ],
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
-  })
+  }),
 );
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use(express.json());
