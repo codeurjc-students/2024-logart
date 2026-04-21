@@ -1,8 +1,13 @@
 import axios from "axios";
 
+const isProduction = import.meta.env.PROD;
+const BASE_URL = isProduction ? "" : "https://localhost:8443";
+
 const api = axios.create({
-  baseURL: "https://localhost:8443",
+  baseURL: BASE_URL,
+  withCredentials: true,
 });
+
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
@@ -13,7 +18,7 @@ api.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;
