@@ -64,13 +64,13 @@ LogArt cuenta con tres tipos de usuarios con diferentes niveles de acceso:
 - Password: admin123
 - Permisos: Acceso completo a todas las galerías y objetos de usuarios, capacidad para moderar contenido y acceso al panel de administración.
 
-### Usuario Registardo
+### Usuario Registrado
 
 - Username: pepe@gmail.com
 - Password: hola123
 - Permisos: Creación y gestión de objetos propios
 
-### Usuario No Registardo
+### Usuario No Registrado
 
 - Simplemente puede ver la página principal.
 
