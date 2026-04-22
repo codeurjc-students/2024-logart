@@ -61,4 +61,3 @@ Para compilar el documento en tu propio equipo, necesitas tener instalada una di
    pdflatex tfg.tex
    pdflatex tfg.tex
    ```
-   `
