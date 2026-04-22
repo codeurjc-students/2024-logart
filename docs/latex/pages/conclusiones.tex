@@ -1,0 +1,83 @@
+Tras el detallado recorrido por la especificación, diseño, implementación y validación de la aplicación ``LogArt: Galería de Recuerdos'' expuesto en los capítulos anteriores, este capítulo final tiene como propósito consolidar las principales conclusiones extraídas del desarrollo de este Trabajo de Fin de Grado. Se realizará una evaluación del cumplimiento de los objetivos inicialmente planteados, se reflexionará sobre los desafíos encontrados y los aprendizajes adquiridos durante el proceso, y se presentará una visión sobre las posibles líneas de evolución y trabajos futuros que podrían enriquecer y expandir la funcionalidad de LogArt.
+
+Este capítulo busca, por tanto, no solo resumir los resultados del proyecto, sino también ofrecer una perspectiva personal sobre la experiencia de desarrollo y el potencial de la aplicación creada.
+
+\section{Conclusiones del Proyecto}
+\label{sec:conclusionesProyecto}
+
+El desarrollo de ``LogArt: Galería de Recuerdos'' ha culminado en una aplicación web funcional que satisface la necesidad principal de proporcionar a los usuarios una plataforma personal para documentar y organizar sus experiencias y recuerdos relacionados con diversas disciplinas culturales. A continuación, se evalúa el proyecto en función de sus objetivos, los resultados obtenidos y los desafíos enfrentados.
+
+\subsection{Cumplimiento de Objetivos}
+\label{ssec:cumplimientoObjetivos}
+
+El proyecto se planteó como una serie de objetivos tanto generales como específicos, detallados en el Capítulo \ref{chap:objetivos}. Se puede concluir que estos objetivos han sido alcanzados satisfactoriamente:
+\begin{itemize}
+    \item \textbf{Objetivo Principal:} Se ha diseñado, desarrollado e implementado con éxito LogArt, una aplicación web SPA funcional que permite a los usuarios registrar, organizar y consultar sus recuerdos culturales. La aplicación ofrece las herramientas necesarias para gestionar galerías personales de libros, canciones y videojuegos, y detallar experiencias mediante comentarios.
+    \item \textbf{Objetivos Específicos:}
+    La evaluación del grado de cumplimiento se ha estructurado en función de las dos categorías de objetivos definidas al inicio del proyecto:
+
+    \vspace{0.2cm}
+    \textbf{Cumplimiento de Objetivos Funcionales:}
+    \begin{itemize}
+        \item \textbf{Gestión de Identidad y Seguridad (OF1):} Se implementó con éxito un sistema completo y seguro de gestión de usuarios, abarcando desde el registro y la autenticación mediante tokens (JWT), hasta la recuperación de contraseñas y la verificación de cuentas vía correo electrónico.
+        \item \textbf{Gestión del Catálogo Cultural (OF2):} La plataforma permite a los usuarios realizar el ciclo completo de operaciones (CRUD) sobre obras culturales categorizadas por disciplinas, integrando además la capacidad de gestionar imágenes asociadas a cada entrada.
+        \item \textbf{Gestión de Recuerdos y Notas Personales (OF3):} Se habilitó la funcionalidad central de la aplicación, permitiendo a los usuarios registrar, editar y consultar anotaciones y recuerdos detallados vinculados a las obras de su catálogo.
+        \item \textbf{Administración y Monitorización del Sistema (OF4):} Se desarrolló un panel de administración funcional que proporciona a los usuarios con privilegios las herramientas necesarias para la moderación del contenido global y la visualización de métricas y gráficos sobre el estado de la plataforma.
+    \end{itemize}
+
+    \vspace{0.2cm}
+    \textbf{Cumplimiento de Objetivos Técnicos:}
+    \begin{itemize}
+        \item \textbf{Arquitectura y Stack Tecnológico (OT1):} Se diseñó e implementó exitosamente una arquitectura \textit{Single Page Application} (SPA) basada en el stack MERN. Esta decisión demostró ser altamente efectiva, permitiendo desarrollar un sistema \textit{Fullstack} en JavaScript con una interfaz de usuario interactiva y adaptable (\textit{responsive}).
+        \item \textbf{Diseño de API RESTful (OT2):} Se construyó una API RESTful robusta y documentada utilizando Node.js y Express.js, garantizando una comunicación fluida con el \textit{frontend} y una persistencia de datos eficiente mediante MongoDB y el modelado de Mongoose.
+        \item \textbf{Aseguramiento de la Calidad (OT3):} Se estableció una sólida estrategia de pruebas automatizadas que abarca el \textit{backend} (pruebas unitarias y de integración con Jest y Supertest) y el \textit{frontend} (pruebas de extremo a extremo con Playwright), contribuyendo significativamente a la estabilidad y calidad del código entregado.
+        \item \textbf{Prácticas DevOps e Infraestructura (OT4):} La aplicación fue empaquetada completamente en contenedores utilizando Docker y Docker Compose, simplificando su configuración. Asimismo, se configuró con éxito un flujo de Integración y Entrega Continua (CI/CD) en GitHub Actions para la validación automática de cambios y la publicación de imágenes en DockerHub.
+    \end{itemize}
+\end{itemize}
+
+En resumen, la aplicación LogArt ha sido desarrollada cumpliendo íntegramente con el conjunto de objetivos funcionales y características técnicas estipuladas, materializándose en una plataforma completa, estable y preparada para su puesta en producción.
+
+\subsection{Resultados Obtenidos}
+\label{ssec:resultadosObtenidos}
+
+El principal resultado de este TFG es la aplicación web LogArt, una plataforma operativa que ofrece una solución viable y útil para aquellos usuarios que deseen llevar un registro personal y detallado de su consumo cultural.
+
+\subsection{Desafíos Enfrentados y Soluciones}
+\label{ssec:desafiosSoluciones}
+
+Durante el desarrollo de LogArt, se presentaron diversos desafíos técnicos y de aprendizaje, cuya superación fue clave para el éxito del proyecto:
+\begin{itemize}
+    \item \textbf{Adopción y Dominio del Stack MERN Completo:} Si bien se tenían conocimientos previos de algunas tecnologías, la integración y el dominio profundo de todo el stack MERN (especialmente la interacción eficiente entre React, Node.js/Express.js y MongoDB con Mongoose) supuso una curva de aprendizaje continua. Se abordó mediante estudio autodidacta, consulta de documentación oficial y experimentación práctica. Por este mismo motivo, y por ser el primer proyecto en el stack MERN realizado por el tutor, el código puede no ser lo más óptimo posible.
+    \item \textbf{Diseño de una API RESTful Coherente y Segura:} Definir una API que fuera a la vez intuitiva, segura (con autenticación JWT y autorización por roles) y que cubriera todas las necesidades funcionales requirió un diseño iterativo y cuidadoso.
+    \item \textbf{Implementación del Panel de Administración:} El desarrollo del \textit{dashboard} de administrador, con sus diversas estadísticas y agregaciones de datos, representó un desafío significativo en términos de lógica de \textit{backend} y presentación de datos en el \textit{frontend}. Se superó mediante la descomposición del problema en consultas más pequeñas y la construcción incremental de la interfaz.
+    \item \textbf{Configuración de CI/CD y Despliegue en Contenedores:} Asegurar que la aplicación se construyera correctamente en contenedores Docker y que los pipelines de CI/CD funcionaran de manera fiable para las pruebas y la publicación de imágenes implicó un aprendizaje considerable sobre Docker, Docker Compose y GitHub Actions, especialmente en la gestión de dependencias y entornos.
+\end{itemize}
+La resolución de estos desafíos fue fundamental no solo para el proyecto en sí, sino también para el desarrollo de habilidades de resolución de problemas y la consolidación de conocimientos técnicos.
+
+\subsection{Limitaciones del Proyecto y Trabajos Futuros}
+\label{ssec:limitacionesproyecto}
+
+A pesar de los logros alcanzados, es importante reconocer algunas limitaciones del proyecto LogArt en su estado actual, que podrían abordarse en futuras iteraciones:
+\begin{itemize}
+    \item \textbf{Cobertura de Pruebas:}
+    Aunque se implementó una base sólida de pruebas, la cobertura de código (aproximadamente 70\%, Sección \ref{sec:pruebasCap4}) podría incrementarse, para aumentar más la robustez del sistema.
+    \item \textbf{Almacenamiento de Imágenes:} Actualmente, las imágenes subidas por los usuarios se almacenan en el sistema de ficheros del servidor donde se ejecuta la aplicación. Para una mayor escalabilidad, resiliencia y eficiencia en un entorno de producción, sería preferible integrar un servicio de almacenamiento en la nube (Amazon S3 o Google Cloud Storage).
+    \item \textbf{Ausencia de un Sistema de Recomendación Basado en IA:}
+    Actualmente, la exploración de contenido es manual o basada en categorías fijas. Una evolución lógica alineada con los estándares de la industria del entretenimiento sería la implementación de un motor de recomendación personalizado. Utilizando algoritmos de \textit{Machine Learning} (filtrado colaborativo o basado en contenido), el sistema podría sugerir nuevas obras a los usuarios basándose en sus recuerdos y valoraciones previas, aumentando significativamente el \textit{engagement} de la plataforma.
+    \item \textbf{Internacionalización (i18n) y Localización:}
+    La aplicación está diseñada actualmente en un único idioma. Para alcanzar una audiencia global y cumplir con los estándares de accesibilidad y usabilidad internacionales, sería necesario implementar un sistema de internacionalización que permitiera adaptar no solo el idioma de la interfaz, sino también los formatos de fecha, moneda y metadatos culturales según la región geográfica del usuario.
+
+    
+\end{itemize}
+Estas limitaciones no demeritan el trabajo realizado, sino que motivan y ofrecen un punto de partida claro para futuras mejoras y desarrollos.
+
+\section{Reflexión Personal y Aprendizaje}
+\label{sec:reflexionPersonal}
+
+La realización del Trabajo Fin de Grado ``LogArt: Galería de Recuerdos" ha constituido una experiencia de aprendizaje sumamente valiosa y enriquecedora, tanto a nivel técnico como personal. Este proyecto ha representado la culminación de los conocimientos adquiridos durante el Grado en Ingeniería del Software y una oportunidad para aplicarlos en un desarrollo completo y autónomo.
+
+Desde el punto de vista \textbf{técnico}, el TFG ha permitido profundizar y consolidar habilidades en un espectro amplio de tecnologías modernas para el desarrollo web FullStack. Destaca el aprendizaje práctico y la aplicación del stack MERN (MongoDB, Express.js, React, Node.js), la implementación de arquitecturas RESTful, y la interacción con bases de datos NoSQL. Igualmente significativo ha sido el dominio de herramientas y prácticas DevOps, como la contenedorización con Docker y Docker Compose, la configuración de pipelines de Integración Continua y Entrega Continua (CI/CD) con GitHub Actions, y la implementación de una estrategia de pruebas automáticas multinivel (unitaria, integración y E2E).
+
+A nivel \textbf{personal y profesional}, el proyecto ha fomentado el desarrollo de habilidades cruciales como la planificación y gestión autónoma de un proyecto de software de principio a fin, la toma de decisiones fundamentadas, la resolución de problemas complejos bajo plazos definidos, y la capacidad de crear documentación técnica. Además, la necesidad de investigar, aprender y superar obstáculos de forma independiente, ha reforzado la proactividad y la resiliencia del autor.
+
+En definitiva, el desarrollo de LogArt ha sido un desafío, que no solo ha resultado en una aplicación funcional, sino que también ha servido como un excelente campo de pruebas para solidificar mi formación como futuro Ingeniero del Software.

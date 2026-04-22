@@ -1,0 +1,43 @@
+El presente Trabajo de Fin de Grado se propuso alcanzar una serie de objetivos para el desarrollo y la implementación de la aplicación web ``LogArt: Galería de Recuerdos''. Estos objetivos se detallan a continuación.
+
+\section{Objetivo Principal}
+\label{sec:objetivoPrincipal}
+
+El objetivo principal de este Trabajo de Fin de Grado es diseñar, desarrollar y desplegar una aplicación web integral, denominada LogArt, orientada a la gestión personal de experiencias culturales. El sistema debe permitir a los usuarios registrar obras, organizar sus recuerdos y consultar notas detalladas sobre diversas disciplinas (como literatura, videojuegos y música), empleando para ello arquitecturas web modernas y prácticas de desarrollo profesional.
+
+\section{Objetivos Específicos}
+\label{sec:objetivosEspecificos}
+
+Para alcanzar el propósito general del proyecto, los objetivos específicos se han dividido en dos categorías fundamentales: los objetivos funcionales, que definen el comportamiento esperado del sistema desde la perspectiva del usuario; y los objetivos técnicos, que establecen las metas de arquitectura, calidad e infraestructura del software. De estos objetivos emanarán los requisitos detallados que se abordan en el Capítulo~\ref{chap:descripcionInformatica}.
+
+\subsection{Objetivos Funcionales}
+\label{sec:objetivosFuncionales}
+
+Estos objetivos describen a alto nivel las capacidades que la aplicación LogArt debe ofrecer para satisfacer las necesidades de sus usuarios:
+
+\begin{itemize}
+    \item \textbf{OF1: Gestión de Identidad y Seguridad:} Proveer un sistema completo de gestión de usuarios que incluya el registro seguro, la autenticación, la recuperación de contraseñas y la verificación de cuentas mediante correo electrónico.
+    
+    \item \textbf{OF2: Gestión del Catálogo Cultural:} Permitir a los usuarios crear, consultar, editar y eliminar (operaciones CRUD) registros de obras culturales categorizadas por disciplinas, soportando la subida y gestión de imágenes representativas para cada obra.
+    
+    \item \textbf{OF3: Gestión de Recuerdos y Notas Personales:} Habilitar la creación y administración de anotaciones y recuerdos vinculados específicamente a cada obra, facilitando así la preservación detallada de la experiencia cultural del usuario.
+    
+    \item \textbf{OF4: Administración y Monitorización del Sistema:} Incorporar un panel de control exclusivo para perfiles con privilegios de administrador que permita la moderación general del contenido y la visualización del desempeño de la plataforma mediante métricas y gráficos interactivos.
+\end{itemize}
+
+\subsection{Objetivos Técnicos}
+\label{sec:objetivosTecnicos}
+
+Estos objetivos definen las restricciones de diseño, el marco tecnológico y las prácticas de ingeniería que garantizan que el sistema sea robusto, mantenible y escalable:
+
+\begin{itemize}
+    \item \textbf{OT1: Arquitectura y Stack Tecnológico:} Implementar el sistema siguiendo una arquitectura \textit{Single Page Application} (SPA) apoyada en el stack tecnológico MERN (MongoDB, Express.js, React, Node.js), garantizando un desarrollo \textit{Fullstack} basado en JavaScript.
+    
+    \item \textbf{OT2: Diseño de API RESTful:} Desarrollar una API robusta y debidamente documentada en el \textit{backend} para gestionar la lógica de negocio, asegurando la persistencia y flexibilidad de los datos mediante una base de datos NoSQL.
+    
+    \item \textbf{OT3: Aseguramiento de la Calidad (QA):} Garantizar la fiabilidad del código y la ausencia de errores críticos mediante la implementación de una estrategia integral de pruebas automatizadas que abarque niveles unitarios, de integración y de extremo a extremo (\textit{End-to-End}).
+    
+    \item \textbf{OT4: Prácticas DevOps e Infraestructura:} Optimizar el ciclo de vida del software mediante el empaquetado de la aplicación en contenedores Docker y la implementación de flujos de Integración y Entrega Continua (CI/CD) utilizando GitHub Actions.
+\end{itemize}
+
+El cumplimiento conjunto de estos objetivos funcionales y técnicos permitirá obtener una versión completa, estable y desplegable de LogArt, sentando bases sólidas para su futura evolución.
