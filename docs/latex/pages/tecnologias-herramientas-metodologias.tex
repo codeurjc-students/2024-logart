@@ -64,7 +64,7 @@ El \textit{backend} de LogArt es el responsable de la lógica de negocio, la ges
 \label{sec:nodejs}
 
 \begin{itemize}
-    \item \textbf{¿Qué es?:} Node.js\footnote{\url{https://nodejs.org/}} es un entorno de ejecución de JavaScript del lado del servidor, asíncrono y orientado a eventos, construido sobre el motor V8 de JavaScript de Google Chrome. Permite a los desarrolladores construir aplicaciones de red escalables y de alto rendimiento \cite{kinstaQueEsNodeJS}.
+    \item \textbf{¿Qué es?:} Node.js\footnote{\url{https://nodejs.org/}} es un entorno de ejecución de JavaScript del lado del servidor, asíncrono y orientado a eventos, construido sobre el motor V8 de JavaScript de Google Chrome. Permite construir aplicaciones escalables con gran rendimiento \cite{kinstaQueEsNodeJS}.
 
     \item \textbf{¿Por qué se eligió para LogArt?:}
         \begin{itemize}
@@ -166,7 +166,7 @@ Garantizar la seguridad de los datos de los usuarios y proteger el acceso a la a
 \begin{itemize}
     \item \textbf{JSON Web Tokens (JWT}
         \begin{itemize}
-            \item \textbf{¿Qué es?:} JSON Web Token (JWT)\footnote{\url{https://datatracker.ietf.org/doc/html/rfc7519}} es un estándar abierto (RFC 7519)\cite{rfc7519} que define una forma compacta y autocontenida para transmitir información de forma segura entre partes como un objeto JSON. Esta información puede ser verificada y confiable porque está firmada digitalmente. Los JWTs se pueden firmar usando un secreto (con el algoritmo HMAC) o un par de claves pública/privada (usando RSA o ECDSA) \cite{caronteJWT}.
+            \item \textbf{¿Qué es?:} JSON Web Token (JWT)\footnote{\url{https://datatracker.ietf.org/doc/html/rfc7519}} es un formato estandarizado por el RFC 7519 que permite intercambiar información de forma compacta entre dos partes mediante un objeto JSON. Al ir firmado digitalmente, el contenido puede verificarse y confiar en que no ha sido modificado. Esta firma puede generarse con una clave secreta mediante HMAC o con un esquema de clave pública y privada, como RSA o ECDSA. \cite{caronteJWT}.
             \item \textbf{¿Por qué se eligió para LogArt?:}
                 \begin{itemize}
                     \item \textit{Autenticación Stateless (con matices):} Los JWTs permiten, en teoría, implementar un sistema de autenticación sin estado (stateless) en el servidor, ya que el token contiene de forma autocontenida la información del usuario. Sin embargo, cabe señalar que para mejorar la seguridad en LogArt y permitir el cierre de sesión, se ha implementado una lista negra (\textit{blacklist}) de tokens invalidados en la base de datos. Esto introduce un componente de estado en el proceso de verificación, pues el servidor debe consultar dicha lista para asegurar que el token no ha sido revocado antes de su expiración, equilibrando así la escalabilidad de los JWT con un control de acceso más riguroso.
@@ -310,7 +310,7 @@ El control de versiones es una práctica indispensable en el desarrollo de softw
     \begin{itemize}
         \item \textbf{Git}
             \begin{itemize}
-                \item \textbf{¿Qué es?:} Git\footnote{\url{https://git-scm.com/}} es un sistema de control de versiones distribuido, gratuito y de código abierto, diseñado para manejar desde proyectos pequeños hasta muy grandes con eficiencia. Su gran fortaleza es el hecho de rastrear cambios en el código, revertir a versiones anteriores, trabajar en diferentes líneas de desarrollo (ramas) y colaborar con otros desarrolladores \cite{gitlabDVCSBenefits}.
+                \item \textbf{¿Qué es?:} Git\footnote{\url{https://git-scm.com/}} es un sistema de control de versiones distribuido, gratuito y de código abierto, diseñado para operar desde proyectos pequeños hasta proyectos con despliegues y equipos inmensos manteniendo la eficiencia. Su gran fortaleza es el hecho de rastrear cambios en el código, revertir a versiones anteriores, trabajar en diferentes líneas de desarrollo (ramas) y colaborar con otros desarrolladores \cite{gitlabDVCSBenefits}.
                 \item \textbf{Uso en LogArt:} Git ha sido la herramienta fundamental para gestionar todo el código fuente del proyecto. Se utilizó para:
                     \begin{itemize}
                         \item Registrar el historial de cambios de todos los archivos del proyecto (\textit{backend}, \textit{frontend}, configuración, documentación).
@@ -342,7 +342,7 @@ La elección de un Entorno de Desarrollo Integrado (IDE) o editor de código ade
     \begin{itemize}
         \item \textbf{Visual Studio Code (VS Code)}
             \begin{itemize}
-                \item \textbf{¿Qué es?:} VS Code\footnote{\url{https://code.visualstudio.com/}} es un editor de código fuente ligero pero potente, desarrollado por Microsoft, pero que está disponible para Windows, macOS y Linux, y que se ejecuta en escritorio. Ofrece un amplio conjunto de características, como resaltado de sintaxis, auto completado inteligente, depuración integrada, integración con Git y un vasto ecosistema de extensiones.
+                \item \textbf{¿Qué es?:} VS Code\footnote{\url{https://code.visualstudio.com/}} es un editor de código creado por Microsoft que destaca por combinar un funcionamiento ágil con herramientas avanzadas de desarrollo. Entre sus funciones principales se encuentran el coloreado de sintaxis, sugerencias inteligentes de código, depuración incorporada, compatibilidad con Git y una amplia colección de extensiones que permiten adaptar el entorno a las necesidades del desarrollador.
                 \item \textbf{Uso en LogArt:} VS Code fue el entorno principal para escribir, editar, depurar y gestionar todo el código fuente de LogArt (\textit{backend}, \textit{frontend} y archivos de configuración). Se aprovecharon diversas extensiones para mejorar la experiencia de desarrollo, entre las que se destacan:
                     \begin{itemize}
                         \item \textbf{ESLint\footnote{\url{https://eslint.org/}} y Prettier\footnote{\url{https://prettier.io/}}}: Para el formateo automático del código y el análisis estático, asegurando un estilo de código consistente y detectando errores potenciales.
@@ -357,7 +357,7 @@ La elección de un Entorno de Desarrollo Integrado (IDE) o editor de código ade
 \subsection{Contenedorización}
 \label{sec:contenedores}
 
-La contenedorización es una tecnología que permite empaquetar una aplicación y todas sus dependencias en una unidad estandarizada para el desarrollo, envío y despliegue de software. Para LogArt, se adoptaron las siguientes herramientas:
+La contenedorización consiste en encapsular una aplicación junto con todos los recursos y dependencias que necesita dentro de un entorno aislado y portable. De este modo, el software puede desarrollarse, distribuirse y ejecutarse de forma más consistente en distintos sistemas. Para LogArt, se adoptaron las siguientes herramientas:
 
     \begin{itemize}
         \item \textbf{Docker}
